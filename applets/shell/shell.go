@@ -3,7 +3,9 @@ package shell
 import (
 	"bufio"
 	"common"
+	"exec"
 	"os"
+	"strings"
 )
 
 func Shell(call []string) os.Error {
@@ -29,30 +31,41 @@ func Shell(call []string) os.Error {
 		if e != nil {
 			return e
 		}
-		ce := executeLine(line)
+		if isComment(line) {
+			continue
+		}
+		params, ce := parameterize(line)
 		if ce != nil {
 			common.DumpError(ce)
+			continue
+		}
+		ce = execute(params)
+		if ce != nil {
+			common.DumpError(ce)
+			continue
 		}
 	}
 	return nil
 }
 
-func getNextLine(in *bufio.Reader) (string, os.Error) {
-	var e os.Error
-	var buffer []byte
-	isPrefix := true
-	for isPrefix {
-		var subbuffer []byte
-		subbuffer, isPrefix, e = in.ReadLine()
-		if e != nil {
-			break
-		}
-		buffer = append(buffer, subbuffer...)
-	}
-	return string(buffer), e
+func isComment(line string) bool {
+	line = strings.TrimSpace(line)
+	return strings.HasPrefix(line, "#")
 }
 
-func executeLine(line string) os.Error {
-	println("Command:", line)
+func execute(cmd []string) os.Error {
+	if isBuiltIn(cmd[0]) {
+	} else {
+		cmd := exec.Command(cmd[0], cmd[1:]...)
+		cmd.Stdout = os.Stdout
+		cmd.Stdin = os.Stdin
+		cmd.Stderr = os.Stderr
+		e := cmd.Run()
+		return e
+	}
 	return nil
+}
+
+func isBuiltIn(cmd string) bool {
+	return false
 }
