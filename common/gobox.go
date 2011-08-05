@@ -33,4 +33,3 @@ func GetGoboxBinaryPath() (string, os.Error) {
 	}
 	return filepath.Abs(relpath)
 }
-

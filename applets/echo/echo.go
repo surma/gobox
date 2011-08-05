@@ -5,7 +5,6 @@ import (
 	"os"
 )
 
-
 // A simple, parameterless echo implementation
 func Echo(call []string) os.Error {
 	var parameters []string

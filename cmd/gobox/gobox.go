@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	helpFlag = flag.Bool("help", false, "Show help")
-	listFlag = flag.Bool("list", false, "List applets")
+	helpFlag    = flag.Bool("help", false, "Show help")
+	listFlag    = flag.Bool("list", false, "List applets")
 	installFlag = flag.String("install", "", "Create symlinks for applets in given path")
 )
 
@@ -22,14 +22,17 @@ func help() {
 func list() {
 	println("List of compiled applets:\n")
 	for name, _ := range Applets {
-		print(name,", ")
+		print(name, ", ")
 	}
 	println("")
 }
 
 func install(path string) {
 	goboxpath, e := common.GetGoboxBinaryPath()
-	check(e)
+	if e != nil {
+		common.DumpError(e)
+		return
+	}
 	for name, _ := range Applets {
 		newpath := filepath.Join(path, name)
 		e = common.ForcedSymlink(goboxpath, newpath)
@@ -41,15 +44,15 @@ func install(path string) {
 
 func run() {
 	callname := filepath.Base(os.Args[0])
-	// "gobox" has to be catched here because it can't
-	// be in the Applets map due to dependency cylces
+	// "gobox" has to be handled separately. Putting it in
+	// the Applets map results in dependency cylces
 	if callname == "gobox" {
 		help()
 		return
 	}
 	applet, ok := Applets[callname]
 	if !ok {
-		panic(os.NewError("Could not find applet \""+callname+"\""))
+		panic(os.NewError("Could not find applet \"" + callname + "\""))
 	}
 	applet(os.Args)
 }
@@ -70,16 +73,10 @@ func main() {
 		help()
 	} else if *listFlag {
 		list()
-	} else if *installFlag != ""{
+	} else if *installFlag != "" {
 		install(*installFlag)
 	} else {
 		run()
 	}
 
-}
-
-func check(e os.Error) {
-	if e != nil {
-		panic(e)
-	}
 }
