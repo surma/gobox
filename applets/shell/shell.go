@@ -55,6 +55,9 @@ func isComment(line string) bool {
 }
 
 func execute(cmd []string) os.Error {
+	if len(cmd) == 0 {
+		return nil
+	}
 	if isBuiltIn(cmd[0]) {
 		builtin := Builtins[cmd[0]]
 		return builtin(cmd)
