@@ -8,7 +8,11 @@ import (
 type BuiltinHandler func(call []string) os.Error
 
 var (
-	Builtins map[string]BuiltinHandler = map[string]BuiltinHandler{
+	Builtins map[string]BuiltinHandler
+)
+
+func init() {
+	Builtins = map[string]BuiltinHandler{
 		"cd":       cd,
 		"pwd":      pwd,
 		"exit":     exit,
@@ -16,8 +20,9 @@ var (
 		"getenv":   getenv,
 		"setenv":   setenv,
 		"unsetenv": unsetenv,
+		"fork":     fork,
 	}
-)
+}
 
 func pwd(call []string) os.Error {
 	pwd, e := os.Getwd()
@@ -75,4 +80,12 @@ func unsetenv(call []string) os.Error {
 		return os.NewError("`unsetenv <variable name>`")
 	}
 	return os.Setenv(call[1], "")
+}
+
+func fork(call []string) os.Error {
+	if len(call) < 2 {
+		return os.NewError("`fork <command...>`")
+	}
+	go execute(call[1:])
+	return nil
 }
