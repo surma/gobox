@@ -11,7 +11,7 @@ import (
 
 // This map contains the mappings from callname
 // to applet function.
-var Applets map[string]Applet = map[string]Applet {
+var Applets map[string]Applet = map[string]Applet{
 	"echo": echo.Echo,
 }
 
@@ -21,4 +21,3 @@ var Applets map[string]Applet = map[string]Applet {
 // If the returned error is not nil, it is printed
 // to stdout.
 type Applet func(call []string) os.Error
-

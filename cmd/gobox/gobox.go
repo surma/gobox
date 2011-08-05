@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	helpFlag = flag.Bool("help", false, "Show help")
-	listFlag = flag.Bool("list", false, "List applets")
+	helpFlag    = flag.Bool("help", false, "Show help")
+	listFlag    = flag.Bool("list", false, "List applets")
 	installFlag = flag.String("install", "", "Create symlinks for applets in given path")
 )
 
@@ -22,7 +22,7 @@ func help() {
 func list() {
 	println("List of compiled applets:\n")
 	for name, _ := range Applets {
-		print(name,", ")
+		print(name, ", ")
 	}
 	println("")
 }
@@ -52,7 +52,7 @@ func run() {
 	}
 	applet, ok := Applets[callname]
 	if !ok {
-		panic(os.NewError("Could not find applet \""+callname+"\""))
+		panic(os.NewError("Could not find applet \"" + callname + "\""))
 	}
 	applet(os.Args)
 }
@@ -73,7 +73,7 @@ func main() {
 		help()
 	} else if *listFlag {
 		list()
-	} else if *installFlag != ""{
+	} else if *installFlag != "" {
 		install(*installFlag)
 	} else {
 		run()
