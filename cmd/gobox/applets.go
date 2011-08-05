@@ -1,11 +1,19 @@
 package main
 
 import (
-	// Applet imports: start
-	"applets/echo"
-	// Applet imports: end
 	"os"
 )
+
+// Applet imports
+import (
+	"applets/echo"
+)
+
+// This map contains the mappings from callname
+// to applet function.
+var Applets map[string]Applet = map[string]Applet {
+	"echo": echo.Echo,
+}
 
 // Signature of applet functions.
 // call is like os.Argv, and therefore contains the
@@ -13,13 +21,4 @@ import (
 // If the returned error is not nil, it is printed
 // to stdout.
 type Applet func(call []string) os.Error
-
-// This map contains the mappings from callname
-// to applet function.
-var Applets map[string]Applet = map[string]Applet {
-	// Applet functions: start
-	"echo": echo.Echo,
-	// Applet functions: end
-}
-
 

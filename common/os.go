@@ -17,8 +17,8 @@ func DumpError(e os.Error) {
 	println("gobox:", "Error:", e.String())
 }
 
-// Creates a symlink, and overwrites the target, if it
-// happens to exist.
+// Creates a symlink and deletes the file blocking
+// the name of the symlink.
 func ForcedSymlink(oldname, newname string) os.Error {
 	if PathExists(newname) {
 		e := os.Remove(newname)

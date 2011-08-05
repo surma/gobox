@@ -29,7 +29,10 @@ func list() {
 
 func install(path string) {
 	goboxpath, e := common.GetGoboxBinaryPath()
-	check(e)
+	if e != nil {
+		common.DumpError(e)
+		return
+	}
 	for name, _ := range Applets {
 		newpath := filepath.Join(path, name)
 		e = common.ForcedSymlink(goboxpath, newpath)
@@ -41,8 +44,8 @@ func install(path string) {
 
 func run() {
 	callname := filepath.Base(os.Args[0])
-	// "gobox" has to be catched here because it can't
-	// be in the Applets map due to dependency cylces
+	// "gobox" has to be handled separately. Putting it in
+	// the Applets map results in dependency cylces
 	if callname == "gobox" {
 		help()
 		return
@@ -76,10 +79,4 @@ func main() {
 		run()
 	}
 
-}
-
-func check(e os.Error) {
-	if e != nil {
-		panic(e)
-	}
 }
