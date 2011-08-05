@@ -13,10 +13,10 @@ import (
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	"echo": echo.Echo,
+	"echo":  echo.Echo,
 	"shell": shell.Shell,
-	"bash": shell.Shell,
-	"sh": shell.Shell,
+	//"bash": shell.Shell,
+	//"sh": shell.Shell,
 }
 
 // Signature of applet functions.
