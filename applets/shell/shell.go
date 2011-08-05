@@ -27,6 +27,7 @@ func Shell(call []string) os.Error {
 	var e os.Error
 	var line string
 	for e == nil {
+		print("> ")
 		line, e = getNextLine(in)
 		if e != nil {
 			return e
@@ -55,6 +56,8 @@ func isComment(line string) bool {
 
 func execute(cmd []string) os.Error {
 	if isBuiltIn(cmd[0]) {
+		builtin := Builtins[cmd[0]]
+		return builtin(cmd)
 	} else {
 		cmd := exec.Command(cmd[0], cmd[1:]...)
 		cmd.Stdout = os.Stdout
@@ -67,5 +70,6 @@ func execute(cmd []string) os.Error {
 }
 
 func isBuiltIn(cmd string) bool {
-	return false
+	_, ok := Builtins[cmd]
+	return ok
 }
