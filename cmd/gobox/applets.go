@@ -8,6 +8,7 @@ import (
 import (
 	"applets/echo"
 	"applets/shell"
+	"applets/telnetd"
 )
 
 // This map contains the mappings from callname
@@ -17,6 +18,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"shell": shell.Shell,
 	//"bash": shell.Shell,
 	//"sh": shell.Shell,
+	"telnetd": telnetd.Telnetd,
 }
 
 // Signature of applet functions.
