@@ -26,13 +26,13 @@ func Ls(call []string) os.Error {
 		if e != nil {
 			return e
 		}
-		e = list(cwd)
+		e = list(cwd, "")
 		if e != nil {
 			return e
 		}
 	} else {
 		for _, dir := range flagSet.Args() {
-			e := list(dir)
+			e := list(dir, "")
 			if e != nil {
 				return e
 			}
@@ -42,7 +42,7 @@ func Ls(call []string) os.Error {
 	return nil
 }
 
-func list(dir string) os.Error {
+func list(dir, prefix string) os.Error {
 	entries, e := ioutil.ReadDir(dir)
 	if e != nil {
 		return e
@@ -51,7 +51,9 @@ func list(dir string) os.Error {
 	for _, entry := range entries {
 		printEntry(entry)
 		if entry.IsDirectory() && *recursiveFlag {
-			e := list(dir + "/" + entry.Name)
+			folder := prefix + "/" + entry.Name
+			fmt.Fprintf(out, "%s:\n", folder)
+			e := list(dir+"/"+entry.Name, folder)
 			if e != nil {
 				return e
 			}
