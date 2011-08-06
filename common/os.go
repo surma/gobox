@@ -1,6 +1,8 @@
 package common
 
 import (
+	"fmt"
+	"io"
 	"os"
 )
 
@@ -14,7 +16,12 @@ func PathExists(path string) bool {
 
 // Prints an error to stdout in a "nice" way.
 func DumpError(e os.Error) {
-	println("gobox:", "Error:", e.String())
+	FDumpError(e, os.Stdout)
+}
+
+// Prints an error to a writer in a "nice" way.
+func FDumpError(e os.Error, w io.Writer) {
+	fmt.Fprintf(w, "gobox: Error: %s\n", e.String())
 }
 
 // Creates a symlink and deletes the file blocking
