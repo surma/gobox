@@ -8,13 +8,30 @@ import (
 )
 
 var (
-	helpFlag    = flag.Bool("help", false, "Show help")
-	listFlag    = flag.Bool("list", false, "List applets")
-	installFlag = flag.String("install", "", "Create symlinks for applets in given path")
+	flagSet     = flag.NewFlagSet("gobox", flag.ExitOnError)
+	helpFlag    = flagSet.Bool("help", false, "Show help")
+	listFlag    = flagSet.Bool("list", false, "List applets")
+	installFlag = flagSet.String("install", "", "Create symlinks for applets in given path")
 )
 
+func Gobox(call []string) (e os.Error) {
+	e = flagSet.Parse(call[1:])
+	if e != nil {
+		return
+	}
+
+	if *listFlag {
+		list()
+	} else if *installFlag != "" {
+		e = install(*installFlag)
+	} else {
+		help()
+	}
+	return
+}
+
 func help() {
-	flag.PrintDefaults()
+	flagSet.PrintDefaults()
 	println()
 	list()
 }
@@ -27,56 +44,21 @@ func list() {
 	println("")
 }
 
-func install(path string) {
+func install(path string) os.Error {
 	goboxpath, e := common.GetGoboxBinaryPath()
 	if e != nil {
-		common.DumpError(e)
-		return
+		return e
 	}
 	for name, _ := range Applets {
+		// Don't overwrite the executable
+		if name == "gobox" {
+			continue
+		}
 		newpath := filepath.Join(path, name)
 		e = common.ForcedSymlink(goboxpath, newpath)
 		if e != nil {
 			common.DumpError(e)
 		}
 	}
-}
-
-func run() {
-	callname := filepath.Base(os.Args[0])
-	// "gobox" has to be handled separately. Putting it in
-	// the Applets map results in dependency cylces
-	if callname == "gobox" {
-		help()
-		return
-	}
-	applet, ok := Applets[callname]
-	if !ok {
-		panic(os.NewError("Could not find applet \"" + callname + "\""))
-	}
-	applet(os.Args)
-}
-
-func main() {
-	defer func() {
-		if p := recover(); p != nil {
-			e, ok := p.(os.Error)
-			if !ok {
-				e = os.NewError("Some error occured")
-			}
-			common.DumpError(e)
-		}
-	}()
-	flag.Parse()
-
-	if *helpFlag {
-		help()
-	} else if *listFlag {
-		list()
-	} else if *installFlag != "" {
-		install(*installFlag)
-	} else {
-		run()
-	}
-
+	return nil
 }
