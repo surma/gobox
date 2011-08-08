@@ -10,17 +10,17 @@ import (
 	"applets/shell"
 	"applets/telnetd"
 	"applets/ls"
+	"applets/rm"
 )
 
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	"echo":  echo.Echo,
-	"shell": shell.Shell,
-	//"bash": shell.Shell,
-	//"sh": shell.Shell,
+	"echo":    echo.Echo,
+	"shell":   shell.Shell,
 	"telnetd": telnetd.Telnetd,
 	"ls":      ls.Ls,
+	"rm":      rm.Rm,
 }
 
 // Signature of applet functions.
