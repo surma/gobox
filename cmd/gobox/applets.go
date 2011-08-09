@@ -11,6 +11,7 @@ import (
 	"applets/telnetd"
 	"applets/ls"
 	"applets/rm"
+	"applets/httpd"
 )
 
 // This map contains the mappings from callname
@@ -21,6 +22,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"telnetd": telnetd.Telnetd,
 	"ls":      ls.Ls,
 	"rm":      rm.Rm,
+	"httpd":   httpd.Httpd,
 }
 
 // Signature of applet functions.
