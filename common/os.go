@@ -16,11 +16,11 @@ func PathExists(path string) bool {
 
 // Prints an error to stdout in a "nice" way.
 func DumpError(e os.Error) {
-	FDumpError(e, os.Stdout)
+	FDumpError(os.Stdout, e)
 }
 
 // Prints an error to a writer in a "nice" way.
-func FDumpError(e os.Error, w io.Writer) {
+func FDumpError(w io.Writer, e os.Error) {
 	fmt.Fprintf(w, "gobox: Error: %s\n", e.String())
 }
 

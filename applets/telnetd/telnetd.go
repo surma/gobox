@@ -11,7 +11,7 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("telnetd", flag.PanicOnError)
-	portFlag = flagSet.Int("port", 23, "Port to listen on")
+	addrFlag = flagSet.String("addr", ":23", "Port to listen on")
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
@@ -21,17 +21,21 @@ func Telnetd(call []string) os.Error {
 		return e
 	}
 
-	if *helpFlag || flagSet.NArg() <= 0 {
+	if flagSet.NArg() <= 0 || *helpFlag {
 		println("telnet [options] <command to serve...>")
 		flagSet.PrintDefaults()
 		return nil
 	}
 
-	return startServer(*portFlag, flagSet.Args())
+	return startServer(*addrFlag, flagSet.Args())
 }
 
-func startServer(port int, call []string) os.Error {
-	l, e := net.ListenTCP("tcp4", &net.TCPAddr{net.IPv4zero, port})
+func startServer(addr string, call []string) os.Error {
+	ta, e := net.ResolveTCPAddr("tcp4", addr)
+	if e != nil {
+		return e
+	}
+	l, e := net.ListenTCP("tcp4", ta)
 	if e != nil {
 		return e
 	}
@@ -39,30 +43,26 @@ func startServer(port int, call []string) os.Error {
 
 	for {
 		c, e := l.Accept()
-		go func() {
-			defer func() {
-				if p := recover(); p != nil {
-					e, ok := p.(os.Error)
-					if !ok {
-						e = os.NewError("Some error occured")
-					}
-					common.FDumpError(e, c)
-				}
-			}()
-			defer c.Close()
-			if e != nil {
-				return
-			}
-			serveExec(c, call)
-			return
-		}()
+		if e == nil {
+		} else {
+			common.DumpError(e)
+		}
+		go serve(c, call)
 	}
 	return nil
 }
 
-func serveExec(inout io.ReadWriter, call []string) {
+func serve(c io.ReadWriteCloser, call []string) {
+	defer c.Close()
+	e := serveExec(c, call)
+	if e != nil {
+		common.FDumpError(c, e)
+	}
+}
+
+func serveExec(inout io.ReadWriter, call []string) os.Error {
 	if len(call) < 1 {
-		panic(os.NewError("Trying to serve an empty command"))
+		return os.NewError("Trying to serve an empty command")
 	}
 	c := exec.Command(call[0], call[1:]...)
 	c.Stdin = inout
@@ -70,6 +70,7 @@ func serveExec(inout io.ReadWriter, call []string) {
 	c.Stderr = inout
 	e := c.Run()
 	if e != nil {
-		panic(e)
+		return e
 	}
+	return nil
 }
