@@ -17,7 +17,8 @@ func Rm(call []string) os.Error {
 	if e != nil {
 		return e
 	}
-	if flagSet.NArg() == 0 || *helpFlag {
+
+	if flagSet.NArg() <= 0 || *helpFlag {
 		println("`rm` [options] <files...>")
 		flagSet.PrintDefaults()
 		return nil
