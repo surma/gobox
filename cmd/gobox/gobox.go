@@ -7,11 +7,15 @@ import (
 	"path/filepath"
 )
 
+const (
+	VERSION = "0.1"
+)
+
 var (
 	flagSet     = flag.NewFlagSet("gobox", flag.ExitOnError)
-	helpFlag    = flagSet.Bool("help", false, "Show help")
 	listFlag    = flagSet.Bool("list", false, "List applets")
 	installFlag = flagSet.String("install", "", "Create symlinks for applets in given path")
+	helpFlag    = flagSet.Bool("help", false, "Show help")
 )
 
 func Gobox(call []string) (e os.Error) {
@@ -31,8 +35,10 @@ func Gobox(call []string) (e os.Error) {
 }
 
 func help() {
+	println("`gobox` [options]")
 	flagSet.PrintDefaults()
 	println()
+	println("Version", VERSION)
 	list()
 }
 
