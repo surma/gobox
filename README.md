@@ -1,13 +1,13 @@
-GoBox
-=====
+GoBox v0.1.1
+============
 GoBox is supposed to be something like [BusyBox](http://www.busybox.net). I.e.
 a single, preferably small executable which bundles all important shell tools.
 A swiss army knife for the command line, if you will.
 It is being developed with a focus on [Amazon EC2](http://aws.amazon.com) or as
-a small footprint template for an [OpenVZ](http://www.openvz.org) template.
+a small footprint basis for an [OpenVZ](http://www.openvz.org) template.
 
 In order to keep the source code and executable small, I have cut a lot of options
-you might be used to from [GNU Binutils](http://www.gnu.org/software/coreutils/) or
+you might be used to from [GNU Coreutils](http://www.gnu.org/software/coreutils/) or
 similar. I might even have less options than BusyBox itself. I certainly have
 fewer applets right now, and probably ever will. But I consider that a good thing.
 
@@ -41,6 +41,10 @@ Missing applets
 - `tee`
 - `ping`
 - ...
+
+Bugs
+----
+- GoBox is not compiled statically right now
 
 Contact
 -------
