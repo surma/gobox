@@ -56,8 +56,8 @@ func getFilenameFromURL(rawurl string) (string, os.Error) {
 	}
 
 	fname := path.Base(url.Path)
-	if len(fname) == 0 {
-		fname = "out"
+	if len(fname) == 0 || fname == "." {
+		fname = "index.html"
 	}
 	return fname, nil
 }
