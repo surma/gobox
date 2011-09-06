@@ -15,6 +15,7 @@ import (
 	"applets/wget"
 	"applets/kill"
 	"applets/cat"
+	"applets/mknod"
 )
 
 // This map contains the mappings from callname
@@ -29,6 +30,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"wget":    wget.Wget,
 	"kill":    kill.Kill,
 	"cat":     cat.Cat,
+	"mknod":   mknod.Mknod,
 }
 
 // Signature of applet functions.
