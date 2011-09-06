@@ -21,7 +21,7 @@ func Wget(call []string) os.Error {
 		return e
 	}
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`wget` [options] <url>")
 		flagSet.PrintDefaults()
 		return nil
