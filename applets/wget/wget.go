@@ -11,7 +11,7 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("wget", flag.PanicOnError)
-	outFlag = flagSet.String("o", "", "Filename to save output to")
+	outFlag  = flagSet.String("o", "", "Filename to save output to")
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 

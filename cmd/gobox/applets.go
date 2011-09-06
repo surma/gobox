@@ -14,6 +14,7 @@ import (
 	"applets/httpd"
 	"applets/wget"
 	"applets/kill"
+	"applets/cat"
 )
 
 // This map contains the mappings from callname
@@ -27,6 +28,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"httpd":   httpd.Httpd,
 	"wget":    wget.Wget,
 	"kill":    kill.Kill,
+	"cat":     cat.Cat,
 }
 
 // Signature of applet functions.

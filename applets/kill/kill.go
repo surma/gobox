@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	flagSet  = flag.NewFlagSet("kill", flag.PanicOnError)
+	flagSet    = flag.NewFlagSet("kill", flag.PanicOnError)
 	signalFlag = flagSet.Int("sig", 9, "Number of the signal to send")
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	helpFlag   = flagSet.Bool("help", false, "Show this help")
 )
 
 func Kill(call []string) os.Error {
