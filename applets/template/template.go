@@ -16,8 +16,8 @@ func Template(call []string) os.Error {
 		return e
 	}
 
-	if flagSet.NArg() <= 0 || *helpFlag {
-		println("`template` [options] <parameters>")
+	if flagSet.NArg() != 1 || *helpFlag {
+		println("`template` [options] <parameter1>")
 		flagSet.PrintDefaults()
 		return nil
 	}

@@ -18,7 +18,7 @@ func Kill(call []string) os.Error {
 		return e
 	}
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`kill` [options] <pid>")
 		flagSet.PrintDefaults()
 		println("1     SIGHUP       terminal line hangup")
