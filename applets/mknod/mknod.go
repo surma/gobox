@@ -33,7 +33,7 @@ func Mknod(call []string) os.Error {
 		return e
 	}
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`mknod` [options] <file>")
 		flagSet.PrintDefaults()
 		return nil
