@@ -10,17 +10,8 @@ import (
 var (
 	flagSet   = flag.NewFlagSet("mount", flag.PanicOnError)
 	typeFlag  = flagSet.String("t", "", "Filesystem type of the mount")
-	flagsFlag = flagSet.String("o", "", "Comma-separated list of flags for the mount (ro, noexec, nosuid, nodev, synchronous, remount)")
+	flagsFlag = flagSet.String("o", "defaults", "Comma-separated list of flags for the mount")
 	helpFlag  = flagSet.Bool("help", false, "Show this help")
-
-	flagMap = map[string]int{
-		"ro":          syscall.MS_RDONLY,
-		"noexec":      syscall.MS_NOEXEC,
-		"nosuid":      syscall.MS_NOSUID,
-		"nodev":       syscall.MS_NODEV,
-		"synchronous": syscall.MS_SYNCHRONOUS,
-		"remount":     syscall.MS_REMOUNT,
-	}
 )
 
 func Mount(call []string) os.Error {
@@ -32,6 +23,11 @@ func Mount(call []string) os.Error {
 	if flagSet.NArg() != 2 || *helpFlag {
 		println("`mount` [options] <device> <dir>")
 		flagSet.PrintDefaults()
+		println("\nAvailable options are:")
+		for opt, _ := range flagMap {
+			print(opt, ", ")
+		}
+		println()
 		return nil
 	}
 
@@ -46,6 +42,20 @@ func Mount(call []string) os.Error {
 	}
 	return nil
 }
+
+var (
+	flagMap = map[string]int{
+		"defaults":   0,
+		"noatime":    syscall.MS_NOATIME,
+		"nodev":      syscall.MS_NODEV,
+		"nodiratime": syscall.MS_NODIRATIME,
+		"noexec":     syscall.MS_NOEXEC,
+		"nosuid":     syscall.MS_NOSUID,
+		"remount":    syscall.MS_REMOUNT,
+		"ro":         syscall.MS_RDONLY,
+		"sync":       syscall.MS_SYNCHRONOUS,
+	}
+)
 
 func parseFlags() (int, os.Error) {
 	ret := 0
