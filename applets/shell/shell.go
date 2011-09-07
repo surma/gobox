@@ -35,7 +35,7 @@ func Shell(call []string) os.Error {
 		if isComment(line) {
 			continue
 		}
-		params, ce := parameterize(line)
+		params, ce := common.Parameterize(line)
 		if ce != nil {
 			common.DumpError(ce)
 			continue

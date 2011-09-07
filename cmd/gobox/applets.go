@@ -18,6 +18,7 @@ import (
 	"applets/mknod"
 	"applets/mount"
 	"applets/umount"
+	"applets/chroot"
 )
 
 // This map contains the mappings from callname
@@ -35,6 +36,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"mknod":   mknod.Mknod,
 	"mount":   mount.Mount,
 	"umount":  umount.Umount,
+	"chroot":  chroot.Chroot,
 }
 
 // Signature of applet functions.
