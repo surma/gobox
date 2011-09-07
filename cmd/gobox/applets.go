@@ -17,6 +17,7 @@ import (
 	"applets/cat"
 	"applets/mknod"
 	"applets/mount"
+	"applets/umount"
 )
 
 // This map contains the mappings from callname
@@ -33,6 +34,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"cat":     cat.Cat,
 	"mknod":   mknod.Mknod,
 	"mount":   mount.Mount,
+	"umount":  umount.Umount,
 }
 
 // Signature of applet functions.
