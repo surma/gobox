@@ -54,7 +54,7 @@ func Mknod(call []string) os.Error {
 	}
 	mode |= uint32(fmode)
 
-	errno := syscall.Mknod(flagSet.Arg(0), mode, *majorFlag<<16|*minorFlag)
+	errno := syscall.Mknod(flagSet.Arg(0), mode, *majorFlag<<8|*minorFlag)
 	if errno != 0 {
 		return os.NewError(syscall.Errstr(errno))
 	}
