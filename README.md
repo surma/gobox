@@ -21,8 +21,11 @@ over network.
 
 Installation
 ------------
-I recommend (hence: only tested) using [`gb`](http://code.google.com/p/go-gb/) as a build tool. Go to the root of the
-repository and start gb. Done.
+For development, I recommend using [`gb`](http://code.google.com/p/go-gb/).
+The hassle of updating makefiles and the dependencies just vanish.
+If you just want to build GoBox, make sure you have `make` available and run:
+
+ 	.../gobox user$ ./build
 
 Developing applets
 ------------------
@@ -33,18 +36,24 @@ Developing applets
 The template provides the basic framework you should stick to that.
 
 Missing applets
------
-- `wget`
-- `ps`
+---------------
 - `kill`
 - `grep`
 - `tee`
 - `ping`
 - ...
 
+Static linking
+--------------
+A while ago, the Go team has decided to use libc´s DNS lookup routines instead of
+their own´s which requires dynamic linking.
+It is however quite easy to reactivate the native DNS routines of Go:
+
+	.../gobox user$ ./tools/netpkg_fix.sh 
+
 Bugs
 ----
-- GoBox is not compiled statically right now
+- Probably
 
 Contact
 -------
@@ -53,4 +62,4 @@ or maybe you even have an implementation ready, please contact me: alexander.sur
 
 Credits
 -------
-(c) 2011 Alexander "Surma" Surma
+(c) 2011 Alexander "Surma" Surma <surma@asdf-systems.de>
