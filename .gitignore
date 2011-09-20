@@ -6,4 +6,4 @@ _obj
 *.swp
 *~
 /cmd/gobox/gobox
-
+*sublime*
