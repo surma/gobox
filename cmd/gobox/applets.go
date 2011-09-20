@@ -19,6 +19,7 @@ import (
 	"applets/mount"
 	"applets/umount"
 	"applets/chroot"
+	"applets/ps"
 )
 
 // This map contains the mappings from callname
@@ -37,6 +38,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"mount":   mount.Mount,
 	"umount":  umount.Umount,
 	"chroot":  chroot.Chroot,
+	"ps":      ps.Ps,
 }
 
 // Signature of applet functions.

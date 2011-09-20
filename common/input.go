@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 const (
 	unquotedParam = "([^ \t\"]+)"
 	quotedParam   = "\"((\\\\.|[^\\\"])*)\""
