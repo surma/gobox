@@ -1,7 +1,6 @@
 package shell
 
 import (
-	"bufio"
 	"common"
 	"exec"
 	"os"
@@ -9,7 +8,7 @@ import (
 )
 
 func Shell(call []string) os.Error {
-	var in *bufio.Reader
+	var in *common.BufferedReader
 	if len(call) > 2 {
 		call = call[0:1]
 	}
@@ -19,16 +18,16 @@ func Shell(call []string) os.Error {
 			return e
 		}
 		defer f.Close()
-		in = bufio.NewReader(f)
+		in = common.NewBufferedReader(f)
 	} else {
-		in = bufio.NewReader(os.Stdin)
+		in = common.NewBufferedReader(os.Stdin)
 	}
 
 	var e os.Error
 	var line string
 	for e == nil {
 		print("> ")
-		line, e = getNextLine(in)
+		line, e = in.ReadWholeLine()
 		if e != nil {
 			return e
 		}
