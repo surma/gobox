@@ -5,4 +5,5 @@ bin/
 _obj
 *.swp
 *~
+/cmd/gobox/gobox
 
