@@ -4,7 +4,6 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
-	"os/user"
 	"tabwriter"
 	"fmt"
 	"math"
@@ -135,9 +134,5 @@ func getEntryTypeString(e *os.FileInfo) string {
 }
 
 func getUserString(id int) string {
-	username, e := user.LookupId(id)
-	if e != nil {
-		return "???"
-	}
-	return username.Username
+	return fmt.Sprintf("%03d", id)
 }

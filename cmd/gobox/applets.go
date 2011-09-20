@@ -12,6 +12,15 @@ import (
 	"applets/ls"
 	"applets/rm"
 	"applets/httpd"
+	"applets/wget"
+	"applets/kill"
+	"applets/cat"
+	"applets/mknod"
+	"applets/mount"
+	"applets/umount"
+	"applets/chroot"
+	"applets/ps"
+	"applets/mkdir"
 )
 
 // This map contains the mappings from callname
@@ -23,6 +32,15 @@ var Applets map[string]Applet = map[string]Applet{
 	"ls":      ls.Ls,
 	"rm":      rm.Rm,
 	"httpd":   httpd.Httpd,
+	"wget":    wget.Wget,
+	"kill":    kill.Kill,
+	"cat":     cat.Cat,
+	"mknod":   mknod.Mknod,
+	"mount":   mount.Mount,
+	"umount":  umount.Umount,
+	"chroot":  chroot.Chroot,
+	"ps":      ps.Ps,
+	"mkdir":   mkdir.Mkdir,
 }
 
 // Signature of applet functions.

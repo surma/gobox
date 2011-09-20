@@ -18,7 +18,7 @@ func Httpd(call []string) os.Error {
 		return e
 	}
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`httpd` [options] <dir>")
 		flagSet.PrintDefaults()
 		return nil
