@@ -22,6 +22,7 @@ import (
 	"applets/ps"
 	"applets/mkdir"
 	"applets/grep"
+	"applets/gzip"
 )
 
 // This map contains the mappings from callname
@@ -43,6 +44,9 @@ var Applets map[string]Applet = map[string]Applet{
 	"ps":      ps.Ps,
 	"mkdir":   mkdir.Mkdir,
 	"grep":    grep.Grep,
+	"gzip":    gzip.Gzip,
+	"gunzip":  gzip.Gunzip,
+	"zcat":    gzip.Zcat,
 }
 
 // Signature of applet functions.
