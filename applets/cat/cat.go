@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	flagSet  = flag.NewFlagSet("template", flag.PanicOnError)
+	flagSet  = flag.NewFlagSet("cat", flag.PanicOnError)
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
