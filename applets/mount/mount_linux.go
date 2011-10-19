@@ -44,7 +44,7 @@ func Mount(call []string) os.Error {
 }
 
 var (
-	flagMap = map[string]int{
+	flagMap = map[string]uint32{
 		"defaults":   0,
 		"noatime":    syscall.MS_NOATIME,
 		"nodev":      syscall.MS_NODEV,
@@ -57,8 +57,8 @@ var (
 	}
 )
 
-func parseFlags() (int, os.Error) {
-	ret := 0
+func parseFlags() (uint32, os.Error) {
+	ret := uint32(0)
 	parts := strings.Split(*flagsFlag, ",")
 	for _, part := range parts {
 		part = strings.TrimSpace(part)
