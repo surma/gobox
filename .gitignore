@@ -7,3 +7,4 @@ _obj
 *~
 /cmd/gobox/gobox
 *sublime*
+.vagrant
