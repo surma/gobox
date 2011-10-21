@@ -21,6 +21,7 @@ import (
 	"applets/chroot"
 	"applets/ps"
 	"applets/mkdir"
+	"applets/head"
 )
 
 // This map contains the mappings from callname
@@ -41,6 +42,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"chroot":  chroot.Chroot,
 	"ps":      ps.Ps,
 	"mkdir":   mkdir.Mkdir,
+	"head":    head.Head,
 }
 
 // Signature of applet functions.
