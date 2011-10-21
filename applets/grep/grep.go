@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"regexp"
 	"io"
-	"bufio"
+	"common"
 )
 
 var (
@@ -36,8 +36,10 @@ func Grep(call []string) os.Error {
 	} else {
 		for _, fn := range flagSet.Args()[1:] {
 			if fh, err := os.Open(fn); err == nil {
-				doGrep(pattern, fh, fn, flagSet.NArg() > 2)
-				fh.Close()
+				func() {
+					defer fh.Close()
+					doGrep(pattern, fh, fn, flagSet.NArg() > 2)
+				}()
 			} else {
 				fmt.Fprintf(os.Stderr, "grep: %s: %v\n", fn, err)
 			}
@@ -48,42 +50,23 @@ func Grep(call []string) os.Error {
 }
 
 func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {
-	buf := bufio.NewReader(fh)
+	buf := common.NewBufferedReader(fh)
 
 	for {
-		line, err := readLine(buf)
+		line, err := buf.ReadWholeLine()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error while reading from %s: %v\n", fn, err)
 			return
 		}
-		if line == nil {
+		if line == "" {
 			break
 		}
 
-		if pattern.Match(line) {
+		if pattern.MatchString(line) {
 			if print_fn {
 				fmt.Printf("%s:", fn)
 			}
 			fmt.Printf("%s\n", line)
 		}
 	}
-}
-
-func readLine(buf *bufio.Reader) ([]byte, os.Error) {
-	str := []byte{}
-	for {
-		data, prfx, err := buf.ReadLine()
-		str = append(str, data...)
-		if err != nil {
-			if err == os.EOF {
-				return nil, nil
-			} else {
-				return nil, err
-			}
-		}
-		if !prfx {
-			break
-		}
-	}
-	return str, nil
 }
