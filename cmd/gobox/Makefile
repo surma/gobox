@@ -27,6 +27,8 @@ $(GBROOT)/bin/$(TARG): $(TARG)
 command: $(GBROOT)/bin/$(TARG)
 
 # gb: local dependencies
+$(TARG): $(GBROOT)/_obj/applets/ps.a
+$(TARG): $(GBROOT)/_obj/applets/head.a
 $(TARG): $(GBROOT)/_obj/applets/kill.a
 $(TARG): $(GBROOT)/_obj/applets/mkdir.a
 $(TARG): $(GBROOT)/_obj/applets/umount.a
@@ -42,4 +44,3 @@ $(TARG): $(GBROOT)/_obj/applets/wget.a
 $(TARG): $(GBROOT)/_obj/common.a
 $(TARG): $(GBROOT)/_obj/applets/cat.a
 $(TARG): $(GBROOT)/_obj/applets/chroot.a
-$(TARG): $(GBROOT)/_obj/applets/ps.a

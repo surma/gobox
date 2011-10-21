@@ -4,13 +4,13 @@ import (
 	"flag"
 	"os"
 	"fmt"
-	"bufio"
+	"common"
 )
 
 var (
 	flagSet  = flag.NewFlagSet("head", flag.PanicOnError)
 	helpFlag = flagSet.Bool("help", false, "Show this help")
-	lines    = flagSet.Uint("n", 10, "Print -n <number> of lines. Default is 10.")
+	numLines = flagSet.Uint("n", 10, "Print -n <number> of lines. Default is 10.")
 	quiet    = flagSet.Bool("q", false, "Don't print file names in multi-file mode.")
 )
 
@@ -27,9 +27,8 @@ func Head(call []string) os.Error {
 		return nil
 	}
 
-	printNames := *quiet == false && argn > 1
 	for _, file := range flagSet.Args() {
-		if printNames {
+		if !*quiet {
 			fmt.Fprintf(os.Stdout, "==> %s <==\n", file)
 		}
 
@@ -49,21 +48,13 @@ func dumpFile(path string) os.Error {
 	}
 	defer f.Close()
 
-	var lineAt uint = 0
-	r := bufio.NewReader(f)
+	r := common.NewBufferedReader(f)
 
-	for bytes, partialLine, err := r.ReadLine(); err == nil; bytes, partialLine, err = r.ReadLine() {
-
-		os.Stdout.Write(bytes)
-
-		if partialLine == false {
-			lineAt++
-			os.Stdout.WriteString("\n")
-		}
-
-		if *lines == lineAt || err == os.EOF {
-			return nil
-		}
+	line, err := r.ReadWholeLine()
+	for *numLines > 0 && err == nil {
+		fmt.Println(line)
+		*numLines--
+		line, err = r.ReadWholeLine()
 	}
 	return err
 }

@@ -7,13 +7,15 @@ echo Running goinstall \
 
 else
 echo Building \
+&& echo "(in common)" gomake $1 && cd common && gomake $1 && cd - > /dev/null \
+&& echo "(in applets/ps)" gomake $1 && cd applets/ps && gomake $1 && cd - > /dev/null \
+&& echo "(in applets/head)" gomake $1 && cd applets/head && gomake $1 && cd - > /dev/null \
 && echo "(in applets/kill)" gomake $1 && cd applets/kill && gomake $1 && cd - > /dev/null \
 && echo "(in applets/mkdir)" gomake $1 && cd applets/mkdir && gomake $1 && cd - > /dev/null \
 && echo "(in applets/umount)" gomake $1 && cd applets/umount && gomake $1 && cd - > /dev/null \
 && echo "(in applets/mknod)" gomake $1 && cd applets/mknod && gomake $1 && cd - > /dev/null \
 && echo "(in applets/template)" gomake $1 && cd applets/template && gomake $1 && cd - > /dev/null \
 && echo "(in applets/rm)" gomake $1 && cd applets/rm && gomake $1 && cd - > /dev/null \
-&& echo "(in common)" gomake $1 && cd common && gomake $1 && cd - > /dev/null \
 && echo "(in applets/shell)" gomake $1 && cd applets/shell && gomake $1 && cd - > /dev/null \
 && echo "(in applets/echo)" gomake $1 && cd applets/echo && gomake $1 && cd - > /dev/null \
 && echo "(in applets/ls)" gomake $1 && cd applets/ls && gomake $1 && cd - > /dev/null \
@@ -23,7 +25,6 @@ echo Building \
 && echo "(in applets/wget)" gomake $1 && cd applets/wget && gomake $1 && cd - > /dev/null \
 && echo "(in applets/cat)" gomake $1 && cd applets/cat && gomake $1 && cd - > /dev/null \
 && echo "(in applets/chroot)" gomake $1 && cd applets/chroot && gomake $1 && cd - > /dev/null \
-&& echo "(in applets/ps)" gomake $1 && cd applets/ps && gomake $1 && cd - > /dev/null \
 && echo "(in cmd/gobox)" gomake $1 && cd cmd/gobox && gomake $1 && cd - > /dev/null \
 
 fi
