@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	flagSet  = flag.NewFlagSet("gzip", flag.PanicOnError)
-	helpFlag = flagSet.Bool("help", false, "Show this help")
-	forceFlag = flagSet.Bool("f", false, "Force decompression (ignore extension)")
+	flagSet    = flag.NewFlagSet("gzip", flag.PanicOnError)
+	helpFlag   = flagSet.Bool("help", false, "Show this help")
+	forceFlag  = flagSet.Bool("f", false, "Force decompression (ignore extension)")
 	decompress = flagSet.Bool("d", false, "Decompress")
 )
 
@@ -99,7 +99,7 @@ func doGzip(fn string) {
 		return
 	}
 	newfn := fn + ".gz"
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY | os.O_CREATE | os.O_EXCL, fi.Permission())
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Permission())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
 		return
@@ -121,7 +121,6 @@ func doGzip(fn string) {
 	}
 }
 
-
 func doGunzip(fn string) {
 	fh, err := os.Open(fn)
 	if err != nil {
@@ -129,6 +128,10 @@ func doGunzip(fn string) {
 		return
 	}
 	decompressor, err := gzip.NewReader(fh)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
+		return
+	}
 	defer decompressor.Close()
 	fi, err := fh.Stat()
 	if err != nil {
@@ -139,11 +142,11 @@ func doGunzip(fn string) {
 		fmt.Fprintf(os.Stderr, "gunzip: %v: unknown suffix -- ignored\n", fn)
 		return
 	}
-	newfn := fn+".gunzip"
+	newfn := fn + ".gunzip"
 	if !*forceFlag {
-		newfn = fn[0:len(fn)-3]
+		newfn = fn[0 : len(fn)-3]
 	}
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY | os.O_CREATE | os.O_EXCL, fi.Permission())
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Permission())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
 		return
