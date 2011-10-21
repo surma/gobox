@@ -12,6 +12,7 @@ import (
 var (
 	flagSet  = flag.NewFlagSet("gzip", flag.PanicOnError)
 	helpFlag = flagSet.Bool("help", false, "Show this help")
+	forceFlag = flagSet.Bool("f", false, "Force decompression (ignore extension)")
 	decompress = flagSet.Bool("d", false, "Decompress")
 )
 
@@ -54,23 +55,27 @@ func Gunzip(call []string) os.Error {
 	for _, fn := range flagSet.Args() {
 		doGunzip(fn)
 	}
-
 	return nil
 }
 
+var (
+	flagSetZcat  = flag.NewFlagSet("zcat", flag.PanicOnError)
+	helpFlagZcat = flagSetZcat.Bool("help", false, "Show this help")
+)
+
 func Zcat(call []string) os.Error {
-	e := flagSet.Parse(call[1:])
+	e := flagSetZcat.Parse(call[1:])
 	if e != nil {
 		return e
 	}
 
-	if flagSet.NArg() < 1 || *helpFlag {
+	if flagSetZcat.NArg() < 1 || *helpFlagZcat {
 		println("`zcat` <file>...")
-		flagSet.PrintDefaults()
+		flagSetZcat.PrintDefaults()
 		return nil
 	}
 
-	for _, fn := range flagSet.Args() {
+	for _, fn := range flagSetZcat.Args() {
 		doZcat(fn)
 	}
 
@@ -130,11 +135,14 @@ func doGunzip(fn string) {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
 		return
 	}
-	if path.Ext(fn) != ".gz" {
+	if path.Ext(fn) != ".gz" && !*forceFlag {
 		fmt.Fprintf(os.Stderr, "gunzip: %v: unknown suffix -- ignored\n", fn)
 		return
 	}
-	newfn := fn[0:len(fn)-3]
+	newfn := fn+".gunzip"
+	if !*forceFlag {
+		newfn = fn[0:len(fn)-3]
+	}
 	tfh, err := os.OpenFile(newfn, os.O_WRONLY | os.O_CREATE | os.O_EXCL, fi.Permission())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
