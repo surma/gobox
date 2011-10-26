@@ -51,10 +51,12 @@ func dumpFile(path string) os.Error {
 	r := common.NewBufferedReader(f)
 
 	line, err := r.ReadWholeLine()
-	for *numLines > 0 && err == nil {
+	for i := uint(0); i < *numLines && err == nil; i++ {
 		fmt.Println(line)
-		*numLines--
 		line, err = r.ReadWholeLine()
+	}
+	if err == os.EOF {
+		err = nil
 	}
 	return err
 }
