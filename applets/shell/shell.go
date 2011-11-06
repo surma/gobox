@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Shell(call []string) os.Error {
+func Shell(call []string) error {
 	var in *common.BufferedReader
 	if len(call) > 2 {
 		call = call[0:1]
@@ -23,7 +23,7 @@ func Shell(call []string) os.Error {
 		in = common.NewBufferedReader(os.Stdin)
 	}
 
-	var e os.Error
+	var e error
 	var line string
 	for e == nil {
 		print("> ")
@@ -53,7 +53,7 @@ func isComment(line string) bool {
 	return strings.HasPrefix(line, "#")
 }
 
-func execute(cmd []string) os.Error {
+func execute(cmd []string) error {
 	if len(cmd) == 0 {
 		return nil
 	}

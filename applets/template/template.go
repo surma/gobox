@@ -1,16 +1,13 @@
 package template
 
-import (
-	"flag"
-	"os"
-)
+import "flag"
 
 var (
 	flagSet  = flag.NewFlagSet("template", flag.PanicOnError)
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Template(call []string) os.Error {
+func Template(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e

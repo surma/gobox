@@ -1,9 +1,5 @@
 package main
 
-import (
-	"os"
-)
-
 // Applet imports
 import (
 	"applets/echo"
@@ -56,4 +52,4 @@ var Applets map[string]Applet = map[string]Applet{
 // name of the applet itself in call[0].
 // If the returned error is not nil, it is printed
 // to stdout.
-type Applet func(call []string) os.Error
+type Applet func(call []string) error

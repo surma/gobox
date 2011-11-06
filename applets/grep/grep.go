@@ -14,7 +14,7 @@ var (
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Grep(call []string) os.Error {
+func Grep(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e

@@ -1,10 +1,10 @@
 package telnetd
 
 import (
+	"errors"
 	"flag"
 	"net"
 	"io"
-	"os"
 	"exec"
 	"common"
 )
@@ -15,7 +15,7 @@ var (
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Telnetd(call []string) os.Error {
+func Telnetd(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -30,7 +30,7 @@ func Telnetd(call []string) os.Error {
 	return startServer(*addrFlag, flagSet.Args())
 }
 
-func startServer(addr string, call []string) os.Error {
+func startServer(addr string, call []string) error {
 	ta, e := net.ResolveTCPAddr("tcp4", addr)
 	if e != nil {
 		return e
@@ -60,9 +60,9 @@ func serve(c io.ReadWriteCloser, call []string) {
 	}
 }
 
-func serveExec(inout io.ReadWriter, call []string) os.Error {
+func serveExec(inout io.ReadWriter, call []string) error {
 	if len(call) < 1 {
-		return os.NewError("Trying to serve an empty command")
+		return errors.New("Trying to serve an empty command")
 	}
 	c := exec.Command(call[0], call[1:]...)
 	c.Stdin = inout
