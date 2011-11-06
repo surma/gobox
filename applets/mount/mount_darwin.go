@@ -1,8 +1,9 @@
 package mount
 
 import (
+	"errors"
 	"flag"
-	"os"
+
 	//"syscall"
 	//"strings"
 )
@@ -14,7 +15,7 @@ var (
 	helpFlag  = flagSet.Bool("help", false, "Show this help")
 )
 
-func Mount(call []string) os.Error {
+func Mount(call []string) error {
 	/*e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -27,5 +28,5 @@ func Mount(call []string) os.Error {
 	}
 
 	return nil*/
-	return os.NewError("`mount` not implemented for darwin")
+	return errors.New("`mount` not implemented for darwin")
 }

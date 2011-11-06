@@ -1,12 +1,9 @@
 package echo
 
-import (
-	"strings"
-	"os"
-)
+import "strings"
 
 // A simple, parameterless echo implementation
-func Echo(call []string) os.Error {
+func Echo(call []string) error {
 	var parameters []string
 	if len(call) <= 1 {
 		parameters = make([]string, 0)

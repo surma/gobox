@@ -2,7 +2,6 @@ package httpd
 
 import (
 	"flag"
-	"os"
 	"http"
 )
 
@@ -12,7 +11,7 @@ var (
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Httpd(call []string) os.Error {
+func Httpd(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e

@@ -1,6 +1,7 @@
 package common
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -17,18 +18,18 @@ func PathExists(path string) bool {
 }
 
 // Prints an error to stdout in a "nice" way.
-func DumpError(e os.Error) {
+func DumpError(e error) {
 	FDumpError(os.Stdout, e)
 }
 
 // Prints an error to a writer in a "nice" way.
-func FDumpError(w io.Writer, e os.Error) {
-	fmt.Fprintf(w, "gobox: Error: %s\n", e.String())
+func FDumpError(w io.Writer, e error) {
+	fmt.Fprintf(w, "gobox: Error: %s\n", e.Error())
 }
 
 // Creates a symlink and deletes the file blocking
 // the name of the symlink.
-func ForcedSymlink(oldname, newname string) os.Error {
+func ForcedSymlink(oldname, newname string) error {
 	if PathExists(newname) {
 		e := os.Remove(newname)
 		if e != nil {
@@ -39,12 +40,12 @@ func ForcedSymlink(oldname, newname string) os.Error {
 }
 
 // Returns a slice of all pids currently existing
-func GetAllPids() ([]int, os.Error) {
+func GetAllPids() ([]int, error) {
 	r := make([]int, 0)
 
 	f, e := os.Open("/proc")
 	if e != nil {
-		e = os.NewError("Could not open /proc")
+		e = errors.New("Could not open /proc")
 		return nil, e
 	}
 
@@ -72,8 +73,8 @@ type Process struct {
 	MemUsage int
 }
 
-func GetProcessByPid(pid int) (*Process, os.Error) {
-	var e os.Error
+func GetProcessByPid(pid int) (*Process, error) {
+	var e error
 	p := &Process{}
 	p.Process, e = os.FindProcess(pid)
 	if e != nil {
@@ -97,7 +98,7 @@ func GetProcessByPid(pid int) (*Process, os.Error) {
 
 }
 
-func readProcessStatusFile(pid int) (map[string]string, os.Error) {
+func readProcessStatusFile(pid int) (map[string]string, error) {
 	filename := fmt.Sprintf("/proc/%d/status", pid)
 	f, e := os.Open(filename)
 	if e != nil {
@@ -112,7 +113,7 @@ func readProcessStatusFile(pid int) (map[string]string, os.Error) {
 		vals[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
 		l, e = r.ReadWholeLine()
 	}
-	if e == os.EOF {
+	if e == io.EOF {
 		e = nil
 	}
 	return vals, e
@@ -124,7 +125,7 @@ func getOwnerID(uid string) int {
 	return nuid
 }
 
-func getCmdlineByPid(pid int) (string, os.Error) {
+func getCmdlineByPid(pid int) (string, error) {
 	filename := fmt.Sprintf("/proc/%d/cmdline", pid)
 	f, e := os.Open(filename)
 	if e != nil {
@@ -134,7 +135,7 @@ func getCmdlineByPid(pid int) (string, os.Error) {
 
 	r := NewBufferedReader(f)
 	l, e := r.ReadWholeLine()
-	if e != nil && e != os.EOF {
+	if e != nil && e != io.EOF {
 		return "", e
 	}
 

@@ -16,7 +16,7 @@ var (
 	decompress = flagSet.Bool("d", false, "Decompress")
 )
 
-func Gzip(call []string) os.Error {
+func Gzip(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -40,7 +40,7 @@ func Gzip(call []string) os.Error {
 	return nil
 }
 
-func Gunzip(call []string) os.Error {
+func Gunzip(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -63,7 +63,7 @@ var (
 	helpFlagZcat = flagSetZcat.Bool("help", false, "Show this help")
 )
 
-func Zcat(call []string) os.Error {
+func Zcat(call []string) error {
 	e := flagSetZcat.Parse(call[1:])
 	if e != nil {
 		return e

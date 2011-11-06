@@ -15,7 +15,7 @@ var (
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Wget(call []string) os.Error {
+func Wget(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -45,7 +45,7 @@ func Wget(call []string) os.Error {
 	return e
 }
 
-func getFilenameFromURL(rawurl string) (string, os.Error) {
+func getFilenameFromURL(rawurl string) (string, error) {
 	url, e := url.Parse(rawurl)
 	if e != nil {
 		return "", e
@@ -58,12 +58,12 @@ func getFilenameFromURL(rawurl string) (string, os.Error) {
 	return fname, nil
 }
 
-func getOutputFile(rawurl string) (io.WriteCloser, os.Error) {
+func getOutputFile(rawurl string) (io.WriteCloser, error) {
 	if *outFlag == "-" {
 		return os.Stdout, nil
 	}
 	var filename string
-	var e os.Error
+	var e error
 	if len(*outFlag) == 0 {
 		filename, e = getFilenameFromURL(flagSet.Arg(0))
 		if e != nil {

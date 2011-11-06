@@ -18,7 +18,7 @@ var (
 	out           = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Ls(call []string) os.Error {
+func Ls(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -45,7 +45,7 @@ func Ls(call []string) os.Error {
 	return nil
 }
 
-func getDirList() ([]string, os.Error) {
+func getDirList() ([]string, error) {
 	if flagSet.NArg() <= 0 {
 		cwd, e := os.Getwd()
 		return []string{cwd}, e
@@ -53,7 +53,7 @@ func getDirList() ([]string, os.Error) {
 	return flagSet.Args(), nil
 }
 
-func list(dir, prefix string) os.Error {
+func list(dir, prefix string) error {
 	entries, e := ioutil.ReadDir(dir)
 	if e != nil {
 		return e

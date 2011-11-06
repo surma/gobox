@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"os"
 	"common"
 	"path/filepath"
 )
@@ -18,7 +17,7 @@ var (
 	helpFlag    = flagSet.Bool("help", false, "Show help")
 )
 
-func Gobox(call []string) (e os.Error) {
+func Gobox(call []string) (e error) {
 	e = flagSet.Parse(call[1:])
 	if e != nil {
 		return
@@ -50,7 +49,7 @@ func list() {
 	println("")
 }
 
-func install(path string) os.Error {
+func install(path string) error {
 	goboxpath, e := common.GetGoboxBinaryPath()
 	if e != nil {
 		return e

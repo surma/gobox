@@ -1,8 +1,8 @@
 package umount
 
 import (
+	"errors"
 	"flag"
-	"os"
 	"syscall"
 )
 
@@ -11,7 +11,7 @@ var (
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Umount(call []string) os.Error {
+func Umount(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -25,7 +25,7 @@ func Umount(call []string) os.Error {
 
 	errno := syscall.Unmount(flagSet.Arg(0), 0)
 	if errno != 0 {
-		return os.NewError(syscall.Errstr(errno))
+		return errors.New(syscall.Errstr(errno))
 	}
 	return nil
 }

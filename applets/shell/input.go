@@ -1,12 +1,9 @@
 package shell
 
-import (
-	"bufio"
-	"os"
-)
+import "bufio"
 
-func getNextLine(in *bufio.Reader) (string, os.Error) {
-	var e os.Error
+func getNextLine(in *bufio.Reader) (string, error) {
+	var e error
 	var buffer []byte
 	isPrefix := true
 	for isPrefix {

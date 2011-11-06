@@ -2,6 +2,7 @@ package head
 
 import (
 	"flag"
+	"io"
 	"os"
 	"fmt"
 	"common"
@@ -14,7 +15,7 @@ var (
 	quiet    = flagSet.Bool("q", false, "Don't print file names in multi-file mode.")
 )
 
-func Head(call []string) os.Error {
+func Head(call []string) error {
 	err := flagSet.Parse(call[1:])
 	if err != nil {
 		return err
@@ -41,7 +42,7 @@ func Head(call []string) os.Error {
 	return nil
 }
 
-func dumpFile(path string) os.Error {
+func dumpFile(path string) error {
 	f, err := os.Open(path)
 	if err != nil {
 		return err
@@ -55,7 +56,7 @@ func dumpFile(path string) os.Error {
 		fmt.Println(line)
 		line, err = r.ReadWholeLine()
 	}
-	if err == os.EOF {
+	if err == io.EOF {
 		err = nil
 	}
 	return err

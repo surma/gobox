@@ -1,8 +1,8 @@
 package mount
 
 import (
+	"errors"
 	"flag"
-	"os"
 	"syscall"
 	"strings"
 )
@@ -14,7 +14,7 @@ var (
 	helpFlag  = flagSet.Bool("help", false, "Show this help")
 )
 
-func Mount(call []string) os.Error {
+func Mount(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -36,9 +36,9 @@ func Mount(call []string) os.Error {
 		return e
 	}
 
-	errno := syscall.Mount(flagSet.Arg(0), flagSet.Arg(1), *typeFlag, flags, "")
+	errno := syscall.Mount(flagSet.Arg(0), flagSet.Arg(1), *typeFlag, uintptr(flags), "")
 	if errno != 0 {
-		return os.NewError(syscall.Errstr(errno))
+		return errors.New(syscall.Errstr(errno))
 	}
 	return nil
 }
@@ -57,14 +57,14 @@ var (
 	}
 )
 
-func parseFlags() (uint32, os.Error) {
+func parseFlags() (uint32, error) {
 	ret := uint32(0)
 	parts := strings.Split(*flagsFlag, ",")
 	for _, part := range parts {
 		part = strings.TrimSpace(part)
 		val, ok := flagMap[strings.ToLower(part)]
 		if !ok {
-			return 0, os.NewError("Invalid flag \"" + part + "\"")
+			return 0, errors.New("Invalid flag \"" + part + "\"")
 		}
 		ret |= val
 	}

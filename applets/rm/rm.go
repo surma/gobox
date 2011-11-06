@@ -12,7 +12,7 @@ var (
 	helpFlag      = flagSet.Bool("help", false, "Show this help")
 )
 
-func Rm(call []string) os.Error {
+func Rm(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -33,7 +33,7 @@ func Rm(call []string) os.Error {
 	return nil
 }
 
-func delete(file string) os.Error {
+func delete(file string) error {
 	fi, e := os.Stat(file)
 	if e != nil {
 		return e
@@ -47,7 +47,7 @@ func delete(file string) os.Error {
 	return os.Remove(file)
 }
 
-func deleteDir(dir string) os.Error {
+func deleteDir(dir string) error {
 	files, e := ioutil.ReadDir(dir)
 	if e != nil {
 		return e

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"path/filepath"
 	"os"
 	"common"
@@ -17,7 +18,7 @@ func run() {
 	callname := filepath.Base(os.Args[0])
 	applet, ok := Applets[callname]
 	if !ok {
-		panic(os.NewError("Could not find applet \"" + callname + "\""))
+		panic(errors.New("Could not find applet \"" + callname + "\""))
 	}
 
 	// If the Gobox applet is called (i.e. the executable itself)
@@ -41,9 +42,9 @@ func run() {
 func main() {
 	defer func() {
 		if p := recover(); p != nil {
-			e, ok := p.(os.Error)
+			e, ok := p.(error)
 			if !ok {
-				e = os.NewError("Some error occured")
+				e = errors.New("Some error occured")
 			}
 			common.DumpError(e)
 		}

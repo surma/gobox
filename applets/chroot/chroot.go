@@ -1,6 +1,7 @@
 package chroot
 
 import (
+	"errors"
 	"flag"
 	"os"
 	"syscall"
@@ -11,7 +12,7 @@ var (
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Chroot(call []string) os.Error {
+func Chroot(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -25,12 +26,12 @@ func Chroot(call []string) os.Error {
 
 	errno := syscall.Chroot(flagSet.Arg(0))
 	if errno != 0 {
-		return os.NewError(syscall.Errstr(errno))
+		return errors.New(syscall.Errstr(errno))
 	}
 
 	errno = syscall.Exec(flagSet.Arg(1), flagSet.Args()[1:], os.Envs)
 	if errno != 0 {
-		return os.NewError(syscall.Errstr(errno))
+		return errors.New(syscall.Errstr(errno))
 	}
 	return nil
 }
