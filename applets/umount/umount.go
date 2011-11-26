@@ -1,7 +1,6 @@
 package umount
 
 import (
-	"errors"
 	"flag"
 	"syscall"
 )
@@ -23,9 +22,6 @@ func Umount(call []string) error {
 		return nil
 	}
 
-	errno := syscall.Unmount(flagSet.Arg(0), 0)
-	if errno != 0 {
-		return errors.New(syscall.Errstr(errno))
-	}
-	return nil
+	e = syscall.Unmount(flagSet.Arg(0), 0)
+	return e
 }

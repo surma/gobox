@@ -25,7 +25,7 @@ func run() {
 	// check, if the second parameter is an applet name.
 	// If so, call that applet instead
 	args := os.Args
-	if applet == Gobox && len(args) >= 2 {
+	if callname == "gobox" && len(args) >= 2 {
 		subapplet, ok := Applets[args[1]]
 		if ok {
 			applet = subapplet

@@ -2,8 +2,8 @@ package shell
 
 import (
 	"common"
-	"exec"
 	"os"
+	"os/exec"
 	"strings"
 )
 

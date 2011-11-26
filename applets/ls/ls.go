@@ -2,11 +2,11 @@ package ls
 
 import (
 	"flag"
-	"io/ioutil"
-	"os"
-	"tabwriter"
 	"fmt"
+	"io/ioutil"
 	"math"
+	"os"
+	"text/tabwriter"
 )
 
 var (
