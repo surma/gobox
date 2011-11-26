@@ -3,9 +3,9 @@ package ps
 import (
 	"common"
 	"flag"
-	"os"
 	"fmt"
-	"tabwriter"
+	"os"
+	"text/tabwriter"
 )
 
 var (

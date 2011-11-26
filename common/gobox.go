@@ -2,9 +2,9 @@ package common
 
 import (
 	"errors"
-	"exec"
-	"path/filepath"
 	"os"
+	"os/exec"
+	"path/filepath"
 )
 
 func getRelativeGoboxBinaryPath() (string, error) {

@@ -2,11 +2,11 @@ package wget
 
 import (
 	"flag"
-	"os"
-	"http"
-	"url"
-	"path"
 	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"path"
 )
 
 var (
