@@ -1,7 +1,6 @@
 package chroot
 
 import (
-	"errors"
 	"flag"
 	"os"
 	"syscall"
@@ -24,14 +23,11 @@ func Chroot(call []string) error {
 		return nil
 	}
 
-	errno := syscall.Chroot(flagSet.Arg(0))
-	if errno != 0 {
-		return errors.New(syscall.Errstr(errno))
+	e = syscall.Chroot(flagSet.Arg(0))
+	if e != nil {
+		return e
 	}
 
-	errno = syscall.Exec(flagSet.Arg(1), flagSet.Args()[1:], os.Envs)
-	if errno != 0 {
-		return errors.New(syscall.Errstr(errno))
-	}
-	return nil
+	e = syscall.Exec(flagSet.Arg(1), flagSet.Args()[1:], os.Environ())
+	return e
 }
