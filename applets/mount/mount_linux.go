@@ -36,11 +36,8 @@ func Mount(call []string) error {
 		return e
 	}
 
-	errno := syscall.Mount(flagSet.Arg(0), flagSet.Arg(1), *typeFlag, uintptr(flags), "")
-	if errno != 0 {
-		return errors.New(syscall.Errstr(errno))
-	}
-	return nil
+	e = syscall.Mount(flagSet.Arg(0), flagSet.Arg(1), *typeFlag, uintptr(flags), "")
+	return e
 }
 
 var (
