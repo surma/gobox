@@ -1,12 +1,12 @@
 package telnetd
 
 import (
+	"common"
 	"errors"
 	"flag"
-	"net"
 	"io"
-	"exec"
-	"common"
+	"net"
+	"os/exec"
 )
 
 var (

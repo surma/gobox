@@ -2,7 +2,7 @@ package httpd
 
 import (
 	"flag"
-	"http"
+	"net/http"
 )
 
 var (
