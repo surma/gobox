@@ -2,6 +2,7 @@ package shell
 
 import (
 	"common"
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -9,6 +10,7 @@ import (
 
 func Shell(call []string) error {
 	var in *common.BufferedReader
+	interactive := true
 	if len(call) > 2 {
 		call = call[0:1]
 	}
@@ -19,6 +21,7 @@ func Shell(call []string) error {
 		}
 		defer f.Close()
 		in = common.NewBufferedReader(f)
+		interactive = false
 	} else {
 		in = common.NewBufferedReader(os.Stdin)
 	}
@@ -26,7 +29,9 @@ func Shell(call []string) error {
 	var e error
 	var line string
 	for e == nil {
-		print("> ")
+		if interactive {
+			fmt.Print("> ")
+		}
 		line, e = in.ReadWholeLine()
 		if e != nil {
 			return e
