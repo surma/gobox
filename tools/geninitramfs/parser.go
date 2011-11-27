@@ -17,6 +17,14 @@ func parseInput(in io.ReadCloser, c chan<- *Entry) {
 		if e != nil && e != io.EOF {
 			log.Printf("Warning: Could not read whole file: %s", e.Error())
 		}
+		stripped_line := strings.TrimSpace(line)
+		if len(stripped_line) == 0 || stripped_line[0] == '#' {
+			if e != io.EOF {
+				continue
+			} else {
+				break
+			}
+		}
 		ent := parseLine(line)
 		if ent != nil {
 			c <- ent

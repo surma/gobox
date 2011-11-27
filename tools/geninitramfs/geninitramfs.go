@@ -22,12 +22,12 @@ func main() {
 		return
 	}
 
-	out, e := os.OpenFile(*outputFlag, os.O_CREATE|os.O_WRONLY, 0644)
+	out, e := os.OpenFile(*outputFlag, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if e != nil {
 		log.Fatalf("Error while opening output file: %s", e.Error())
 	}
 	defer out.Close()
-	comp_out, e := gzip.NewWriter(out)
+	comp_out, e := gzip.NewWriterLevel(out, gzip.BestCompression)
 	if e != nil {
 		log.Fatalf("Error while setting up the compressor: %s", e.Error())
 	}
