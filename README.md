@@ -1,4 +1,4 @@
-GoBox v0.2
+GoBox v0.3
 ============
 GoBox is supposed to be something like [BusyBox](http://www.busybox.net). I.e.
 a single, preferably small executable which bundles all important shell tools.
