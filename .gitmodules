@@ -1,3 +1,0 @@
-[submodule "pkg/cpio"]
-	path = pkg/cpio
-	url = git@github.com:surma/gocpio.git

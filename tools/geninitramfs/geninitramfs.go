@@ -2,9 +2,9 @@ package main
 
 import (
 	"compress/gzip"
-	"cpio"
 	"flag"
 	"fmt"
+	"github.com/surma/gocpio"
 	"io"
 	"log"
 	"os"

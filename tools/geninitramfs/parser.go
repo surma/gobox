@@ -2,7 +2,7 @@ package main
 
 import (
 	"common"
-	"cpio"
+	"github.com/surma/gocpio"
 	"io"
 	"log"
 	"os"

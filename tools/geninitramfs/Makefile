@@ -3,13 +3,10 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=common
+TARG=geninitramfs
 GOFILES=\
-	bufio.go\
-	gobox.go\
-	input.go\
-	os.go\
-	unicode.go\
+	geninitramfs.go\
+	parser.go\
 
 # gb: this is the local install
 GBROOT=../..
@@ -18,10 +15,15 @@ GBROOT=../..
 GC+= -I $(GBROOT)/_obj
 LD+= -L $(GBROOT)/_obj
 
+# gb: default target is in GBROOT this way
+command:
+
+include $(GOROOT)/src/Make.cmd
+
 # gb: copy to local install
-$(GBROOT)/_obj/$(TARG).a: _obj/$(TARG).a
+$(GBROOT)/bin/$(TARG): $(TARG)
 	mkdir -p $(dir $@); cp -f $< $@
+command: $(GBROOT)/bin/$(TARG)
 
-package: $(GBROOT)/_obj/$(TARG).a
-
-include $(GOROOT)/src/Make.pkg
+# gb: local dependencies
+$(TARG): $(GBROOT)/_obj/common.a

@@ -28,12 +28,14 @@ command: $(GBROOT)/bin/$(TARG)
 
 # gb: local dependencies
 $(TARG): $(GBROOT)/_obj/applets/ps.a
+$(TARG): $(GBROOT)/_obj/applets/grep.a
 $(TARG): $(GBROOT)/_obj/applets/head.a
 $(TARG): $(GBROOT)/_obj/applets/kill.a
 $(TARG): $(GBROOT)/_obj/applets/mkdir.a
 $(TARG): $(GBROOT)/_obj/applets/umount.a
 $(TARG): $(GBROOT)/_obj/applets/mknod.a
 $(TARG): $(GBROOT)/_obj/applets/rm.a
+$(TARG): $(GBROOT)/_obj/applets/gzip.a
 $(TARG): $(GBROOT)/_obj/applets/shell.a
 $(TARG): $(GBROOT)/_obj/applets/echo.a
 $(TARG): $(GBROOT)/_obj/applets/ls.a
