@@ -12,7 +12,6 @@ import (
 
 var (
 	outputFlag = flag.String("o", "initramfs", "Define output filename")
-	continueFlag = flag.Bool("c", false, "Continue on error")
 	helpFlag   = flag.Bool("h", false, "Show this help")
 )
 
