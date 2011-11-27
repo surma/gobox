@@ -12,6 +12,7 @@ import (
 
 var (
 	outputFlag = flag.String("o", "initramfs", "Define output filename")
+	continueFlag = flag.Bool("c", false, "Continue on error")
 	helpFlag   = flag.Bool("h", false, "Show this help")
 )
 
@@ -48,11 +49,18 @@ func main() {
 
 type Entry struct {
 	hdr  cpio.Header
-	data io.ReadCloser
+	data io.Reader
 }
 
 func createCpioArchive(w *cpio.Writer, c <-chan *Entry) {
 	for entry := range c {
-		fmt.Printf("Making file: %s", entry.hdr.Name)
+		fmt.Printf("Entry: %s\n", entry.hdr.Name)
+		w.WriteHeader(&entry.hdr)
+		if entry.data != nil {
+			io.Copy(w, entry.data)
+			if closer, ok := entry.data.(io.Closer); ok {
+				closer.Close()
+			}
+		}
 	}
 }

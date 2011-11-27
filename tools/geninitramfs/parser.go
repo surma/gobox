@@ -16,7 +16,9 @@ func parseInput(in io.ReadCloser, c chan<- *Entry) {
 		line, e := buf.ReadWholeLine()
 		if e != nil && e != io.EOF {
 			log.Printf("Warning: Could not read whole file: %s", e.Error())
-			break
+			if !*continueFlag {
+				break
+			}
 		}
 		ent := parseLine(line)
 		if ent != nil {
@@ -109,7 +111,7 @@ func parseDir(parts []string) *Entry {
 			Gid: gid,
 			Type: cpio.TYPE_DIR,
 			Name: name,
-		}
+		},
 	}
 }
 
@@ -124,23 +126,23 @@ func parseNod(parts []string) *Entry {
 		return nil
 	}
 
-	dev_type := 0
+	var dev_type int64
 	switch(parts[4]) {
 		case "b":
 			dev_type = cpio.TYPE_BLK
 		case "c":
-			dev_type = cpio.TYPE_CHR
+			dev_type = cpio.TYPE_CHAR
 		default:
 			log.Printf("Invalid device type: %s\n", parts[4])
 			return nil
 	}
 
-	maj, e := strconv.Atoi(parts[5])
+	maj, e := strconv.Atoi64(parts[5])
 	if e != nil {
 		log.Printf("Invalid major device: %s\n", e.Error())
 		return nil
 	}
-	min, e := strconv.Atoi(parts[6])
+	min, e := strconv.Atoi64(parts[6])
 	if e != nil {
 		log.Printf("Invalid major device: %s\n", e.Error())
 		return nil
@@ -154,7 +156,8 @@ func parseNod(parts []string) *Entry {
 			Type: dev_type,
 			Devmajor: maj,
 			Devminor: min,
-		}
+			Name: name,
+		},
 	}
 
 }
@@ -179,8 +182,9 @@ func parseSlink(parts []string) *Entry {
 			Uid: uid,
 			Gid: gid,
 			Type: cpio.TYPE_SYMLINK,
-		}
-		f: strings.NewReader(target),
+			Name: name,
+		},
+		data: strings.NewReader(target),
 	}
 
 }
@@ -201,9 +205,9 @@ func parsePipe(parts []string) *Entry {
 			Mode: mode,
 			Uid: uid,
 			Gid: gid,
-			Type: cpio.TYPE_PIPE,
+			Type: cpio.TYPE_FIFO,
 			Name: name,
-		}
+		},
 	}
 }
 
@@ -225,25 +229,19 @@ func parseSock(parts []string) *Entry {
 			Gid: gid,
 			Type: cpio.TYPE_SOCK,
 			Name: name,
-		}
+		},
 	}
 }
 
-func parseModeUidGid(mode, uid, gid string) (mode int64, uid, gid int, err error) {
-	mode, e := strconv.Btoi64(parts[2], 0)
-	if e != nil {
-		err = e
+func parseModeUidGid(s_mode, s_uid, s_gid string) (mode int64, uid, gid int, err error) {
+	mode, err = strconv.Btoi64(s_mode, 0)
+	if err != nil {
 		return
 	}
-	uid, e := strconv.Atoi(parts[3])
-	if e != nil {
-		err = e
+	uid, err = strconv.Atoi(s_uid)
+	if err != nil {
 		return
 	}
-	gid, e := strconv.Atoi(parts[4])
-	if e != nil {
-		log.Printf("Invalid uid %s: %s\n", parts[3], e.Error())
-		return nil
-	}
+	gid, err = strconv.Atoi(s_gid)
 	return mode, uid, gid, nil
 }
