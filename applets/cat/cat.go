@@ -2,8 +2,8 @@ package cat
 
 import (
 	"flag"
-	"os"
 	"io"
+	"os"
 )
 
 var (

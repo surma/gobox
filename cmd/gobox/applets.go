@@ -2,24 +2,24 @@ package main
 
 // Applet imports
 import (
-	"applets/echo"
-	"applets/shell"
-	"applets/telnetd"
-	"applets/ls"
-	"applets/rm"
-	"applets/httpd"
-	"applets/wget"
-	"applets/kill"
 	"applets/cat"
-	"applets/mknod"
-	"applets/mount"
-	"applets/umount"
 	"applets/chroot"
-	"applets/ps"
-	"applets/mkdir"
-	"applets/head"
+	"applets/echo"
 	"applets/grep"
 	"applets/gzip"
+	"applets/head"
+	"applets/httpd"
+	"applets/kill"
+	"applets/ls"
+	"applets/mkdir"
+	"applets/mknod"
+	"applets/mount"
+	"applets/ps"
+	"applets/rm"
+	"applets/shell"
+	"applets/telnetd"
+	"applets/umount"
+	"applets/wget"
 )
 
 // This map contains the mappings from callname

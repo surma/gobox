@@ -1,10 +1,10 @@
 package main
 
 import (
-	"errors"
-	"path/filepath"
-	"os"
 	"common"
+	"errors"
+	"os"
+	"path/filepath"
 )
 
 func init() {

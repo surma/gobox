@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
-	"cpio"
-	"log"
-	"flag"
-	"io"
-	"fmt"
 	"compress/gzip"
+	"cpio"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"os"
 )
 
 var (

@@ -1,11 +1,11 @@
 package gzip
 
 import (
-	"flag"
-	"os"
-	"fmt"
 	"compress/gzip"
+	"flag"
+	"fmt"
 	"io"
+	"os"
 	"path"
 )
 

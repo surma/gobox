@@ -1,12 +1,12 @@
 package grep
 
 import (
-	"flag"
-	"os"
-	"fmt"
-	"regexp"
-	"io"
 	"common"
+	"flag"
+	"fmt"
+	"io"
+	"os"
+	"regexp"
 )
 
 var (

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
 	"common"
+	"flag"
 	"path/filepath"
 )
 

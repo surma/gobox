@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
 	"common"
-	"io"
 	"cpio"
-	"strconv"
+	"io"
+	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -43,21 +43,21 @@ func parseLine(line string) *Entry {
 		return nil
 	}
 
-	switch(lineparts[0]) {
-		case "file":
-			return parseFile(lineparts[1:])
-		case "dir":
-			return parseDir(lineparts[1:])
-		case "nod":
-			return parseNod(lineparts[1:])
-		case "slink":
-			return parseSlink(lineparts[1:])
-		case "pipe":
-			return parsePipe(lineparts[1:])
-		case "sock":
-			return parseSock(lineparts[1:])
-		default:
-			log.Printf("Warning: %s is in invalid type\n", lineparts[0])
+	switch lineparts[0] {
+	case "file":
+		return parseFile(lineparts[1:])
+	case "dir":
+		return parseDir(lineparts[1:])
+	case "nod":
+		return parseNod(lineparts[1:])
+	case "slink":
+		return parseSlink(lineparts[1:])
+	case "pipe":
+		return parsePipe(lineparts[1:])
+	case "sock":
+		return parseSock(lineparts[1:])
+	default:
+		log.Printf("Warning: %s is in invalid type\n", lineparts[0])
 	}
 	return nil
 }
@@ -85,11 +85,11 @@ func parseFile(parts []string) *Entry {
 		return nil
 	}
 
-	return &Entry {
-		hdr: cpio.Header {
+	return &Entry{
+		hdr: cpio.Header{
 			Mode: mode,
-			Uid: uid,
-			Gid: gid,
+			Uid:  uid,
+			Gid:  gid,
 			Size: finfo.Size,
 			Type: cpio.TYPE_REG,
 			Name: name,
@@ -109,11 +109,11 @@ func parseDir(parts []string) *Entry {
 		return nil
 	}
 
-	return &Entry {
-		hdr: cpio.Header {
+	return &Entry{
+		hdr: cpio.Header{
 			Mode: mode,
-			Uid: uid,
-			Gid: gid,
+			Uid:  uid,
+			Gid:  gid,
 			Type: cpio.TYPE_DIR,
 			Name: name,
 		},
@@ -132,14 +132,14 @@ func parseNod(parts []string) *Entry {
 	}
 
 	var dev_type int64
-	switch(parts[4]) {
-		case "b":
-			dev_type = cpio.TYPE_BLK
-		case "c":
-			dev_type = cpio.TYPE_CHAR
-		default:
-			log.Printf("Invalid device type: %s\n", parts[4])
-			return nil
+	switch parts[4] {
+	case "b":
+		dev_type = cpio.TYPE_BLK
+	case "c":
+		dev_type = cpio.TYPE_CHAR
+	default:
+		log.Printf("Invalid device type: %s\n", parts[4])
+		return nil
 	}
 
 	maj, e := strconv.Atoi64(parts[5])
@@ -153,15 +153,15 @@ func parseNod(parts []string) *Entry {
 		return nil
 	}
 
-	return &Entry {
-		hdr: cpio.Header {
-			Mode: mode,
-			Uid: uid,
-			Gid: gid,
-			Type: dev_type,
+	return &Entry{
+		hdr: cpio.Header{
+			Mode:     mode,
+			Uid:      uid,
+			Gid:      gid,
+			Type:     dev_type,
 			Devmajor: maj,
 			Devminor: min,
-			Name: name,
+			Name:     name,
 		},
 	}
 
@@ -181,13 +181,13 @@ func parseSlink(parts []string) *Entry {
 		return nil
 	}
 
-	return &Entry {
-		hdr: cpio.Header {
+	return &Entry{
+		hdr: cpio.Header{
 			Mode: mode,
-			Uid: uid,
-			Gid: gid,
+			Uid:  uid,
+			Gid:  gid,
 			Type: cpio.TYPE_SYMLINK,
-			Size: int64(len(target)+1),
+			Size: int64(len(target) + 1),
 			Name: name,
 		},
 		data: strings.NewReader(target),
@@ -206,11 +206,11 @@ func parsePipe(parts []string) *Entry {
 		return nil
 	}
 
-	return &Entry {
-		hdr: cpio.Header {
+	return &Entry{
+		hdr: cpio.Header{
 			Mode: mode,
-			Uid: uid,
-			Gid: gid,
+			Uid:  uid,
+			Gid:  gid,
 			Type: cpio.TYPE_FIFO,
 			Name: name,
 		},
@@ -228,11 +228,11 @@ func parseSock(parts []string) *Entry {
 		return nil
 	}
 
-	return &Entry {
-		hdr: cpio.Header {
+	return &Entry{
+		hdr: cpio.Header{
 			Mode: mode,
-			Uid: uid,
-			Gid: gid,
+			Uid:  uid,
+			Gid:  gid,
 			Type: cpio.TYPE_SOCK,
 			Name: name,
 		},

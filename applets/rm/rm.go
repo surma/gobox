@@ -1,9 +1,9 @@
 package rm
 
 import (
-	"os"
 	"flag"
 	"io/ioutil"
+	"os"
 )
 
 var (

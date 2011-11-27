@@ -3,9 +3,9 @@ package mknod
 import (
 	"errors"
 	"flag"
-	"syscall"
-	"strings"
 	"strconv"
+	"strings"
+	"syscall"
 )
 
 var (

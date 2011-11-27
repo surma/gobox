@@ -1,11 +1,11 @@
 package head
 
 import (
+	"common"
 	"flag"
+	"fmt"
 	"io"
 	"os"
-	"fmt"
-	"common"
 )
 
 var (
