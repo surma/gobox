@@ -1,0 +1,7 @@
+#!/bin/shell
+
+/bin/gobox -install=/bin
+setenv PATH /bin
+mount -t proc none /proc
+fork telnetd /bin/shell
+shell
