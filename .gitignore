@@ -6,4 +6,7 @@ _obj
 *.swp
 *~
 /cmd/gobox/gobox
+/tools/geninitramfs/geninitramfs
 *sublime*
+.vagrant
+.DS_Store

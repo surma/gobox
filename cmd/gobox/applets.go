@@ -1,26 +1,25 @@
 package main
 
-import (
-	"os"
-)
-
 // Applet imports
 import (
-	"applets/echo"
-	"applets/shell"
-	"applets/telnetd"
-	"applets/ls"
-	"applets/rm"
-	"applets/httpd"
-	"applets/wget"
-	"applets/kill"
 	"applets/cat"
+	"applets/chroot"
+	"applets/echo"
+	"applets/grep"
+	"applets/gzip"
+	"applets/head"
+	"applets/httpd"
+	"applets/kill"
+	"applets/ls"
+	"applets/mkdir"
 	"applets/mknod"
 	"applets/mount"
-	"applets/umount"
-	"applets/chroot"
 	"applets/ps"
-	"applets/mkdir"
+	"applets/rm"
+	"applets/shell"
+	"applets/telnetd"
+	"applets/umount"
+	"applets/wget"
 )
 
 // This map contains the mappings from callname
@@ -41,6 +40,11 @@ var Applets map[string]Applet = map[string]Applet{
 	"chroot":  chroot.Chroot,
 	"ps":      ps.Ps,
 	"mkdir":   mkdir.Mkdir,
+	"head":    head.Head,
+	"grep":    grep.Grep,
+	"gzip":    gzip.Gzip,
+	"gunzip":  gzip.Gunzip,
+	"zcat":    gzip.Zcat,
 }
 
 // Signature of applet functions.
@@ -48,4 +52,4 @@ var Applets map[string]Applet = map[string]Applet{
 // name of the applet itself in call[0].
 // If the returned error is not nil, it is printed
 // to stdout.
-type Applet func(call []string) os.Error
+type Applet func(call []string) error

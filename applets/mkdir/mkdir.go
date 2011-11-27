@@ -11,7 +11,7 @@ var (
 	helpFlag   = flagSet.Bool("help", false, "Show this help")
 )
 
-func Mkdir(call []string) os.Error {
+func Mkdir(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e

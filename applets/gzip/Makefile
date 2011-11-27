@@ -3,16 +3,12 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=common
+TARG=applets/gzip
 GOFILES=\
-	bufio.go\
-	gobox.go\
-	input.go\
-	os.go\
-	unicode.go\
+	gzip.go\
 
 # gb: this is the local install
-GBROOT=..
+GBROOT=../..
 
 # gb: compile/link against local install
 GC+= -I $(GBROOT)/_obj

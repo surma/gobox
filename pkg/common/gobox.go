@@ -1,12 +1,13 @@
 package common
 
 import (
-	"exec"
-	"path/filepath"
+	"errors"
 	"os"
+	"os/exec"
+	"path/filepath"
 )
 
-func getRelativeGoboxBinaryPath() (string, os.Error) {
+func getRelativeGoboxBinaryPath() (string, error) {
 	callname := os.Args[0]
 	// First check: Is gobox in $PATH?
 	path, e := exec.LookPath(callname)
@@ -23,10 +24,10 @@ func getRelativeGoboxBinaryPath() (string, os.Error) {
 	if PathExists(path) {
 		return path, nil
 	}
-	return "", os.NewError("Could not find gobox binary")
+	return "", errors.New("Could not find gobox binary")
 }
 
-func GetGoboxBinaryPath() (string, os.Error) {
+func GetGoboxBinaryPath() (string, error) {
 	relpath, e := getRelativeGoboxBinaryPath()
 	if e != nil {
 		return "", e

@@ -3,9 +3,9 @@ package ps
 import (
 	"common"
 	"flag"
-	"os"
 	"fmt"
-	"tabwriter"
+	"os"
+	"text/tabwriter"
 )
 
 var (
@@ -14,7 +14,7 @@ var (
 	out      = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Ps(call []string) os.Error {
+func Ps(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e

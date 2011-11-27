@@ -2,16 +2,16 @@ package cat
 
 import (
 	"flag"
-	"os"
 	"io"
+	"os"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("template", flag.PanicOnError)
+	flagSet  = flag.NewFlagSet("cat", flag.PanicOnError)
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
-func Cat(call []string) os.Error {
+func Cat(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
@@ -33,7 +33,7 @@ func Cat(call []string) os.Error {
 	return nil
 }
 
-func dumpFile(path string) os.Error {
+func dumpFile(path string) error {
 	f, e := os.Open(path)
 	if e != nil {
 		return e

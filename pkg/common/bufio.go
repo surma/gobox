@@ -2,7 +2,6 @@ package common
 
 import (
 	"bufio"
-	"os"
 	"io"
 )
 
@@ -16,7 +15,7 @@ func NewBufferedReader(r io.Reader) *BufferedReader {
 	}
 }
 
-func (b *BufferedReader) ReadWholeLine() (line string, err os.Error) {
+func (b *BufferedReader) ReadWholeLine() (line string, err error) {
 	byteline := make([]byte, 0)
 	prefix := true
 	for prefix {

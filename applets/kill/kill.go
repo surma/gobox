@@ -12,7 +12,7 @@ var (
 	helpFlag   = flagSet.Bool("help", false, "Show this help")
 )
 
-func Kill(call []string) os.Error {
+func Kill(call []string) error {
 	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e

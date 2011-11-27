@@ -1,9 +1,10 @@
 package main
 
 import (
-	"path/filepath"
-	"os"
 	"common"
+	"errors"
+	"os"
+	"path/filepath"
 )
 
 func init() {
@@ -17,14 +18,14 @@ func run() {
 	callname := filepath.Base(os.Args[0])
 	applet, ok := Applets[callname]
 	if !ok {
-		panic(os.NewError("Could not find applet \"" + callname + "\""))
+		panic(errors.New("Could not find applet \"" + callname + "\""))
 	}
 
 	// If the Gobox applet is called (i.e. the executable itself)
 	// check, if the second parameter is an applet name.
 	// If so, call that applet instead
 	args := os.Args
-	if applet == Gobox && len(args) >= 2 {
+	if callname == "gobox" && len(args) >= 2 {
 		subapplet, ok := Applets[args[1]]
 		if ok {
 			applet = subapplet
@@ -41,9 +42,9 @@ func run() {
 func main() {
 	defer func() {
 		if p := recover(); p != nil {
-			e, ok := p.(os.Error)
+			e, ok := p.(error)
 			if !ok {
-				e = os.NewError("Some error occured")
+				e = errors.New("Some error occured")
 			}
 			common.DumpError(e)
 		}

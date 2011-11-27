@@ -2,13 +2,15 @@ package shell
 
 import (
 	"common"
-	"exec"
+	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
-func Shell(call []string) os.Error {
+func Shell(call []string) error {
 	var in *common.BufferedReader
+	interactive := true
 	if len(call) > 2 {
 		call = call[0:1]
 	}
@@ -19,14 +21,17 @@ func Shell(call []string) os.Error {
 		}
 		defer f.Close()
 		in = common.NewBufferedReader(f)
+		interactive = false
 	} else {
 		in = common.NewBufferedReader(os.Stdin)
 	}
 
-	var e os.Error
+	var e error
 	var line string
 	for e == nil {
-		print("> ")
+		if interactive {
+			fmt.Print("> ")
+		}
 		line, e = in.ReadWholeLine()
 		if e != nil {
 			return e
@@ -53,7 +58,7 @@ func isComment(line string) bool {
 	return strings.HasPrefix(line, "#")
 }
 
-func execute(cmd []string) os.Error {
+func execute(cmd []string) error {
 	if len(cmd) == 0 {
 		return nil
 	}
