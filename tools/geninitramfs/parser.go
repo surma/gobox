@@ -170,7 +170,7 @@ func parseSlink(parts []string) *Entry {
 	name := parts[0]
 	target := parts[1]
 
-	mode, uid, gid, e := parseModeUidGid(parts[1], parts[2], parts[3])
+	mode, uid, gid, e := parseModeUidGid(parts[2], parts[3], parts[4])
 	if e != nil {
 		log.Printf("Invalid permission settings: %s\n", e.Error())
 		return nil
@@ -182,6 +182,7 @@ func parseSlink(parts []string) *Entry {
 			Uid: uid,
 			Gid: gid,
 			Type: cpio.TYPE_SYMLINK,
+			Size: int64(len(target)+1),
 			Name: name,
 		},
 		data: strings.NewReader(target),
