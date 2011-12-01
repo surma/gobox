@@ -4,8 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"net"
-	"unsafe"
-	"syscall"
 )
 
 var (
@@ -19,74 +17,54 @@ func Ifconfig(call []string) error {
 		return e
 	}
 
-	if (flagSet.NArg() != 0 && flagSet.NArg() != 4) || *helpFlag {
-		println("`ifconfig` [interface ip netmask {up|down}]")
+	if (flagSet.NArg() != 0 && flagSet.NArg() != 3) || *helpFlag {
+		println("`ifconfig` [interface ip netmask]")
 		flagSet.PrintDefaults()
 		return nil
 	}
-	list, e := GetIfaceNames()
-	if e != nil {
-		panic(e)
+	if flagSet.NArg() == 0 {
+		return ListAllInterfaces()
+	} else {
+		fmt.Printf("Not implemented\n")
 	}
-	for _, iface := range list {
-		fmt.Printf("%s\n", iface)
-	}
-	ip, e := GetAddrFromIface("eth0")
-	if e != nil {
-		panic(e)
-	}
-	fmt.Printf("%v\n", ip)
 	return nil
 }
 
-func GetAddrFromIface(name string) (ip net.IP, e error) {
-	if len(name) >= syscall.IFNAMSIZ {
-		return ip, ErrInvalidIfaceName
-	}
-
-	var req ifreq_sockaddr
-	copy(req.ifr_name[0:], []byte(name))
-	ptr := uintptr(unsafe.Pointer(&req))
-	e = socketIoctl(syscall.SIOCGIFADDR, ptr)
+func ListAllInterfaces() error {
+	list, e := GetInterfaceNames()
 	if e != nil {
-		return ip, e
+		return e
 	}
-	ipaddr := (*sockaddr_in)(unsafe.Pointer(&req.ifr_addr))
-	ip = uint32ToByteArray(ipaddr.sin_addr.addr)
-	return ip, nil
+	for _, name := range list {
+		iface, e := GetInterface(name)
+		if e != nil {
+			fmt.Printf("Could not obtain data of %s: %s\n", name, e)
+			continue
+		}
+		fmt.Printf("%s: %s/%s\n", iface.Name, iface.Address, iface.Netmask)
+	}
+	return nil
 }
 
-func GetIfaceNames() ([]string, error) {
-	// Apparently due to the union the struct is
-	// 8 bytes bigger than it’s Go pendant
-	structsize := int(unsafe.Sizeof(ifreq_sockaddr{}))+8
-	list := ifconf_list {
-		ifc_len: 1,
+type Interface struct {
+	Name    string
+	Address net.IP
+	Netmask net.IP
+}
+
+func GetInterface(name string) (*Interface, error) {
+	ip, e := GetAddrFromIface(name)
+	if e != nil {
+		return nil, e
 	}
-	for i := 1; ; i++ {
-		list.ifc_req = make([]ifreq_sockaddr, i)
-		list.ifc_len = i*structsize
-		ptr := uintptr(unsafe.Pointer(&list))
-		e := socketIoctl(syscall.SIOCGIFCONF, ptr)
-		if e != nil {
-			return nil, e
-		}
-		list.ifc_len /= structsize
-		// ifc_len is set by the kernel to the number
-		// of bytes of interface descriptions put into the struct.
-		// When that value is smaller than the size
-		// of the array, we got everyting.
-		// ...
-		// And yes, this is how the `man 7 netdevice` tells
-		// me to go about this.
-		if i > list.ifc_len {
-			list.ifc_req = list.ifc_req[0:i-1]
-			break
-		}
+	nm, e := GetNetmaskFromIface(name)
+	if e != nil {
+		return nil, e
 	}
-	ret := make([]string, 0)
-	for _, iface := range list.ifc_req {
-		ret = append(ret, string(iface.ifr_name[0:]))
-	}
-	return ret, nil
+
+	return &Interface{
+		Name:    name,
+		Address: ip,
+		Netmask: nm,
+	}, nil
 }

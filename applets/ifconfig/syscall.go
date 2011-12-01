@@ -12,6 +12,7 @@ type sa_family_t uint16
 type sockaddr struct {
 	sin_family sa_family_t
 	data       [SOCKADDR_DATA]byte
+	padding    [8]byte
 }
 type in_port uint16
 type in_addr struct {
@@ -29,9 +30,9 @@ type ifreq_sockaddr struct {
 }
 
 type ifconf_list struct {
-	ifc_len int;
-	ifc_req []ifreq_sockaddr;
-};
+	ifc_len int
+	ifc_req []ifreq_sockaddr
+}
 
 func Ioctl(fd, request, data uintptr) error {
 	_, _, errno := syscall.Syscall(syscall.SYS_IOCTL, fd, request, data)
@@ -40,4 +41,3 @@ func Ioctl(fd, request, data uintptr) error {
 	}
 	return errno
 }
-
