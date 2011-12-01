@@ -61,10 +61,10 @@ func list(dir, prefix string) error {
 
 	for _, entry := range entries {
 		printEntry(entry)
-		if entry.IsDirectory() && *recursiveFlag {
-			folder := prefix + "/" + entry.Name
+		if entry.IsDir() && *recursiveFlag {
+			folder := prefix + "/" + entry.Name()
 			fmt.Fprintf(out, "%s:\n", folder)
-			e := list(dir+"/"+entry.Name, folder)
+			e := list(dir+"/"+entry.Name(), folder)
 			if e != nil {
 				return e
 			}
@@ -73,21 +73,21 @@ func list(dir, prefix string) error {
 	return nil
 }
 
-func printEntry(e *os.FileInfo) {
-	fmt.Fprintf(out, "%s%s\t", e.Name, getEntryTypeString(e))
+func printEntry(e os.FileInfo) {
+	fmt.Fprintf(out, "%s%s\t", e.Name(), getEntryTypeString(e))
 	if *longFlag {
-		fmt.Fprintf(out, "%s\t", getModeString(e.Mode))
-		fmt.Fprintf(out, "%s\t", getSizeString(e.Size))
-		fmt.Fprintf(out, "%s\t", getUserString(e.Uid))
+		fmt.Fprintf(out, "%s\t", getModeString(e.Mode().Perm()))
+		fmt.Fprintf(out, "%s\t", getSizeString(e.Size()))
+		// fmt.Fprintf(out, "%s\t", getUserString(e.Uid))
 	}
 	fmt.Fprintln(out, "")
 }
 
 var accessSymbols = "xwr"
 
-func getModeString(mode uint32) (s string) {
+func getModeString(mode os.FileMode) (s string) {
 	for i := 8; i >= 0; i-- {
-		if mode&(1<<uint(i)) == 0 {
+		if uint32(mode)&(1<<uint(i)) == 0 {
 			s += "-"
 		} else {
 			char := i % 3
@@ -116,10 +116,10 @@ func getSizeString(size int64) (s string) {
 	return fmt.Sprintf("%7.3f%s", rSize, sizeSymbols[power:power+1])
 }
 
-func getEntryTypeString(e *os.FileInfo) string {
-	if e.IsDirectory() {
+func getEntryTypeString(e os.FileInfo) string {
+	if e.IsDir() {
 		return "/"
-	} else if e.IsBlock() {
+	} /*else if e.IsBlock() {
 		return "<>"
 	} else if e.IsFifo() {
 		return ">>"
@@ -129,7 +129,7 @@ func getEntryTypeString(e *os.FileInfo) string {
 		return "&"
 	} else if e.IsRegular() && (e.Mode&0001 == 0001) {
 		return "*"
-	}
+	}*/
 	return ""
 }
 
