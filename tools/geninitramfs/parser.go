@@ -90,7 +90,7 @@ func parseFile(parts []string) *Entry {
 			Mode: mode,
 			Uid:  uid,
 			Gid:  gid,
-			Size: finfo.Size,
+			Size: finfo.Size(),
 			Type: cpio.TYPE_REG,
 			Name: name,
 		},
