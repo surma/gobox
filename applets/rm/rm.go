@@ -38,7 +38,7 @@ func delete(file string) error {
 	if e != nil {
 		return e
 	}
-	if fi.IsDirectory() && *recursiveFlag {
+	if fi.IsDir() && *recursiveFlag {
 		e := deleteDir(file)
 		if e != nil {
 			return e
@@ -53,7 +53,7 @@ func deleteDir(dir string) error {
 		return e
 	}
 	for _, file := range files {
-		e = delete(dir + "/" + file.Name)
+		e = delete(dir + "/" + file.Name())
 		if e != nil {
 			return e
 		}
