@@ -1,12 +1,11 @@
 package ifconfig
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"net"
-	"syscall"
 	"unsafe"
+	"syscall"
 )
 
 var (
@@ -25,7 +24,14 @@ func Ifconfig(call []string) error {
 		flagSet.PrintDefaults()
 		return nil
 	}
-	ip, e := getAddrFromIface("eth0")
+	list, e := GetIfaceNames()
+	if e != nil {
+		panic(e)
+	}
+	for _, iface := range list {
+		fmt.Printf("%s\n", iface)
+	}
+	ip, e := GetAddrFromIface("eth0")
 	if e != nil {
 		panic(e)
 	}
@@ -33,98 +39,54 @@ func Ifconfig(call []string) error {
 	return nil
 }
 
-const (
-	SOCKADDR_DATA = 14
-	IFNAMSIZ      = 0x10
-)
-
-type sa_family_t uint16
-type sockaddr struct {
-	sin_family sa_family_t
-	data       [14]byte
-}
-type in_port uint16
-type in_addr struct {
-	addr uint32
-}
-type sockaddr_in struct {
-	sin_family sa_family_t
-	sin_port   in_port
-	sin_addr   in_addr
-}
-
-type ifreq struct {
-	ifr_name [IFNAMSIZ]byte
-	ifr_addr sockaddr
-}
-
-var (
-	ErrInvalidIfaceName = errors.New("Invalid interface name")
-	ErrNoPortAvailable  = errors.New("Could not find a free port")
-)
-
-func createSocket() (*net.TCPListener, error) {
-	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:1")
-	for i := 65535; i > 1024; i-- {
-		addr.Port = i
-		listener, e := net.ListenTCP("tcp", addr)
-		if e == nil {
-			return listener, nil
-		}
-	}
-	return nil, ErrNoPortAvailable
-}
-
-func getFdFromSocket(sock *net.TCPListener) (int, error) {
-	f, e := sock.File()
-	if e != nil {
-		return 0, e
-	}
-	return f.Fd(), nil
-
-}
-
-func getAddrFromIface(name string) (ip net.IP, e error) {
-	if len(name) >= IFNAMSIZ {
+func GetAddrFromIface(name string) (ip net.IP, e error) {
+	if len(name) >= syscall.IFNAMSIZ {
 		return ip, ErrInvalidIfaceName
 	}
 
-	var req ifreq
+	var req ifreq_sockaddr
 	copy(req.ifr_name[0:], []byte(name))
 	ptr := uintptr(unsafe.Pointer(&req))
-	socketIoctl(syscall.SIOCGIFADDR, ptr)
+	e = socketIoctl(syscall.SIOCGIFADDR, ptr)
+	if e != nil {
+		return ip, e
+	}
 	ipaddr := (*sockaddr_in)(unsafe.Pointer(&req.ifr_addr))
 	ip = uint32ToByteArray(ipaddr.sin_addr.addr)
 	return ip, nil
 }
 
-func socketIoctl(request, data uintptr) error {
-	sock, e := createSocket()
-	if e != nil {
-		return e
+func GetIfaceNames() ([]string, error) {
+	// Apparently due to the union the struct is
+	// 8 bytes bigger than it’s Go pendant
+	structsize := int(unsafe.Sizeof(ifreq_sockaddr{}))+8
+	list := ifconf_list {
+		ifc_len: 1,
 	}
-	defer sock.Close()
-
-	fd, e := getFdFromSocket(sock)
-	if e != nil {
-		return e
+	for i := 1; ; i++ {
+		list.ifc_req = make([]ifreq_sockaddr, i)
+		list.ifc_len = i*structsize
+		ptr := uintptr(unsafe.Pointer(&list))
+		e := socketIoctl(syscall.SIOCGIFCONF, ptr)
+		if e != nil {
+			return nil, e
+		}
+		list.ifc_len /= structsize
+		// ifc_len is set by the kernel to the number
+		// of bytes of interface descriptions put into the struct.
+		// When that value is smaller than the size
+		// of the array, we got everyting.
+		// ...
+		// And yes, this is how the `man 7 netdevice` tells
+		// me to go about this.
+		if i > list.ifc_len {
+			list.ifc_req = list.ifc_req[0:i-1]
+			break
+		}
 	}
-
-	return Ioctl(uintptr(fd), request, data)
-}
-
-func Ioctl(fd, request, data uintptr) error {
-	_, _, errno := syscall.Syscall(syscall.SYS_IOCTL, fd, request, data)
-	if errno == 0 {
-		return nil
+	ret := make([]string, 0)
+	for _, iface := range list.ifc_req {
+		ret = append(ret, string(iface.ifr_name[0:]))
 	}
-	return errno
-}
-
-func uint32ToByteArray(t uint32) []byte {
-	r := make([]byte, 4)
-	for i := uint(0); i < 4; i++ {
-		r[i] = byte((t >> (i * 8)) & 0xFF)
-	}
-	return r
+	return ret, nil
 }
