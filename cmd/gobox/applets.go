@@ -9,6 +9,7 @@ import (
 	"applets/gzip"
 	"applets/head"
 	"applets/httpd"
+	"applets/ifconfig"
 	"applets/kill"
 	"applets/ls"
 	"applets/mkdir"
@@ -25,26 +26,27 @@ import (
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	"echo":    echo.Echo,
-	"shell":   shell.Shell,
-	"telnetd": telnetd.Telnetd,
-	"ls":      ls.Ls,
-	"rm":      rm.Rm,
-	"httpd":   httpd.Httpd,
-	"wget":    wget.Wget,
-	"kill":    kill.Kill,
-	"cat":     cat.Cat,
-	"mknod":   mknod.Mknod,
-	"mount":   mount.Mount,
-	"umount":  umount.Umount,
-	"chroot":  chroot.Chroot,
-	"ps":      ps.Ps,
-	"mkdir":   mkdir.Mkdir,
-	"head":    head.Head,
-	"grep":    grep.Grep,
-	"gzip":    gzip.Gzip,
-	"gunzip":  gzip.Gunzip,
-	"zcat":    gzip.Zcat,
+	"echo":     echo.Echo,
+	"shell":    shell.Shell,
+	"telnetd":  telnetd.Telnetd,
+	"ls":       ls.Ls,
+	"rm":       rm.Rm,
+	"httpd":    httpd.Httpd,
+	"wget":     wget.Wget,
+	"kill":     kill.Kill,
+	"cat":      cat.Cat,
+	"ifconfig": ifconfig.Ifconfig,
+	"mknod":    mknod.Mknod,
+	"mount":    mount.Mount,
+	"umount":   umount.Umount,
+	"chroot":   chroot.Chroot,
+	"ps":       ps.Ps,
+	"mkdir":    mkdir.Mkdir,
+	"head":     head.Head,
+	"grep":     grep.Grep,
+	"gzip":     gzip.Gzip,
+	"gunzip":   gzip.Gunzip,
+	"zcat":     gzip.Zcat,
 }
 
 // Signature of applet functions.
