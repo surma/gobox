@@ -9,11 +9,7 @@ const (
 )
 
 type sa_family_t uint16
-type sockaddr struct {
-	sin_family sa_family_t
-	data       [SOCKADDR_DATA]byte
-	padding    [8]byte
-}
+
 type in_port uint16
 type in_addr struct {
 	addr uint32
@@ -24,14 +20,9 @@ type sockaddr_in struct {
 	sin_addr   in_addr
 }
 
-type ifreq_sockaddr struct {
+type ifreq_sockaddr_in struct {
 	ifr_name [syscall.IFNAMSIZ]byte
-	ifr_addr sockaddr
-}
-
-type ifconf_list struct {
-	ifc_len int
-	ifc_req []ifreq_sockaddr
+	ifr_addr sockaddr_in
 }
 
 func Ioctl(fd, request, data uintptr) error {
@@ -40,14 +31,6 @@ func Ioctl(fd, request, data uintptr) error {
 		return nil
 	}
 	return errno
-}
-
-func uint32ToByteArray(t uint32) []byte {
-	r := make([]byte, 16)
-	for i := uint(0); i < 4; i++ {
-		r[i+12] = byte((t >> (i * 8)) & 0xFF)
-	}
-	return r
 }
 
 func byteArrayToUint32(t []byte) uint32 {

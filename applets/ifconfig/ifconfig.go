@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net"
+	"os"
 )
 
 var (
@@ -30,30 +31,27 @@ func Ifconfig(call []string) error {
 		if ip == nil || nm == nil {
 			return ErrInvalidAddressFormat
 		}
-		iface := Interface {
-			Name: flagSet.Arg(0),
-			Address: ip,
-			Netmask: nm,
-		}
-		return iface.Set()
+		return SetInterface(flagSet.Arg(0), ip, nm)
 	}
 	return nil
 }
 
 func ListAllInterfaces() error {
-	list, e := GetInterfaceNames()
+	list, e := net.Interfaces()
 	if e != nil {
 		return e
 	}
-	var iface Interface
-	for _, name := range list {
-		iface.Name = name
-		e = iface.Load()
+	for _, iface := range list {
+		fmt.Printf("%s (%v)\n", iface.Name, iface.HardwareAddr)
+		addrs, e := iface.Addrs()
 		if e != nil {
-			fmt.Printf("Could not obtain data of %s: %s\n", name, e)
+			fmt.Fprintf(os.Stderr, "Error while getting addresses: %s\n", e)
 			continue
 		}
-		fmt.Printf("%s: %s/%s\n", iface.Name, iface.Address, iface.Netmask)
+		for _, addr := range addrs {
+			fmt.Printf("\t%s\n", addr)
+		}
+		fmt.Println()
 	}
 	return nil
 }
