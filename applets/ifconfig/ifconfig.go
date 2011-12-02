@@ -25,7 +25,17 @@ func Ifconfig(call []string) error {
 	if flagSet.NArg() == 0 {
 		return ListAllInterfaces()
 	} else {
-		fmt.Printf("Not implemented\n")
+		ip := net.ParseIP(flagSet.Arg(1))
+		nm := net.ParseIP(flagSet.Arg(2))
+		if ip == nil || nm == nil {
+			return ErrInvalidAddressFormat
+		}
+		iface := Interface {
+			Name: flagSet.Arg(0),
+			Address: ip,
+			Netmask: nm,
+		}
+		return iface.Set()
 	}
 	return nil
 }
@@ -35,8 +45,10 @@ func ListAllInterfaces() error {
 	if e != nil {
 		return e
 	}
+	var iface Interface
 	for _, name := range list {
-		iface, e := GetInterface(name)
+		iface.Name = name
+		e = iface.Load()
 		if e != nil {
 			fmt.Printf("Could not obtain data of %s: %s\n", name, e)
 			continue
@@ -46,25 +58,3 @@ func ListAllInterfaces() error {
 	return nil
 }
 
-type Interface struct {
-	Name    string
-	Address net.IP
-	Netmask net.IP
-}
-
-func GetInterface(name string) (*Interface, error) {
-	ip, e := GetAddrFromIface(name)
-	if e != nil {
-		return nil, e
-	}
-	nm, e := GetNetmaskFromIface(name)
-	if e != nil {
-		return nil, e
-	}
-
-	return &Interface{
-		Name:    name,
-		Address: ip,
-		Netmask: nm,
-	}, nil
-}

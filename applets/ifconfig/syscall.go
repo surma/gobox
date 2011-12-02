@@ -41,3 +41,20 @@ func Ioctl(fd, request, data uintptr) error {
 	}
 	return errno
 }
+
+func uint32ToByteArray(t uint32) []byte {
+	r := make([]byte, 16)
+	for i := uint(0); i < 4; i++ {
+		r[i+12] = byte((t >> (i * 8)) & 0xFF)
+	}
+	return r
+}
+
+func byteArrayToUint32(t []byte) uint32 {
+	r := uint32(0)
+	for i := uint(0); i < 4; i++ {
+		r = (r<<8) | uint32(t[15-i])
+	}
+	return r
+}
+
