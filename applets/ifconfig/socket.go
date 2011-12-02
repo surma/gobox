@@ -39,7 +39,6 @@ func socketIoctl(request, data uintptr) error {
 	return Ioctl(uintptr(fd), request, data)
 }
 
-
 func cstrToString(str []byte) string {
 	for i := range str {
 		if str[i] == 0 {

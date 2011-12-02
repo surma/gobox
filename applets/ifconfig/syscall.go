@@ -25,6 +25,11 @@ type ifreq_sockaddr_in struct {
 	ifr_addr sockaddr_in
 }
 
+type ifreq_flags struct {
+	ifr_name  [syscall.IFNAMSIZ]byte
+	ifr_flags uint16
+}
+
 func Ioctl(fd, request, data uintptr) error {
 	_, _, errno := syscall.Syscall(syscall.SYS_IOCTL, fd, request, data)
 	if errno == 0 {
@@ -36,8 +41,7 @@ func Ioctl(fd, request, data uintptr) error {
 func byteArrayToUint32(t []byte) uint32 {
 	r := uint32(0)
 	for i := uint(0); i < 4; i++ {
-		r = (r<<8) | uint32(t[15-i])
+		r = (r << 8) | uint32(t[15-i])
 	}
 	return r
 }
-
