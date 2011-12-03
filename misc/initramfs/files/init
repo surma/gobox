@@ -4,6 +4,9 @@
 /bin/gobox -install=/bin
 setenv PATH /bin
 echo "[*] GoBox has been set up"
+ifconfig -addr 127.0.0.1 -netmask 255.0.0.0 -state up lo
+ifconfig -addr 10.23.0.2 -netmask 255.255.255.0 -state up eth0
 mount -t proc none /proc
 fork telnetd /bin/shell
+fork httpd -addr=:80 /htdocs
 shell
