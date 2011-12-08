@@ -142,12 +142,12 @@ func parseNod(parts []string) *Entry {
 		return nil
 	}
 
-	maj, e := strconv.Atoi64(parts[5])
+	maj, e := strconv.ParseInt(parts[5], 10, 64)
 	if e != nil {
 		log.Printf("Invalid major device: %s\n", e.Error())
 		return nil
 	}
-	min, e := strconv.Atoi64(parts[6])
+	min, e := strconv.ParseInt(parts[6], 10, 64)
 	if e != nil {
 		log.Printf("Invalid major device: %s\n", e.Error())
 		return nil
@@ -239,15 +239,15 @@ func parseSock(parts []string) *Entry {
 	}
 }
 
-func parseModeUidGid(s_mode, s_uid, s_gid string) (mode int64, uid, gid int, err error) {
-	mode, err = strconv.Btoi64(s_mode, 0)
+func parseModeUidGid(s_mode, s_uid, s_gid string) (int64, int, int, error) {
+	mode, err := strconv.ParseInt(s_mode, 0, 64)
 	if err != nil {
-		return
+		return 0, 0, 0, err
 	}
-	uid, err = strconv.Atoi(s_uid)
+	tuid, err := strconv.ParseInt(s_uid, 0, 0)
 	if err != nil {
-		return
+		return 0, 0, 0, err
 	}
-	gid, err = strconv.Atoi(s_gid)
-	return mode, uid, gid, nil
+	tgid, err := strconv.ParseInt(s_gid, 0, 0)
+	return mode, int(tuid), int(tgid), nil
 }
