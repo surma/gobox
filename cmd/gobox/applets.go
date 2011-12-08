@@ -32,7 +32,6 @@ var Applets map[string]Applet = map[string]Applet{
 	// "ls":       ls.Ls,
 	// "rm":       rm.Rm,
 	// "httpd":    httpd.Httpd,
-	"wget":     wget.Main,
 	// "kill":     kill.Kill,
 	// "cat":      cat.Cat,
 	// "ifconfig": ifconfig.Ifconfig,
@@ -47,6 +46,7 @@ var Applets map[string]Applet = map[string]Applet{
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"wget":     wget.Main,
 }
 
 // Signature of applet functions.
