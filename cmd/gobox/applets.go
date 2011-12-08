@@ -15,7 +15,7 @@ import (
 	// "applets/mkdir"
 	// "applets/mknod"
 	// "applets/mount"
-	// "applets/ps"
+	"applets/ps"
 	"applets/rm"
 	"applets/shell"
 	"applets/telnetd"
@@ -35,13 +35,13 @@ var Applets map[string]Applet = map[string]Applet{
 	// "mknod":    mknod.Mknod,
 	// "mount":    mount.Mount,
 	// "chroot":   chroot.Chroot,
-	// "ps":       ps.Ps,
 	// "mkdir":    mkdir.Mkdir,
 	// "head":     head.Head,
 	// "grep":     grep.Grep,
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"ps":       ps.Main,
 	"rm":       rm.Main,
 	"shell":    shell.Main,
 	"telnetd":  telnetd.Main,
