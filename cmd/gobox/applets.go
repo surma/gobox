@@ -17,7 +17,7 @@ import (
 	// "applets/mount"
 	// "applets/ps"
 	// "applets/rm"
-	// "applets/shell"
+	"applets/shell"
 	"applets/telnetd"
 	"applets/umount"
 	"applets/wget"
@@ -27,7 +27,6 @@ import (
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
 	// "echo":     echo.Echo,
-	// "shell":    shell.Shell,
 	// "ls":       ls.Ls,
 	// "rm":       rm.Rm,
 	// "httpd":    httpd.Httpd,
@@ -44,6 +43,7 @@ var Applets map[string]Applet = map[string]Applet{
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"shell":    shell.Main,
 	"telnetd":  telnetd.Main,
 	"umount":   umount.Main,
 	"wget":     wget.Main,
