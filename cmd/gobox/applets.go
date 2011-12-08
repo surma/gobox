@@ -16,7 +16,7 @@ import (
 	// "applets/mknod"
 	// "applets/mount"
 	// "applets/ps"
-	// "applets/rm"
+	"applets/rm"
 	"applets/shell"
 	"applets/telnetd"
 	"applets/umount"
@@ -28,7 +28,6 @@ import (
 var Applets map[string]Applet = map[string]Applet{
 	// "echo":     echo.Echo,
 	// "ls":       ls.Ls,
-	// "rm":       rm.Rm,
 	// "httpd":    httpd.Httpd,
 	// "kill":     kill.Kill,
 	// "cat":      cat.Cat,
@@ -43,6 +42,7 @@ var Applets map[string]Applet = map[string]Applet{
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"rm":       rm.Main,
 	"shell":    shell.Main,
 	"telnetd":  telnetd.Main,
 	"umount":   umount.Main,
