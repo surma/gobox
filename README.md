@@ -50,11 +50,13 @@ and enter it
 
 Developing applets
 ------------------
-- Copy `applets/template` and name the copy like your applet
-- Rename `template.go` and edit its contents to fit your applet
-- Add your applet to `cmd/gobox/applets.go`
+Write your applet as a standalone Go application. When done, you need to execute the following steps:
 
-The template provides the basic framework you should stick to that.
+1. Change the package name from `main` to something sensible (i.e. the exectuables name)
+2. Change `import "flag"` to `import flag "appletflag"`
+3. Change `func main() {...` to `func Main() {...`
+
+Now move your code into it’s own folder unter `applets` and add your applet to the `cmd/gobox/applets.go`.
 
 Why is there not real shell?
 ----------------------------
