@@ -19,7 +19,7 @@ import (
 	// "applets/rm"
 	// "applets/shell"
 	// "applets/telnetd"
-	// "applets/umount"
+	"applets/umount"
 	"applets/wget"
 )
 
@@ -37,7 +37,6 @@ var Applets map[string]Applet = map[string]Applet{
 	// "ifconfig": ifconfig.Ifconfig,
 	// "mknod":    mknod.Mknod,
 	// "mount":    mount.Mount,
-	// "umount":   umount.Umount,
 	// "chroot":   chroot.Chroot,
 	// "ps":       ps.Ps,
 	// "mkdir":    mkdir.Mkdir,
@@ -46,6 +45,7 @@ var Applets map[string]Applet = map[string]Applet{
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"umount":   umount.Main,
 	"wget":     wget.Main,
 }
 
