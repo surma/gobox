@@ -48,7 +48,7 @@ func Mknod(call []string) error {
 		return errors.New("When creating a block device, both minor and major number have to be given")
 	}
 
-	fmode, e := strconv.Btoui64(*modeFlag, 8)
+	fmode, e := strconv.ParseInt(*modeFlag, 8, 32)
 	if e != nil {
 		return e
 	}
