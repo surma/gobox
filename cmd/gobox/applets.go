@@ -4,7 +4,7 @@ package main
 import (
 	// "applets/cat"
 	// "applets/chroot"
-	// "applets/echo"
+	"applets/echo"
 	"applets/grep"
 	"applets/gzip"
 	"applets/head"
@@ -26,9 +26,9 @@ import (
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	// "echo":     echo.Echo,
 	// "cat":      cat.Cat,
 	// "chroot":   chroot.Chroot,
+	"echo":     echo.Main,
 	"grep":     grep.Main,
 	"gunzip":   gzip.GunzipMain,
 	"gzip":     gzip.GzipMain,
