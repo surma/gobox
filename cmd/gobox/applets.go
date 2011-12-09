@@ -9,7 +9,7 @@ import (
 	// "applets/gzip"
 	// "applets/head"
 	// "applets/httpd"
-	// "applets/ifconfig"
+	"applets/ifconfig"
 	"applets/kill"
 	"applets/ls"
 	"applets/mkdir"
@@ -29,13 +29,13 @@ var Applets map[string]Applet = map[string]Applet{
 	// "echo":     echo.Echo,
 	// "httpd":    httpd.Httpd,
 	// "cat":      cat.Cat,
-	// "ifconfig": ifconfig.Ifconfig,
 	// "chroot":   chroot.Chroot,
 	// "head":     head.Head,
 	// "grep":     grep.Grep,
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"ifconfig": ifconfig.Main,
 	"kill":     kill.Main,
 	"ls":       ls.Main,
 	"mkdir":    mkdir.Main,
