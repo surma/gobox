@@ -13,7 +13,7 @@ import (
 	// "applets/kill"
 	// "applets/ls"
 	// "applets/mkdir"
-	// "applets/mknod"
+	"applets/mknod"
 	"applets/mount"
 	"applets/ps"
 	"applets/rm"
@@ -32,7 +32,6 @@ var Applets map[string]Applet = map[string]Applet{
 	// "kill":     kill.Kill,
 	// "cat":      cat.Cat,
 	// "ifconfig": ifconfig.Ifconfig,
-	// "mknod":    mknod.Mknod,
 	// "chroot":   chroot.Chroot,
 	// "mkdir":    mkdir.Mkdir,
 	// "head":     head.Head,
@@ -40,6 +39,7 @@ var Applets map[string]Applet = map[string]Applet{
 	// "gzip":     gzip.Gzip,
 	// "gunzip":   gzip.Gunzip,
 	// "zcat":     gzip.Zcat,
+	"mknod":    mknod.Main,
 	"mount":    mount.Main,
 	"ps":       ps.Main,
 	"rm":       rm.Main,
