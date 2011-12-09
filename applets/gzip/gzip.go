@@ -2,7 +2,7 @@ package gzip
 
 import (
 	"compress/gzip"
-	"flag"
+	flag "appletflag"
 	"fmt"
 	"io"
 	"os"
@@ -16,46 +16,40 @@ var (
 	decompress = flagSet.Bool("d", false, "Decompress")
 )
 
-func Gzip(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func GzipMain() {
+	flagSet.Parse(flag.Parameters)
 
 	if flagSet.NArg() < 1 || *helpFlag {
 		println("`gzip` <file>...")
 		flagSet.PrintDefaults()
-		return nil
+		return
 	}
 
 	if *decompress {
-		Gunzip(call)
-		return nil
+		GunzipMain()
+		return
 	}
 
 	for _, fn := range flagSet.Args() {
 		doGzip(fn)
 	}
 
-	return nil
+	return
 }
 
-func Gunzip(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func GunzipMain() {
+	flagSet.Parse(flag.Parameters)
 
 	if flagSet.NArg() < 1 || *helpFlag {
 		println("`gunzip` <file>...")
 		flagSet.PrintDefaults()
-		return nil
+		return
 	}
 
 	for _, fn := range flagSet.Args() {
 		doGunzip(fn)
 	}
-	return nil
+	return
 }
 
 var (
@@ -63,23 +57,20 @@ var (
 	helpFlagZcat = flagSetZcat.Bool("help", false, "Show this help")
 )
 
-func Zcat(call []string) error {
-	e := flagSetZcat.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func ZcatMain() {
+	flagSetZcat.Parse(flag.Parameters)
 
 	if flagSetZcat.NArg() < 1 || *helpFlagZcat {
 		println("`zcat` <file>...")
 		flagSetZcat.PrintDefaults()
-		return nil
+		return
 	}
 
 	for _, fn := range flagSetZcat.Args() {
 		doZcat(fn)
 	}
 
-	return nil
+	return
 }
 
 func doGzip(fn string) {
