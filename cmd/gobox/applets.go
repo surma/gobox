@@ -26,27 +26,27 @@ import (
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	"echo":     echo.Echo,
-	"shell":    shell.Shell,
-	"telnetd":  telnetd.Telnetd,
-	"ls":       ls.Ls,
-	"rm":       rm.Rm,
-	"httpd":    httpd.Httpd,
-	"wget":     wget.Wget,
-	"kill":     kill.Kill,
-	"cat":      cat.Cat,
-	"ifconfig": ifconfig.Ifconfig,
-	"mknod":    mknod.Mknod,
-	"mount":    mount.Mount,
-	"umount":   umount.Umount,
-	"chroot":   chroot.Chroot,
-	"ps":       ps.Ps,
-	"mkdir":    mkdir.Mkdir,
-	"head":     head.Head,
-	"grep":     grep.Grep,
-	"gzip":     gzip.Gzip,
-	"gunzip":   gzip.Gunzip,
-	"zcat":     gzip.Zcat,
+	"cat":      cat.Main,
+	"chroot":   chroot.Main,
+	"echo":     echo.Main,
+	"grep":     grep.Main,
+	"gunzip":   gzip.GunzipMain,
+	"gzip":     gzip.GzipMain,
+	"zcat":     gzip.ZcatMain,
+	"head":     head.Main,
+	"httpd":    httpd.Main,
+	"ifconfig": ifconfig.Main,
+	"kill":     kill.Main,
+	"ls":       ls.Main,
+	"mkdir":    mkdir.Main,
+	"mknod":    mknod.Main,
+	"mount":    mount.Main,
+	"ps":       ps.Main,
+	"rm":       rm.Main,
+	"shell":    shell.Main,
+	"telnetd":  telnetd.Main,
+	"umount":   umount.Main,
+	"wget":     wget.Main,
 }
 
 // Signature of applet functions.
@@ -54,4 +54,4 @@ var Applets map[string]Applet = map[string]Applet{
 // name of the applet itself in call[0].
 // If the returned error is not nil, it is printed
 // to stdout.
-type Applet func(call []string) error
+type Applet func()

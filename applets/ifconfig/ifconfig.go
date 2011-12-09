@@ -1,78 +1,79 @@
 package ifconfig
 
 import (
-	"flag"
+	flag "appletflag"
 	"fmt"
+	"log"
 	"net"
 	"os"
 )
 
 var (
-	flagSet     = flag.NewFlagSet("ifconfig", flag.PanicOnError)
-	addrFlag    = flagSet.String("addr", "", "Address to set")
-	netmaskFlag = flagSet.String("netmask", "", "Netmask to set")
-	stateFlag   = flagSet.String("state", "", "Set the interface up")
-	listFlag    = flagSet.Bool("list", false, "List one or all interfaces")
-	helpFlag    = flagSet.Bool("help", false, "Show this help")
+	addrFlag    = flag.String("addr", "", "Address to set")
+	netmaskFlag = flag.String("netmask", "", "Netmask to set")
+	stateFlag   = flag.String("state", "", "Set the interface up")
+	listFlag    = flag.Bool("list", false, "List one or all interfaces")
+	helpFlag    = flag.Bool("help", false, "Show this help")
 )
 
 func Help() {
 	fmt.Println("`ifconfig` {-list [interface] | [options] [-state {up|down}] <interface>}")
-	flagSet.PrintDefaults()
+	flag.PrintDefaults()
 }
 
-func Ifconfig(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	narg := flagSet.NArg()
+	narg := flag.NArg()
 	if (narg != 0 && narg != 1) || *helpFlag {
 		Help()
-		return nil
+		return
 	}
+	var e error
 	if *listFlag {
 		if narg == 0 {
-			return ListAllInterfaces()
+			e = ListAllInterfaces()
 		} else {
-			return ListInterface(flagSet.Arg(0))
+			e = ListInterface(flag.Arg(0))
+		}
+		if e != nil {
+			log.Fatalf("Could not list interface(s): %s\n", e)
 		}
 	}
 	if narg != 1 {
 		Help()
-		return nil
+		return
 	}
 	if *addrFlag != "" {
 		ip := net.ParseIP(*addrFlag)
 		if ip == nil {
-			return ErrInvalidAddressFormat
+			log.Fatalf("Invalid IP")
 		}
-		e := SetAddrForIface(flagSet.Arg(0), ip)
+		e := SetAddrForIface(flag.Arg(0), ip)
 		if e != nil {
-			return e
+			log.Fatalf("Could not set address: %s\n", e)
 		}
 	}
 	if *netmaskFlag != "" {
 		nm := net.ParseIP(*netmaskFlag)
 		if nm == nil {
-			return ErrInvalidAddressFormat
+			log.Fatalf("Invalid netmask")
 		}
-		e := SetNetmaskForIface(flagSet.Arg(0), nm)
+		e := SetNetmaskForIface(flag.Arg(0), nm)
 		if e != nil {
-			return e
+			log.Fatalf("Could not set netmask: %s\n", e)
 		}
 	}
 	if *stateFlag == "up" || *stateFlag == "down" {
 		up := *stateFlag == "up"
-		e := SetStateForIface(flagSet.Arg(0), up)
+		e := SetStateForIface(flag.Arg(0), up)
 		if e != nil {
-			return e
+			log.Fatalf("Could not change state: %s\n", e)
 		}
 	} else if *stateFlag != "" {
-		return ErrInvalidState
+		log.Fatalf("Invalid state")
 	}
-	return nil
+	return
 }
 
 func ListInterface(name string) error {

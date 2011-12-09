@@ -1,8 +1,9 @@
 package wget
 
 import (
-	"flag"
+	flag "appletflag"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -10,39 +11,33 @@ import (
 )
 
 var (
-	flagSet  = flag.NewFlagSet("wget", flag.PanicOnError)
-	outFlag  = flagSet.String("o", "", "Filename to save output to")
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	outFlag  = flag.String("o", "", "Filename to save output to")
+	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Wget(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 1 || *helpFlag {
+	if flag.NArg() != 1 || *helpFlag {
 		println("`wget` [options] <url>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	output, e := getOutputFile(flagSet.Arg(0))
+	output, e := getOutputFile(flag.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Could not open output file %s: %s", flag.Arg(0), e)
 	}
 	defer output.Close()
 
 	c := http.Client{}
-	r, e := c.Get(flagSet.Arg(0))
+	r, e := c.Get(flag.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Could not issue HTTP request: %s", e)
 	}
 	defer r.Body.Close()
 
 	_, e = io.Copy(output, r.Body)
-
-	return e
 }
 
 func getFilenameFromURL(rawurl string) (string, error) {
@@ -65,7 +60,7 @@ func getOutputFile(rawurl string) (io.WriteCloser, error) {
 	var filename string
 	var e error
 	if len(*outFlag) == 0 {
-		filename, e = getFilenameFromURL(flagSet.Arg(0))
+		filename, e = getFilenameFromURL(flag.Arg(0))
 		if e != nil {
 			return nil, e
 		}

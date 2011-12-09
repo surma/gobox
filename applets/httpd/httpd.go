@@ -1,27 +1,27 @@
 package httpd
 
 import (
-	"flag"
+	flag "appletflag"
+	"log"
 	"net/http"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("httpd", flag.PanicOnError)
-	addrFlag = flagSet.String("addr", ":8080", "Address to listen on")
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	addrFlag = flag.String("addr", ":8080", "Address to listen on")
+	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Httpd(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 1 || *helpFlag {
+	if flag.NArg() != 1 || *helpFlag {
 		println("`httpd` [options] <dir>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	return http.ListenAndServe(*addrFlag, http.FileServer(http.Dir(flagSet.Arg(0))))
+	e := http.ListenAndServe(*addrFlag, http.FileServer(http.Dir(flag.Arg(0))))
+	if e != nil {
+		log.Fatalf("Could not start server: %s\n", e)
+	}
 }

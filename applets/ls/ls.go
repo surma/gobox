@@ -1,56 +1,53 @@
 package ls
 
 import (
-	"flag"
+	flag "appletflag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math"
 	"os"
 	"text/tabwriter"
 )
 
 var (
-	flagSet       = flag.NewFlagSet("ls", flag.PanicOnError)
-	longFlag      = flagSet.Bool("l", false, "Long, detailed listing")
-	recursiveFlag = flagSet.Bool("r", false, "Recurse into directories")
-	humanFlag     = flagSet.Bool("h", false, "Output sizes in a human readable format")
-	helpFlag      = flagSet.Bool("help", false, "Show this help")
+	longFlag      = flag.Bool("l", false, "Long, detailed listing")
+	recursiveFlag = flag.Bool("r", false, "Recurse into directories")
+	humanFlag     = flag.Bool("h", false, "Output sizes in a human readable format")
+	helpFlag      = flag.Bool("help", false, "Show this help")
 	out           = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Ls(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
 	if *helpFlag {
 		println("`ls` [options] [dirs...]")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
 	dirs, e := getDirList()
 	if e != nil {
-		return e
+		log.Fatalf("Could not get cwd: %s\n", e)
 	}
 
 	for _, dir := range dirs {
 		e := list(dir, "")
 		if e != nil {
-			return e
+			log.Printf("Error while listing directory: %s\n", e)
 		}
 	}
 	out.Flush()
-	return nil
+	return
 }
 
 func getDirList() ([]string, error) {
-	if flagSet.NArg() <= 0 {
+	if flag.NArg() <= 0 {
 		cwd, e := os.Getwd()
 		return []string{cwd}, e
 	}
-	return flagSet.Args(), nil
+	return flag.Args(), nil
 }
 
 func list(dir, prefix string) error {

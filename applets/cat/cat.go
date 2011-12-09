@@ -1,36 +1,33 @@
 package cat
 
 import (
-	"flag"
+	flag "appletflag"
 	"io"
+	"log"
 	"os"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("cat", flag.PanicOnError)
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Cat(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flag.NArg() <= 0 || *helpFlag {
 		println("`cat` [options] <files>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	for _, file := range flagSet.Args() {
+	for _, file := range flag.Args() {
 		e := dumpFile(file)
 		if e != nil {
-			return e
+			log.Printf("Could not print file %s: %s\n", file, e)
 		}
 	}
 
-	return nil
+	return
 }
 
 func dumpFile(path string) error {
