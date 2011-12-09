@@ -5,7 +5,7 @@ import (
 	// "applets/cat"
 	// "applets/chroot"
 	// "applets/echo"
-	// "applets/grep"
+	"applets/grep"
 	"applets/gzip"
 	"applets/head"
 	"applets/httpd"
@@ -29,7 +29,7 @@ var Applets map[string]Applet = map[string]Applet{
 	// "echo":     echo.Echo,
 	// "cat":      cat.Cat,
 	// "chroot":   chroot.Chroot,
-	// "grep":     grep.Grep,
+	"grep":     grep.Main,
 	"gunzip":   gzip.GunzipMain,
 	"gzip":     gzip.GzipMain,
 	"zcat":     gzip.ZcatMain,

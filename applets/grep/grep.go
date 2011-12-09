@@ -2,51 +2,48 @@ package grep
 
 import (
 	"common"
-	"flag"
+	flag "appletflag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"regexp"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("grep", flag.PanicOnError)
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Grep(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() < 1 || *helpFlag {
+	if flag.NArg() < 1 || *helpFlag {
 		println("`grep` <pattern> [<file>...]")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	pattern, err := regexp.Compile(flagSet.Arg(0))
+	pattern, err := regexp.Compile(flag.Arg(0))
 	if err != nil {
-		return err
+		log.Fatalf("Invalid regular expression: %s\n", err)
 	}
 
-	if flagSet.NArg() == 1 {
+	if flag.NArg() == 1 {
 		doGrep(pattern, os.Stdin, "<stdin>", false)
 	} else {
-		for _, fn := range flagSet.Args()[1:] {
+		for _, fn := range flag.Args()[1:] {
 			if fh, err := os.Open(fn); err == nil {
 				func() {
 					defer fh.Close()
-					doGrep(pattern, fh, fn, flagSet.NArg() > 2)
+					doGrep(pattern, fh, fn, flag.NArg() > 2)
 				}()
 			} else {
-				fmt.Fprintf(os.Stderr, "grep: %s: %v\n", fn, err)
+				log.Printf("Could not open file %s: %s\n", fn, err)
 			}
 		}
 	}
 
-	return nil
+	return
 }
 
 func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {
@@ -55,7 +52,7 @@ func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {
 	for {
 		line, err := buf.ReadWholeLine()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error while reading from %s: %v\n", fn, err)
+			log.Printf("Could not read from %s: %s\n", fn, err)
 			return
 		}
 		if line == "" {
