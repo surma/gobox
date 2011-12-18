@@ -15,11 +15,11 @@ func Main() {
 	call := flag.Args()
 	var in *common.BufferedReader
 	interactive := true
-	if len(call) > 2 {
+	if len(call) > 1 {
 		call = call[0:1]
 	}
-	if len(call) == 2 {
-		f, e := os.Open(call[1])
+	if len(call) == 1 {
+		f, e := os.Open(call[0])
 		if e != nil {
 			log.Fatalf("Could not open input file %s: %s\n", call[1], e)
 		}

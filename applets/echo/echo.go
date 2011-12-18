@@ -8,7 +8,7 @@ import (
 
 // A simple, parameterless echo implementation
 func Main() {
-	parameters := flag.Parameters
+	parameters := flag.Parameters[1:]
 	fmt.Println(strings.Join(parameters, " "))
 	return
 }
