@@ -1,11 +1,11 @@
 package main
 
 import (
+	flag "appletflag"
 	"common"
 	"errors"
 	"os"
 	"path/filepath"
-	flag "appletflag"
 )
 
 func init() {

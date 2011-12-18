@@ -25,4 +25,5 @@ package: $(GBROOT)/_obj/$(TARG).a
 include $(GOROOT)/src/Make.pkg
 
 # gb: local dependencies
+_obj/$(TARG).a: $(GBROOT)/_obj/appletflag.a
 _obj/$(TARG).a: $(GBROOT)/_obj/common.a

@@ -1,8 +1,8 @@
 package echo
 
 import (
-	"fmt"
 	flag "appletflag"
+	"fmt"
 	"strings"
 )
 

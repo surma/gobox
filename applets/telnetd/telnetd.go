@@ -1,9 +1,9 @@
 package telnetd
 
 import (
+	flag "appletflag"
 	"common"
 	"errors"
-	flag "appletflag"
 	"io"
 	"log"
 	"net"

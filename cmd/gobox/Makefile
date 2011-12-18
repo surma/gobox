@@ -27,6 +27,11 @@ $(GBROOT)/bin/$(TARG): $(TARG)
 command: $(GBROOT)/bin/$(TARG)
 
 # gb: local dependencies
+$(TARG): $(GBROOT)/_obj/applets/mount.a
+$(TARG): $(GBROOT)/_obj/applets/wget.a
+$(TARG): $(GBROOT)/_obj/common.a
+$(TARG): $(GBROOT)/_obj/applets/cat.a
+$(TARG): $(GBROOT)/_obj/applets/chroot.a
 $(TARG): $(GBROOT)/_obj/applets/ps.a
 $(TARG): $(GBROOT)/_obj/applets/grep.a
 $(TARG): $(GBROOT)/_obj/applets/head.a
@@ -38,11 +43,8 @@ $(TARG): $(GBROOT)/_obj/applets/rm.a
 $(TARG): $(GBROOT)/_obj/applets/gzip.a
 $(TARG): $(GBROOT)/_obj/applets/shell.a
 $(TARG): $(GBROOT)/_obj/applets/echo.a
+$(TARG): $(GBROOT)/_obj/applets/ifconfig.a
 $(TARG): $(GBROOT)/_obj/applets/ls.a
 $(TARG): $(GBROOT)/_obj/applets/httpd.a
+$(TARG): $(GBROOT)/_obj/appletflag.a
 $(TARG): $(GBROOT)/_obj/applets/telnetd.a
-$(TARG): $(GBROOT)/_obj/applets/mount.a
-$(TARG): $(GBROOT)/_obj/applets/wget.a
-$(TARG): $(GBROOT)/_obj/common.a
-$(TARG): $(GBROOT)/_obj/applets/cat.a
-$(TARG): $(GBROOT)/_obj/applets/chroot.a

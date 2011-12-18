@@ -1,8 +1,8 @@
 package shell
 
 import (
-	"common"
 	flag "appletflag"
+	"common"
 	"fmt"
 	"log"
 	"os"

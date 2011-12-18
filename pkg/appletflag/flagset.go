@@ -22,8 +22,8 @@ type ErrorHandling flag.ErrorHandling
 
 const (
 	ContinueOnError ErrorHandling = ErrorHandling(flag.ContinueOnError)
-	ExitOnError ErrorHandling = ErrorHandling(flag.ExitOnError)
-	PanicOnError ErrorHandling = ErrorHandling(flag.PanicOnError)
+	ExitOnError     ErrorHandling = ErrorHandling(flag.ExitOnError)
+	PanicOnError    ErrorHandling = ErrorHandling(flag.PanicOnError)
 )
 
 // A Flag represents the state of a flag.
