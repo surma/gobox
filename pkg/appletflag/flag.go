@@ -76,7 +76,7 @@ func Lookup(name string) *Flag {
 
 // Set sets the value of the named command-line flag. It returns true if the
 // set succeeded; false if there is no such flag defined.
-func Set(name, value string) bool {
+func Set(name, value string) error {
 	fs := getPackageFlagSet(getCallerPackage())
 	return fs.Set(name, value)
 }

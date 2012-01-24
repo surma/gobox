@@ -60,7 +60,7 @@ func (f *FlagSet) Lookup(name string) *Flag {
 
 // Set sets the value of the named flag.  It returns true if the set succeeded; false if
 // there is no such flag defined.
-func (f *FlagSet) Set(name, value string) bool {
+func (f *FlagSet) Set(name, value string) error {
 	return (*flag.FlagSet)(f).Set(name, value)
 }
 

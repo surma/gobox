@@ -90,7 +90,7 @@ func doGzip(fn string) {
 		return
 	}
 	newfn := fn + ".gz"
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, uint32(fi.Mode().Perm()))
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
 		return
@@ -137,7 +137,7 @@ func doGunzip(fn string) {
 	if !*forceFlag {
 		newfn = fn[0 : len(fn)-3]
 	}
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, uint32(fi.Mode().Perm()))
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
 		return
