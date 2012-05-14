@@ -11,5 +11,6 @@ func getCallerPackage() string {
 		panic("Could not obtain caller’s function pointer")
 	}
 	name := runtime.FuncForPC(ptr).Name()
-	return strings.Split(name, ".")[0]
+	elems := strings.Split(name, ".")
+	return strings.Join(elems[0:len(elems)-1], ".")
 }
