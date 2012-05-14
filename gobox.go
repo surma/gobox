@@ -2,7 +2,7 @@ package main
 
 import (
 	flag "appletflag"
-	"common"
+	"./common"
 	"path/filepath"
 )
 
