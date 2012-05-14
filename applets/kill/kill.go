@@ -4,6 +4,7 @@ import (
 	flag "../../appletflag"
 	"log"
 	"os"
+	"syscall"
 	"strconv"
 )
 
@@ -47,7 +48,7 @@ func Main() {
 		log.Fatalf("Could not find process: %s\n", e)
 	}
 
-	e = p.Signal(os.UnixSignal(int32(*signalFlag)))
+	e = p.Signal(syscall.Signal(*signalFlag))
 	if e != nil {
 		log.Fatalf("Could not send signal: %s\n", e)
 	}
