@@ -4,8 +4,8 @@ import (
 	flag "../../appletflag"
 	"log"
 	"os"
-	"syscall"
 	"strconv"
+	"syscall"
 )
 
 var (

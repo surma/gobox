@@ -1,11 +1,11 @@
 package mount
 
 import (
-	"errors"
 	flag "../../appletflag"
+	"errors"
 	"log"
-	"syscall"
 	"strings"
+	"syscall"
 )
 
 var (
