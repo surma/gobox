@@ -1,11 +1,9 @@
 *.6
 *.5
 *.8
-bin/
-_obj
+/gobox
 *.swp
 *~
-/cmd/gobox/gobox
 /tools/geninitramfs/geninitramfs
 *sublime*
 .vagrant
