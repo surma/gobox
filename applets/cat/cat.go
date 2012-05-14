@@ -1,7 +1,7 @@
 package cat
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"io"
 	"log"
 	"os"

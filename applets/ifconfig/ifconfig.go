@@ -1,7 +1,7 @@
 package ifconfig
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"fmt"
 	"log"
 	"net"

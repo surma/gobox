@@ -1,7 +1,7 @@
 package chroot
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"log"
 	"os"
 	"syscall"

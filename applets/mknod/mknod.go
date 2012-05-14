@@ -1,7 +1,7 @@
 package mknod
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"log"
 	"strconv"
 	"strings"

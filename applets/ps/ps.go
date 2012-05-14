@@ -1,8 +1,8 @@
 package ps
 
 import (
-	flag "appletflag"
-	"common"
+	flag "../../appletflag"
+	"../../common"
 	"fmt"
 	"log"
 	"os"

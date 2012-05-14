@@ -1,7 +1,7 @@
 package umount
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"log"
 	"syscall"
 )

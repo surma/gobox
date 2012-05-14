@@ -13,6 +13,7 @@ func getPackageFlagSet(name string) *FlagSet {
 	}
 	return flagset
 }
+
 // Float64Var defines a float64 flag with specified name, default value, and usage string.
 // The argument p points to a float64 variable in which to store the value of the flag.
 func Float64Var(p *float64, name string, value float64, usage string) {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	flag "appletflag"
-	"common"
+	flag "./appletflag"
+	"./common"
 	"errors"
 	"os"
 	"path/filepath"
