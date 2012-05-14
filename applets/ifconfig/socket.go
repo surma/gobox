@@ -16,7 +16,7 @@ func createSocket() (*net.TCPListener, error) {
 	return nil, ErrNoPortAvailable
 }
 
-func getFdFromSocket(sock *net.TCPListener) (int, error) {
+func getFdFromSocket(sock *net.TCPListener) (uintptr, error) {
 	f, e := sock.File()
 	if e != nil {
 		return 0, e
