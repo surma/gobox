@@ -1,8 +1,8 @@
 package head
 
 import (
-	flag "appletflag"
-	"common"
+	flag "../../appletflag"
+	"../../common"
 	"fmt"
 	"io"
 	"log"

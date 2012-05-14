@@ -2,7 +2,7 @@ package mount
 
 import (
 	"errors"
-	flag "appletflag"
+	flag "../../appletflag"
 	"log"
 	"syscall"
 	"strings"

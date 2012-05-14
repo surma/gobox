@@ -1,7 +1,7 @@
 package wget
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"io"
 	"log"
 	"net/http"

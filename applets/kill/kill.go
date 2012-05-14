@@ -1,7 +1,7 @@
 package kill
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"log"
 	"os"
 	"strconv"

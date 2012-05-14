@@ -1,7 +1,7 @@
 package main
 
 import (
-	"common"
+	"./common"
 	"github.com/surma/gocpio"
 	"io"
 	"log"

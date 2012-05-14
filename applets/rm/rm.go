@@ -1,7 +1,7 @@
 package rm
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"io/ioutil"
 	"log"
 	"os"

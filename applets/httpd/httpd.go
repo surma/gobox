@@ -1,7 +1,7 @@
 package httpd
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"log"
 	"net/http"
 )

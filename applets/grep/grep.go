@@ -1,8 +1,8 @@
 package grep
 
 import (
-	flag "appletflag"
-	"common"
+	flag "../../appletflag"
+	"../../common"
 	"fmt"
 	"io"
 	"log"

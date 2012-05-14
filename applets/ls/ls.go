@@ -1,7 +1,7 @@
 package ls
 
 import (
-	flag "appletflag"
+	flag "../../appletflag"
 	"fmt"
 	"io/ioutil"
 	"log"
