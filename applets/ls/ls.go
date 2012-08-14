@@ -63,7 +63,8 @@ func list(dir, prefix string) error {
 			fmt.Fprintf(out, "%s:\n", folder)
 			e := list(dir+"/"+entry.Name(), folder)
 			if e != nil {
-				return e
+				log.Printf("Failed listing %s: %s", entry.Name(), e)
+				continue
 			}
 		}
 	}
