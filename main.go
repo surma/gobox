@@ -1,9 +1,8 @@
 package main
 
 import (
-	flag "./appletflag"
-	"./common"
-	"errors"
+	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -15,11 +14,20 @@ func init() {
 	Applets["gobox"] = GoboxMain
 }
 
-func run() {
+func main() {
 	callname := filepath.Base(os.Args[0])
+	defer func() {
+		if p := recover(); p != nil {
+			e, ok := p.(error)
+			if !ok {
+				e = fmt.Errorf("Some error occured")
+			}
+			log.Fatalf("%s: %s", callname, e)
+		}
+	}()
 	applet, ok := Applets[callname]
 	if !ok {
-		panic(errors.New("Could not find applet \"" + callname + "\""))
+		log.Fatalf("Could not find applet \"%s\"", callname)
 	}
 
 	// If the Gobox applet is called (i.e. the executable itself)
@@ -34,19 +42,5 @@ func run() {
 		}
 	}
 
-	flag.Parameters = args
-	applet()
-}
-
-func main() {
-	defer func() {
-		if p := recover(); p != nil {
-			e, ok := p.(error)
-			if !ok {
-				e = errors.New("Some error occured")
-			}
-			common.DumpError(e)
-		}
-	}()
-	run()
+	applet(args)
 }
