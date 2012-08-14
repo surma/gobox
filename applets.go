@@ -1,7 +1,7 @@
 package main
 
 import (
-	ls "github.com/gobox/applet-ls"
+	"gobox.me/applet/ls"
 )
 
 // This map contains the mappings from callname
