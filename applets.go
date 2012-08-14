@@ -1,10 +1,14 @@
 package main
 
-import ()
+import (
+	ls "github.com/gobox/applet-ls"
+)
 
 // This map contains the mappings from callname
 // to applet function.
-var Applets map[string]Applet = map[string]Applet{}
+var Applets map[string]Applet = map[string]Applet{
+	"ls": ls.Main,
+}
 
 // Signature of applet functions.
 // call is like os.Argv, and therefore contains the
