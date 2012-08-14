@@ -23,6 +23,7 @@ import (
 	"./applets/wget"
 )
 
+
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
