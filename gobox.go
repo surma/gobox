@@ -1,8 +1,11 @@
 package main
 
 import (
-	flag "./appletflag"
-	"./common"
+	flags "flag"
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -11,13 +14,14 @@ const (
 )
 
 var (
+	flag        = flags.NewFlagSet("Gobox", flags.ExitOnError)
 	listFlag    = flag.Bool("list", false, "List applets")
 	installFlag = flag.String("install", "", "Create symlinks for applets in given path")
 	helpFlag    = flag.Bool("help", false, "Show help")
 )
 
-func GoboxMain() {
-	flag.Parse()
+func GoboxMain(call []string) {
+	flag.Parse(call[1:])
 
 	if *listFlag {
 		list()
@@ -30,23 +34,24 @@ func GoboxMain() {
 }
 
 func help() {
-	println("`gobox` [options]")
+	fmt.Println("`gobox` [options]")
 	flag.PrintDefaults()
-	println()
-	println("Version", VERSION)
+	fmt.Println("Version", VERSION)
 	list()
 }
 
 func list() {
-	println("List of compiled applets:\n")
+	fmt.Println("List of available applets:")
+	sep := ""
 	for name, _ := range Applets {
-		print(name, ", ")
+		fmt.Print(sep, name)
+		sep = ", "
 	}
-	println("")
+	fmt.Println("")
 }
 
 func install(path string) error {
-	goboxpath, e := common.GetGoboxBinaryPath()
+	goboxpath, e := binaryLocation()
 	if e != nil {
 		return e
 	}
@@ -56,10 +61,21 @@ func install(path string) error {
 			continue
 		}
 		newpath := filepath.Join(path, name)
-		e = common.ForcedSymlink(goboxpath, newpath)
+		e = os.Symlink(goboxpath, newpath)
 		if e != nil {
-			common.DumpError(e)
+			log.Printf("Symlinking %s failed: %s", newpath, e)
+			continue
 		}
 	}
 	return nil
+}
+
+func binaryLocation() (string, error) {
+	callname := os.Args[0]
+	path, e := exec.LookPath(callname)
+	if e == nil {
+		return filepath.Abs(path)
+	}
+
+	return "", fmt.Errorf("Could not find gobox binary")
 }
