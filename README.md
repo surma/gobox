@@ -1,4 +1,4 @@
-GoBox v0.3
+GoBox v0.3.1
 ============
 GoBox is supposed to be something like [BusyBox](http://www.busybox.net). I.e.
 a single, preferably small executable which bundles all important shell tools.
@@ -16,7 +16,7 @@ The current development status can be seen [here](https://trello.com/board/gobox
 Pitfalls
 --------
 - The shell is *not* a bash, sh or zsh. It is something original, written by me and
-  is fairly limited. It does the job of acting as a shell, it‘s hardly adequate for 
+  is fairly limited. It does the job of acting as a shell, it‘s hardly adequate for
   scripting, though.
 - Telnetd has no authentication mechanism right now. It’s noting more than a
   network-capable pipe.
@@ -62,9 +62,9 @@ I got this question a lot and I have 2 main reasons:
 
 - I seriously did not want to implement the broken and god-awful syntax of bash
   or any other currently used shell!
-- You have Go. Do you need anything *more* lightweight? The philosohpy behind this 
-  project is, that it is cheap to (re)build and deploy. So you don’t really use 
-  scripting anymore. If you need to automate some process, write an applet in Go and 
+- You have Go. Do you need anything *more* lightweight? The philosohpy behind this
+  project is, that it is cheap to (re)build and deploy. So you don’t really use
+  scripting anymore. If you need to automate some process, write an applet in Go and
   integrate it with GoBox and push it.
 
 Tools-Folder
@@ -72,17 +72,17 @@ Tools-Folder
 All these scripts are supposed to be run from the root of the repository inside
 the DevEnv. Most of them will work on the outside as well, though.
 
-- `geninitramfs.sh`  
+- `geninitramfs.sh`
   This script will build a kernel compatible initramfs containing just enough to be
   able to boot with it.
   You usually don’t need to run this script yourself as `run_qemu.sh` does it for you.
   For details on customization take a look at the script itself and [the kernel’s implementation](https://github.com/torvalds/linux/blob/master/usr/gen_init_cpio.c)
 
-- `run_qemu.sh`  
-  This script builds an initramfs and starts a virtual machine booting the DevEnv’s 
+- `run_qemu.sh`
+  This script builds an initramfs and starts a virtual machine booting the DevEnv’s
   kernel together with the newly build initramfs.
 
-- `netpkg_fix.sh`  
+- `netpkg_fix.sh`
   You don’t need to run this script except if you updated Go!
   A while ago, the Go team has decided to use libc´s DNS lookup routines instead of
   their own´s which requires dynamic linking. This script will recompile the `net`
