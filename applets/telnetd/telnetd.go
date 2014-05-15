@@ -1,9 +1,9 @@
 package telnetd
 
 import (
-	"common"
 	"errors"
 	"flag"
+	"github.com/surma/gobox/pkg/common"
 	"io"
 	"net"
 	"os/exec"

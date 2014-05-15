@@ -1,8 +1,8 @@
 package shell
 
 import (
-	"common"
 	"fmt"
+	"github.com/surma/gobox/pkg/common"
 	"os"
 	"os/exec"
 	"strings"
