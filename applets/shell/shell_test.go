@@ -21,9 +21,9 @@ func TestParameterizeEmptyString(t *testing.T) {
 
 func TestParameterizeStrings(t *testing.T) {
 	lines := map[string][]string{
-		"1 22 333":                      []string{"1", "22", "333"},
-		"\"111 11 11\" 222 \"333 333\"": []string{"111 11 11", "222", "333 333"},
-		"\"111 \\\" 1\\11\" 222":        []string{"111 \" 1\\11", "222"},
+		"1 22 333":                      {"1", "22", "333"},
+		"\"111 11 11\" 222 \"333 333\"": {"111 11 11", "222", "333 333"},
+		"\"111 \\\" 1\\11\" 222":        {"111 \" 1\\11", "222"},
 	}
 	for sin, sout := range lines {
 		res, e := parameterize(sin)
@@ -85,7 +85,7 @@ func compareStringArrays(a, b []string) bool {
 	if len(a) != len(b) {
 		return false
 	}
-	for i, _ := range a {
+	for i := range a {
 		if a[i] != b[i] {
 			return false
 		}
@@ -95,7 +95,7 @@ func compareStringArrays(a, b []string) bool {
 
 func stringifyStringArray(a []string) (s string) {
 	s = "{"
-	for i, _ := range a {
+	for i := range a {
 		s += "\"" + a[i] + "\""
 		if i+1 != len(a) {
 			s += ", "

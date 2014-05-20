@@ -1,9 +1,9 @@
 package ps
 
 import (
-	"common"
 	"flag"
 	"fmt"
+	"github.com/surma/gobox/pkg/common"
 	"os"
 	"text/tabwriter"
 )

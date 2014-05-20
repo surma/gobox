@@ -1,8 +1,8 @@
 package main
 
 import (
-	"common"
 	"flag"
+	"github.com/surma/gobox/pkg/common"
 	"path/filepath"
 )
 
@@ -43,7 +43,7 @@ func help() {
 
 func list() {
 	println("List of compiled applets:\n")
-	for name, _ := range Applets {
+	for name := range Applets {
 		print(name, ", ")
 	}
 	println("")
@@ -54,7 +54,7 @@ func install(path string) error {
 	if e != nil {
 		return e
 	}
-	for name, _ := range Applets {
+	for name := range Applets {
 		// Don't overwrite the executable
 		if name == "gobox" {
 			continue
