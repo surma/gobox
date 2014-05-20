@@ -1,9 +1,0 @@
-#!/bin/shell
-
-/bin/gobox echo "[*] GoBox is running"
-/bin/gobox -install=/bin
-setenv PATH /bin
-echo "[*] GoBox has been set up"
-mount -t proc none /proc
-fork telnetd /bin/shell
-shell
