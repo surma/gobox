@@ -1,8 +1,8 @@
 package main
 
 import (
-	"common"
 	"errors"
+	"github.com/surma/gobox/pkg/common"
 	"os"
 	"path/filepath"
 )

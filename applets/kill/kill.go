@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"strconv"
+	"syscall"
 )
 
 var (
@@ -50,5 +51,5 @@ func Kill(call []string) error {
 		return e
 	}
 
-	return p.Signal(os.UnixSignal(int32(*signalFlag)))
+	return p.Signal(syscall.Signal(int32(*signalFlag)))
 }
