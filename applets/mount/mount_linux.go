@@ -3,8 +3,8 @@ package mount
 import (
 	"errors"
 	"flag"
-	"syscall"
 	"strings"
+	"syscall"
 )
 
 var (
@@ -24,7 +24,7 @@ func Mount(call []string) error {
 		println("`mount` [options] <device> <dir>")
 		flagSet.PrintDefaults()
 		println("\nAvailable options are:")
-		for opt, _ := range flagMap {
+		for opt := range flagMap {
 			print(opt, ", ")
 		}
 		println()

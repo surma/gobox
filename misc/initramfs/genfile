@@ -1,9 +1,0 @@
-dir bin 0755 0 0
-file bin/gobox bin/gobox 0755 0 0
-file init misc/initramfs/files/init 0755 0 0
-slink bin/shell /bin/gobox 0777 0 0
-dir proc 0755 0 0
-dir dev 0755 0 0
-nod dev/console 0644 0 0 c 5 1
-nod dev/zero 0666 0 0 c 1 5
-nod dev/null 0666 0 0 c 1 3
