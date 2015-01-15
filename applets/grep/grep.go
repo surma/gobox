@@ -59,7 +59,7 @@ func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {
 			return
 		}
 		if line == "" {
-			break
+			continue
 		}
 
 		if pattern.MatchString(line) {
