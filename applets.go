@@ -21,6 +21,7 @@ import (
 	"./applets/shell"
     "./applets/strings"
 	"./applets/telnetd"
+    "./applets/touch"
     "./applets/spipe"
 	"./applets/umount"
 	"./applets/wget"
@@ -35,6 +36,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"spiped":    spipe.Spiped,
 	"strings":   strings.Strings,
 	"telnetd":   telnetd.Telnetd,
+	"touch":     touch.Touch,
 	"md5sum":    checksum.Hash,
 	"sha1sum":   checksum.Hash,
 	"sha256sum": checksum.Hash,
