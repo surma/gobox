@@ -2,7 +2,7 @@ package main
 
 // Applet imports
 import (
-<<<<<<< HEAD
+    "./applets/cal"
 	"./applets/cat"
 	"./applets/chroot"
     "./applets/checksum"
@@ -51,6 +51,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"wc":        wc.Wc,
 	"kill":      kill.Kill,
 	"cat":       cat.Cat,
+	"cal":       cal.Cal,
 	"mknod":     mknod.Mknod,
 	"mount":     mount.Mount,
 	"umount":    umount.Umount,
