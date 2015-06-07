@@ -37,7 +37,7 @@ func Touch(call []string) error {
 		}
 	}
 
-	for _, name := range flag.Args() {
+	for _, name := range flagSet.Args() {
 		if err := os.Chtimes(name, atime, mtime); err != nil {
 			fmt.Fprintln(os.Stderr, "touch:", err)
 		}
