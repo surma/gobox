@@ -2,6 +2,7 @@ package main
 
 // Applet imports
 import (
+<<<<<<< HEAD
 	"./applets/cat"
 	"./applets/chroot"
     "./applets/date"
@@ -18,6 +19,7 @@ import (
 	"./applets/ps"
 	"./applets/rm"
 	"./applets/shell"
+    "./applets/strings"
 	"./applets/telnetd"
     "./applets/spipe"
 	"./applets/umount"
@@ -31,6 +33,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"shell":   shell.Shell,
 	"spipe":   spipe.Spipe,
 	"spiped":  spipe.Spiped,
+	"strings": strings.Strings,
 	"telnetd": telnetd.Telnetd,
 	"ls":      ls.Ls,
 	"rm":      rm.Rm,
