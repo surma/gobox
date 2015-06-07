@@ -2,6 +2,7 @@ package main
 
 // Applet imports
 import (
+<<<<<<< HEAD
 	"./applets/cat"
 	"./applets/chroot"
     "./applets/checksum"
@@ -24,6 +25,7 @@ import (
     "./applets/touch"
     "./applets/spipe"
 	"./applets/umount"
+    "./applets/wc"
 	"./applets/wget"
 )
 
@@ -46,6 +48,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"rm":        rm.Rm,
 	"httpd":     httpd.Httpd,
 	"wget":      wget.Wget,
+	"wc":        wc.Wc,
 	"kill":      kill.Kill,
 	"cat":       cat.Cat,
 	"mknod":     mknod.Mknod,
