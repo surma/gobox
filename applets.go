@@ -2,9 +2,9 @@ package main
 
 // Applet imports
 import (
-<<<<<<< HEAD
 	"./applets/cat"
 	"./applets/chroot"
+    "./applets/checksum"
     "./applets/date"
 	"./applets/echo"
 	"./applets/grep"
@@ -29,30 +29,35 @@ import (
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	"echo":    echo.Echo,
-	"shell":   shell.Shell,
-	"spipe":   spipe.Spipe,
-	"spiped":  spipe.Spiped,
-	"strings": strings.Strings,
-	"telnetd": telnetd.Telnetd,
-	"ls":      ls.Ls,
-	"rm":      rm.Rm,
-	"httpd":   httpd.Httpd,
-	"wget":    wget.Wget,
-	"kill":    kill.Kill,
-	"cat":     cat.Cat,
-	"mknod":   mknod.Mknod,
-	"mount":   mount.Mount,
-	"umount":  umount.Umount,
-	"chroot":  chroot.Chroot,
-	"ps":      ps.Ps,
-	"mkdir":   mkdir.Mkdir,
-	"head":    head.Head,
-	"grep":    grep.Grep,
-	"gzip":    gzip.Gzip,
-	"gunzip":  gzip.Gunzip,
-	"zcat":    gzip.Zcat,
-	"date":    date.Date,
+	"echo":      echo.Echo,
+	"shell":     shell.Shell,
+	"spipe":     spipe.Spipe,
+	"spiped":    spipe.Spiped,
+	"strings":   strings.Strings,
+	"telnetd":   telnetd.Telnetd,
+	"md5sum":    checksum.Hash,
+	"sha1sum":   checksum.Hash,
+	"sha256sum": checksum.Hash,
+	"sha512sum": checksum.Hash,
+	"crc32":     checksum.Hash,
+	"ls":        ls.Ls,
+	"rm":        rm.Rm,
+	"httpd":     httpd.Httpd,
+	"wget":      wget.Wget,
+	"kill":      kill.Kill,
+	"cat":       cat.Cat,
+	"mknod":     mknod.Mknod,
+	"mount":     mount.Mount,
+	"umount":    umount.Umount,
+	"chroot":    chroot.Chroot,
+	"ps":        ps.Ps,
+	"mkdir":     mkdir.Mkdir,
+	"head":      head.Head,
+	"grep":      grep.Grep,
+	"gzip":      gzip.Gzip,
+	"gunzip":    gzip.Gunzip,
+	"zcat":      gzip.Zcat,
+	"date":      date.Date,
 }
 
 // Signature of applet functions.
