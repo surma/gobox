@@ -23,6 +23,7 @@ import (
     "./applets/strings"
 	"./applets/telnetd"
     "./applets/touch"
+    "./applets/tar"
     "./applets/spipe"
 	"./applets/umount"
     "./applets/wc"
@@ -48,6 +49,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"rm":        rm.Rm,
 	"httpd":     httpd.Httpd,
 	"wget":      wget.Wget,
+	"tar":       tar.Tar,
 	"wc":        wc.Wc,
 	"kill":      kill.Kill,
 	"cat":       cat.Cat,
