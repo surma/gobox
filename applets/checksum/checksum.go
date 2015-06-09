@@ -24,8 +24,8 @@ func Hash(call []string) error {
 	}
 
 	if flagSet.NArg() < 1 {
-		fmt.Printf("Usage of %s\n", "md5sum")
-		fmt.Println("`md5sum` [file ...]")
+		fmt.Printf("Usage of %s\n", call[0])
+		fmt.Println("`%s` [file ...]", call[0])
 		return nil
 	}
 
