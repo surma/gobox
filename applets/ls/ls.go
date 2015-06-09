@@ -8,6 +8,7 @@ import (
 	"math"
 	"os"
 	"text/tabwriter"
+	"time"
 )
 
 var (
@@ -72,13 +73,22 @@ func list(dir, prefix string) error {
 }
 
 func printEntry(e os.FileInfo) {
-	fmt.Fprintf(out, "%s%s\t", e.Name(), getEntryTypeString(e))
 	if *longFlag {
-		fmt.Fprintf(out, "%s\t", getModeString(e.Mode().Perm()))
-		fmt.Fprintf(out, "%s\t", getSizeString(e.Size()))
-		fmt.Fprintf(out, "%s\t", getUserString(e.Uid))
+		if e.IsDir() {
+			fmt.Print("d")
+		} else {
+			fmt.Print("-")
+		}
+		fmt.Fprintf(out, "%s ", getModeString(e.Mode()))
+		fmt.Fprintf(out, "%s ", getSizeString(e.Size()))
+		fmt.Fprintf(out, "%16s ", getTimeString(e.ModTime()))
 	}
+	fmt.Fprintf(out, "%s%s", e.Name(), getEntryTypeString(e))
 	fmt.Fprintln(out, "")
+}
+
+func getTimeString(mtime time.Time) (s string) {
+	return mtime.Format("2006-01-02 15:04")
 }
 
 var accessSymbols = "xwr"
@@ -99,7 +109,7 @@ var sizeSymbols = "BkMGT"
 
 func getSizeString(size int64) (s string) {
 	if !*humanFlag {
-		return fmt.Sprintf("%9dB", size)
+		return fmt.Sprintf("%6dB", size)
 	}
 	var power int
 	if size == 0 {
@@ -111,7 +121,7 @@ func getSizeString(size int64) (s string) {
 		power = len(sizeSymbols) - 1
 	}
 	rSize := float64(size) / math.Pow(1024, float64(power))
-	return fmt.Sprintf("%7.3f%s", rSize, sizeSymbols[power:power+1])
+	return fmt.Sprintf("% 6.1f%s", rSize, sizeSymbols[power:power+1])
 }
 
 func getEntryTypeString(e os.FileInfo) string {
