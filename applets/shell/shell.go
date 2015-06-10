@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 )
 
@@ -60,10 +61,13 @@ func Main() {
 
 // Replace environment variables with the content
 func expandEnvs(params []string) []string {
+	envReplaceFn := func(envVar string) string {
+		return os.Getenv(envVar[1:])
+	}
+
+	envRe := regexp.MustCompile("([$]{1}[A-Z_]+)")
 	for i, param := range params {
-		if len(param) > 1 && strings.HasPrefix(param, "$") {
-			params[i] = os.Getenv(param[1:])
-		}
+		params[i] = envRe.ReplaceAllStringFunc(param, envReplaceFn)
 	}
 	return params
 }
