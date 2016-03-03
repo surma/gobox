@@ -35,6 +35,14 @@ func pwd(call []string) error {
 }
 
 func cd(call []string) error {
+	if len(call) == 1 {
+		e := os.Chdir(os.Getenv("HOME"))
+		return e
+	}
+	if call[1] == "~" && len(call) == 2 {
+		e := os.Chdir(os.Getenv("HOME"))
+		return e
+	}
 	if len(call) != 2 {
 		return errors.New("`cd <directory>`")
 	}
