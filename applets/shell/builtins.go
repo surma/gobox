@@ -35,12 +35,19 @@ func pwd(call []string) error {
 }
 
 func cd(call []string) error {
+		homedir := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
+		if homedir == "" {
+				homedir = os.Getenv("USERPROFILE")
+		}
+		if homedir == "" {
+				homedir = os.Getenv("HOME")
+		}
 	if len(call) == 1 {
-		e := os.Chdir(os.Getenv("HOME"))
+		e := os.Chdir(homedir)
 		return e
 	}
 	if call[1] == "~" && len(call) == 2 {
-		e := os.Chdir(os.Getenv("HOME"))
+		e := os.Chdir(homedir)
 		return e
 	}
 	if len(call) != 2 {
