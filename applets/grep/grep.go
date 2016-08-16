@@ -52,12 +52,15 @@ func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {
 
 	for {
 		line, err := buf.ReadWholeLine()
+		if err == io.EOF {
+			return
+		}
 		if err != nil {
 			log.Printf("Could not read from %s: %s\n", fn, err)
 			return
 		}
 		if line == "" {
-			break
+			continue
 		}
 
 		if pattern.MatchString(line) {

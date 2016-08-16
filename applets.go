@@ -2,8 +2,10 @@ package main
 
 // Applet imports
 import (
+<<<<<<< HEAD
 	"./applets/cat"
 	"./applets/chroot"
+    "./applets/date"
 	"./applets/echo"
 	"./applets/grep"
 	"./applets/gzip"
@@ -45,6 +47,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"gzip":    gzip.Gzip,
 	"gunzip":  gzip.Gunzip,
 	"zcat":    gzip.Zcat,
+	"date":    date.Date,
 }
 
 // Signature of applet functions.
