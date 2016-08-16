@@ -24,7 +24,6 @@ import (
 	"./applets/telnetd"
     "./applets/touch"
     "./applets/tar"
-    "./applets/spipe"
 	"./applets/umount"
     "./applets/wc"
 	"./applets/wget"
@@ -36,8 +35,6 @@ var Applets map[string]Applet = map[string]Applet{
 	"echo":      echo.Echo,
 	"shell":     shell.Shell,
     "sh":        shell.Shell,
-	"spipe":     spipe.Spipe,
-	"spiped":    spipe.Spiped,
 	"strings":   strings.Strings,
 	"telnetd":   telnetd.Telnetd,
 	"touch":     touch.Touch,

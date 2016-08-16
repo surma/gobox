@@ -127,8 +127,6 @@ func getSizeString(size int64) (s string) {
 func getEntryTypeString(e os.FileInfo) string {
 	if e.IsDir() {
 		return "/"
-	} else if e.IsBlock() {
-		return "<>"
 	} else if e.Mode()&os.ModeNamedPipe != 0 {
 		return ">>"
 	} else if e.Mode()&os.ModeSymlink != 0 {

@@ -4,7 +4,6 @@ import (
 	flag "../../appletflag"
 	"../../common"
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
 	"io"
 	"log"
 	"os"
