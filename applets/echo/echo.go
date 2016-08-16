@@ -1,16 +1,14 @@
 package echo
 
-import "strings"
+import (
+	flag "../../appletflag"
+	"fmt"
+	"strings"
+)
 
 // A simple, parameterless echo implementation
-func Echo(call []string) error {
-	var parameters []string
-	if len(call) <= 1 {
-		parameters = make([]string, 0)
-	} else {
-		parameters = call[1:]
-	}
-
-	println(strings.Join(parameters, " "))
-	return nil
+func Main() {
+	parameters := flag.Parameters[1:]
+	fmt.Println(strings.Join(parameters, " "))
+	return
 }

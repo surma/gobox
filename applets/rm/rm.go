@@ -1,36 +1,33 @@
 package rm
 
 import (
-	"flag"
+	flag "../../appletflag"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
 var (
-	flagSet       = flag.NewFlagSet("rm", flag.PanicOnError)
-	recursiveFlag = flagSet.Bool("r", false, "Recurse into directories")
-	helpFlag      = flagSet.Bool("help", false, "Show this help")
+	recursiveFlag = flag.Bool("r", false, "Recurse into directories")
+	helpFlag      = flag.Bool("help", false, "Show this help")
 )
 
-func Rm(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flag.NArg() <= 0 || *helpFlag {
 		println("`rm` [options] <files...>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	for _, file := range flagSet.Args() {
+	for _, file := range flag.Args() {
 		e := delete(file)
 		if e != nil {
-			return e
+			log.Fatalf("Could not delete file: %s\n", e)
 		}
 	}
-	return nil
+	return
 }
 
 func delete(file string) error {

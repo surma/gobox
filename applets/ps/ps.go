@@ -1,47 +1,45 @@
 package ps
 
 import (
-	"flag"
+	flag "../../appletflag"
+	"../../common"
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
+	"log"
 	"os"
 	"text/tabwriter"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("ps", flag.PanicOnError)
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	helpFlag = flag.Bool("help", false, "Show this help")
 	out      = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Ps(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 0 || *helpFlag {
+	if flag.NArg() != 0 || *helpFlag {
 		println("`ps` [options]")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
 	pids, e := common.GetAllPids()
 	if e != nil {
-		return e
+		log.Fatalf("Could not obtain PIDs: %s\n", e)
 	}
 
 	fmt.Fprintf(out, "Pid\tParent\tState\tOwner\tMem (kB)\tName\t\n")
 	for _, pid := range pids {
 		proc, e := common.GetProcessByPid(pid)
 		if e != nil {
-			return e
+			log.Printf("Could not get process info of %d: %s\n", pid, e)
+			continue
 		}
 		printProcess(proc)
 	}
 
 	out.Flush()
-	return nil
+	return
 }
 
 func printProcess(p *common.Process) {

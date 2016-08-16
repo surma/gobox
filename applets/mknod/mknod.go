@@ -1,20 +1,19 @@
 package mknod
 
 import (
-	"errors"
-	"flag"
+	flag "../../appletflag"
+	"log"
 	"strconv"
 	"strings"
 	"syscall"
 )
 
 var (
-	flagSet   = flag.NewFlagSet("mknod", flag.PanicOnError)
-	majorFlag = flagSet.Int("major", -1, "Major number of the block device")
-	minorFlag = flagSet.Int("minor", -1, "Minor number of the block device")
-	typeFlag  = flagSet.String("type", "", "Type of the node to create (i.e. socket, link, regular, block, directory, character, fifo)")
-	modeFlag  = flagSet.String("mode", "644", "Mode (in octal) to create the node with")
-	helpFlag  = flagSet.Bool("help", false, "Show this help")
+	majorFlag = flag.Int("major", -1, "Major number of the block device")
+	minorFlag = flag.Int("minor", -1, "Minor number of the block device")
+	typeFlag  = flag.String("type", "", "Type of the node to create (i.e. socket, link, regular, block, directory, character, fifo)")
+	modeFlag  = flag.String("mode", "644", "Mode (in octal) to create the node with")
+	helpFlag  = flag.Bool("help", false, "Show this help")
 
 	typemap = map[string]uint32{
 		"socket":    syscall.S_IFSOCK,
@@ -27,33 +26,32 @@ var (
 	}
 )
 
-func Mknod(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 1 || *helpFlag {
+	if flag.NArg() != 1 || *helpFlag {
 		println("`mknod` [options] <file>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
 	mode, ok := typemap[strings.ToLower(*typeFlag)]
 	if !ok {
-		return errors.New("Invalid node type \"" + *typeFlag + "\"")
+		log.Fatalf("Invalid node type: %s\n", *typeFlag)
 	}
 
 	if mode == syscall.S_IFBLK && (*majorFlag == -1 || *minorFlag == -1) {
-		return errors.New("When creating a block device, both minor and major number have to be given")
+		log.Fatalf("Major and minor device have to be set when creating a block device\n")
 	}
 
-	fmode, e := strconv.ParseUint(*modeFlag, 10, 8)
+	fmode, e := strconv.ParseInt(*modeFlag, 8, 32)
 	if e != nil {
-		return e
+		log.Fatalf("Invalid number: %s\n", e)
 	}
 	mode |= uint32(fmode)
 
-	e = syscall.Mknod(flagSet.Arg(0), mode, *majorFlag<<8|*minorFlag)
-	return e
+	e = syscall.Mknod(flag.Arg(0), mode, *majorFlag<<8|*minorFlag)
+	if e != nil {
+		log.Fatalf("Could not create node: %s\n", e)
+	}
 }

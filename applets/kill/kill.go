@@ -1,27 +1,24 @@
 package kill
 
 import (
-	"flag"
+	flag "../../appletflag"
+	"log"
 	"os"
 	"strconv"
 	"syscall"
 )
 
 var (
-	flagSet    = flag.NewFlagSet("kill", flag.PanicOnError)
-	signalFlag = flagSet.Int("sig", 9, "Number of the signal to send")
-	helpFlag   = flagSet.Bool("help", false, "Show this help")
+	signalFlag = flag.Int("sig", 9, "Number of the signal to send")
+	helpFlag   = flag.Bool("help", false, "Show this help")
 )
 
-func Kill(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 1 || *helpFlag {
+	if flag.NArg() != 1 || *helpFlag {
 		println("`kill` [options] <pid>")
-		flagSet.PrintDefaults()
+		flag.PrintDefaults()
 		println("1     SIGHUP       terminal line hangup")
 		println("2     SIGINT       interrupt program")
 		println("3     SIGQUIT      quit program")
@@ -38,18 +35,21 @@ func Kill(call []string) error {
 		println("14    SIGALRM      real-time timer expired")
 		println("15    SIGTERM      software termination signal")
 		println("16    SIGURG       urgent condition present on socket")
-		return nil
+		return
 	}
 
-	pid, e := strconv.Atoi(flagSet.Arg(0))
+	pid, e := strconv.Atoi(flag.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Invald PID %s: %s\n", flag.Arg(0), e)
 	}
 
 	p, e := os.FindProcess(pid)
 	if e != nil {
-		return e
+		log.Fatalf("Could not find process: %s\n", e)
 	}
 
-	return p.Signal(syscall.Signal(int32(*signalFlag)))
+	e = p.Signal(syscall.Signal(*signalFlag))
+	if e != nil {
+		log.Fatalf("Could not send signal: %s\n", e)
+	}
 }

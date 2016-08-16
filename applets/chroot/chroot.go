@@ -1,33 +1,32 @@
 package chroot
 
 import (
-	"flag"
+	flag "../../appletflag"
+	"log"
 	"os"
 	"syscall"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("chroot", flag.PanicOnError)
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Chroot(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() < 2 || *helpFlag {
+	if flag.NArg() < 2 || *helpFlag {
 		println("`chroot` [options] <new root> <command>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	e = syscall.Chroot(flagSet.Arg(0))
+	e := syscall.Chroot(flag.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Could not chroot: %s\n", e)
 	}
 
-	e = syscall.Exec(flagSet.Arg(1), flagSet.Args()[1:], os.Environ())
-	return e
+	e = syscall.Exec(flag.Arg(1), flag.Args()[1:], os.Environ())
+	if e != nil {
+		log.Fatalf("Could not exec: %s\n", e)
+	}
 }

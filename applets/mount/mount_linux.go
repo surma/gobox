@@ -1,43 +1,42 @@
 package mount
 
 import (
+	flag "../../appletflag"
 	"errors"
-	"flag"
+	"log"
 	"strings"
 	"syscall"
 )
 
 var (
-	flagSet   = flag.NewFlagSet("mount", flag.PanicOnError)
-	typeFlag  = flagSet.String("t", "", "Filesystem type of the mount")
-	flagsFlag = flagSet.String("o", "defaults", "Comma-separated list of flags for the mount")
-	helpFlag  = flagSet.Bool("help", false, "Show this help")
+	typeFlag  = flag.String("t", "", "Filesystem type of the mount")
+	flagsFlag = flag.String("o", "defaults", "Comma-separated list of flags for the mount")
+	helpFlag  = flag.Bool("help", false, "Show this help")
 )
 
-func Mount(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 2 || *helpFlag {
+	if flag.NArg() != 2 || *helpFlag {
 		println("`mount` [options] <device> <dir>")
-		flagSet.PrintDefaults()
+		flag.PrintDefaults()
 		println("\nAvailable options are:")
 		for opt := range flagMap {
 			print(opt, ", ")
 		}
 		println()
-		return nil
+		return
 	}
 
 	flags, e := parseFlags()
 	if e != nil {
-		return e
+		log.Fatalf("Could not parse options: %s\n", e)
 	}
 
-	e = syscall.Mount(flagSet.Arg(0), flagSet.Arg(1), *typeFlag, uintptr(flags), "")
-	return e
+	e = syscall.Mount(flag.Arg(0), flag.Arg(1), *typeFlag, uintptr(flags), "")
+	if e != nil {
+		log.Fatalf("Could not mount: %s\n", e)
+	}
 }
 
 var (

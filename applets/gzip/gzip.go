@@ -1,8 +1,8 @@
 package gzip
 
 import (
+	flag "../../appletflag"
 	"compress/gzip"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -16,46 +16,40 @@ var (
 	decompress = flagSet.Bool("d", false, "Decompress")
 )
 
-func Gzip(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func GzipMain() {
+	flagSet.Parse(flag.Parameters)
 
 	if flagSet.NArg() < 1 || *helpFlag {
 		println("`gzip` <file>...")
 		flagSet.PrintDefaults()
-		return nil
+		return
 	}
 
 	if *decompress {
-		Gunzip(call)
-		return nil
+		GunzipMain()
+		return
 	}
 
 	for _, fn := range flagSet.Args() {
 		doGzip(fn)
 	}
 
-	return nil
+	return
 }
 
-func Gunzip(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func GunzipMain() {
+	flagSet.Parse(flag.Parameters)
 
 	if flagSet.NArg() < 1 || *helpFlag {
 		println("`gunzip` <file>...")
 		flagSet.PrintDefaults()
-		return nil
+		return
 	}
 
 	for _, fn := range flagSet.Args() {
 		doGunzip(fn)
 	}
-	return nil
+	return
 }
 
 var (
@@ -63,23 +57,20 @@ var (
 	helpFlagZcat = flagSetZcat.Bool("help", false, "Show this help")
 )
 
-func Zcat(call []string) error {
-	e := flagSetZcat.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func ZcatMain() {
+	flagSetZcat.Parse(flag.Parameters)
 
 	if flagSetZcat.NArg() < 1 || *helpFlagZcat {
 		println("`zcat` <file>...")
 		flagSetZcat.PrintDefaults()
-		return nil
+		return
 	}
 
 	for _, fn := range flagSetZcat.Args() {
 		doZcat(fn)
 	}
 
-	return nil
+	return
 }
 
 func doGzip(fn string) {
@@ -94,12 +85,12 @@ func doGzip(fn string) {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
 		return
 	}
-	if !fi.Mode().IsRegular() {
-		fmt.Fprintf(os.Stderr, "%s: not a regular file\n", fn)
+	if fi.IsDir() {
+		fmt.Fprintf(os.Stderr, "%s: is a directory\n", fn)
 		return
 	}
 	newfn := fn + ".gz"
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode())
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
 		return
@@ -146,7 +137,7 @@ func doGunzip(fn string) {
 	if !*forceFlag {
 		newfn = fn[0 : len(fn)-3]
 	}
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode())
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
 		return

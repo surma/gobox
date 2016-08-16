@@ -1,30 +1,32 @@
 package mkdir
 
 import (
-	"flag"
+	flag "../../appletflag"
+	"log"
 	"os"
 )
 
 var (
-	flagSet    = flag.NewFlagSet("mkdir", flag.PanicOnError)
-	parentFlag = flagSet.Bool("p", false, "Create parent directories, if necessary")
-	helpFlag   = flagSet.Bool("help", false, "Show this help")
+	parentFlag = flag.Bool("p", false, "Create parent directories, if necessary")
+	helpFlag   = flag.Bool("help", false, "Show this help")
 )
 
-func Mkdir(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() != 1 || *helpFlag {
+	if flag.NArg() != 1 || *helpFlag {
 		println("`Mkdir` [options] <path>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
+	var e error
 	if *parentFlag {
-		return os.MkdirAll(flagSet.Arg(0), 0755)
+		e = os.MkdirAll(flag.Arg(0), 0755)
+	} else {
+		e = os.Mkdir(flag.Arg(0), 0755)
 	}
-	return os.Mkdir(flagSet.Arg(0), 0755)
+	if e != nil {
+		log.Fatalf("Could not create: %s\n", e)
+	}
 }

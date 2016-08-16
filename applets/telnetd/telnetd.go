@@ -1,33 +1,33 @@
 package telnetd
 
 import (
+	flag "../../appletflag"
+	"../../common"
 	"errors"
-	"flag"
-	"github.com/surma/gobox/pkg/common"
 	"io"
+	"log"
 	"net"
 	"os/exec"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("telnetd", flag.PanicOnError)
-	addrFlag = flagSet.String("addr", ":23", "Port to listen on")
-	helpFlag = flagSet.Bool("help", false, "Show this help")
+	addrFlag = flag.String("addr", ":23", "Port to listen on")
+	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Telnetd(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
-	if flagSet.NArg() <= 0 || *helpFlag {
+	if flag.NArg() <= 0 || *helpFlag {
 		println("telnet [options] <command to serve...>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	return startServer(*addrFlag, flagSet.Args())
+	e := startServer(*addrFlag, flag.Args())
+	if e != nil {
+		log.Fatalf("Could not start server: %s\n", e)
+	}
 }
 
 func startServer(addr string, call []string) error {

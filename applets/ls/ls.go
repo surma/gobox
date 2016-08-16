@@ -1,56 +1,53 @@
 package ls
 
 import (
-	"flag"
+	flag "../../appletflag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math"
 	"os"
 	"text/tabwriter"
 )
 
 var (
-	flagSet       = flag.NewFlagSet("ls", flag.PanicOnError)
-	longFlag      = flagSet.Bool("l", false, "Long, detailed listing")
-	recursiveFlag = flagSet.Bool("r", false, "Recurse into directories")
-	humanFlag     = flagSet.Bool("h", false, "Output sizes in a human readable format")
-	helpFlag      = flagSet.Bool("help", false, "Show this help")
+	longFlag      = flag.Bool("l", false, "Long, detailed listing")
+	recursiveFlag = flag.Bool("r", false, "Recurse into directories")
+	humanFlag     = flag.Bool("h", false, "Output sizes in a human readable format")
+	helpFlag      = flag.Bool("help", false, "Show this help")
 	out           = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Ls(call []string) error {
-	e := flagSet.Parse(call[1:])
-	if e != nil {
-		return e
-	}
+func Main() {
+	flag.Parse()
 
 	if *helpFlag {
 		println("`ls` [options] [dirs...]")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
 	dirs, e := getDirList()
 	if e != nil {
-		return e
+		log.Fatalf("Could not get cwd: %s\n", e)
 	}
 
 	for _, dir := range dirs {
 		e := list(dir, "")
 		if e != nil {
-			return e
+			log.Printf("Error while listing directory: %s\n", e)
 		}
 	}
 	out.Flush()
-	return nil
+	return
 }
 
 func getDirList() ([]string, error) {
-	if flagSet.NArg() <= 0 {
+	if flag.NArg() <= 0 {
 		cwd, e := os.Getwd()
 		return []string{cwd}, e
 	}
-	return flagSet.Args(), nil
+	return flag.Args(), nil
 }
 
 func list(dir, prefix string) error {
@@ -66,7 +63,8 @@ func list(dir, prefix string) error {
 			fmt.Fprintf(out, "%s:\n", folder)
 			e := list(dir+"/"+entry.Name(), folder)
 			if e != nil {
-				return e
+				log.Printf("Failed listing %s: %s", entry.Name(), e)
+				continue
 			}
 		}
 	}
@@ -76,9 +74,9 @@ func list(dir, prefix string) error {
 func printEntry(e os.FileInfo) {
 	fmt.Fprintf(out, "%s%s\t", e.Name(), getEntryTypeString(e))
 	if *longFlag {
-		fmt.Fprintf(out, "%s\t", getModeString(e.Mode()))
+		fmt.Fprintf(out, "%s\t", getModeString(e.Mode().Perm()))
 		fmt.Fprintf(out, "%s\t", getSizeString(e.Size()))
-		//fmt.Fprintf(out, "%s\t", getUserString(e.Uid))
+		fmt.Fprintf(out, "%s\t", getUserString(e.Uid))
 	}
 	fmt.Fprintln(out, "")
 }
@@ -87,7 +85,7 @@ var accessSymbols = "xwr"
 
 func getModeString(mode os.FileMode) (s string) {
 	for i := 8; i >= 0; i-- {
-		if mode&(1<<uint(i)) == 0 {
+		if uint32(mode)&(1<<uint(i)) == 0 {
 			s += "-"
 		} else {
 			char := i % 3
@@ -119,7 +117,7 @@ func getSizeString(size int64) (s string) {
 func getEntryTypeString(e os.FileInfo) string {
 	if e.IsDir() {
 		return "/"
-	} else if e.Mode()&os.ModeDevice != 0 {
+	} else if e.IsBlock() {
 		return "<>"
 	} else if e.Mode()&os.ModeNamedPipe != 0 {
 		return ">>"

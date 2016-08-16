@@ -1,45 +1,43 @@
 package head
 
 import (
-	"flag"
+	flag "../../appletflag"
+	"../../common"
 	"fmt"
 	"github.com/surma/gobox/pkg/common"
 	"io"
+	"log"
 	"os"
 )
 
 var (
-	flagSet  = flag.NewFlagSet("head", flag.PanicOnError)
-	helpFlag = flagSet.Bool("help", false, "Show this help")
-	numLines = flagSet.Uint("n", 10, "Print -n <number> of lines. Default is 10.")
-	quiet    = flagSet.Bool("q", false, "Don't print file names in multi-file mode.")
+	helpFlag = flag.Bool("help", false, "Show this help")
+	numLines = flag.Uint("n", 10, "Print -n <number> of lines. Default is 10.")
+	quiet    = flag.Bool("q", false, "Don't print file names in multi-file mode.")
 )
 
-func Head(call []string) error {
-	err := flagSet.Parse(call[1:])
-	if err != nil {
-		return err
-	}
+func Main() {
+	flag.Parse()
 
-	argn := flagSet.NArg()
+	argn := flag.NArg()
 	if argn <= 0 || *helpFlag {
 		println("`head` [options] <files>")
-		flagSet.PrintDefaults()
-		return nil
+		flag.PrintDefaults()
+		return
 	}
 
-	for _, file := range flagSet.Args() {
+	for _, file := range flag.Args() {
 		if !*quiet {
 			fmt.Fprintf(os.Stdout, "==> %s <==\n", file)
 		}
 
-		err = dumpFile(file)
-		if err != nil {
-			return err
+		e := dumpFile(file)
+		if e != nil {
+			log.Printf("Could not read file %s: %s\n", file, e)
 		}
 	}
 
-	return nil
+	return
 }
 
 func dumpFile(path string) error {

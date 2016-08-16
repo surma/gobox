@@ -1,23 +1,27 @@
 package shell
 
 import (
+	flag "../../appletflag"
+	"../../common"
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
 )
 
-func Shell(call []string) error {
+func Main() {
+	flag.Parse()
+	call := flag.Args()
 	var in *common.BufferedReader
 	interactive := true
-	if len(call) > 2 {
+	if len(call) > 1 {
 		call = call[0:1]
 	}
-	if len(call) == 2 {
-		f, e := os.Open(call[1])
+	if len(call) == 1 {
+		f, e := os.Open(call[0])
 		if e != nil {
-			return e
+			log.Fatalf("Could not open input file %s: %s\n", call[1], e)
 		}
 		defer f.Close()
 		in = common.NewBufferedReader(f)
@@ -34,7 +38,7 @@ func Shell(call []string) error {
 		}
 		line, e = in.ReadWholeLine()
 		if e != nil {
-			return e
+			log.Fatalf("Could not read line: %s\n", e)
 		}
 		if isComment(line) {
 			continue
@@ -50,7 +54,7 @@ func Shell(call []string) error {
 			continue
 		}
 	}
-	return nil
+	return
 }
 
 func isComment(line string) bool {

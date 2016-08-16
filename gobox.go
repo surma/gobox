@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
-	"github.com/surma/gobox/pkg/common"
+	flag "./appletflag"
+	"./common"
 	"path/filepath"
 )
 
@@ -11,22 +11,18 @@ const (
 )
 
 var (
-	flagSet     = flag.NewFlagSet("gobox", flag.ExitOnError)
-	listFlag    = flagSet.Bool("list", false, "List applets")
-	installFlag = flagSet.String("install", "", "Create symlinks for applets in given path")
-	helpFlag    = flagSet.Bool("help", false, "Show help")
+	listFlag    = flag.Bool("list", false, "List applets")
+	installFlag = flag.String("install", "", "Create symlinks for applets in given path")
+	helpFlag    = flag.Bool("help", false, "Show help")
 )
 
-func Gobox(call []string) (e error) {
-	e = flagSet.Parse(call[1:])
-	if e != nil {
-		return
-	}
+func GoboxMain() {
+	flag.Parse()
 
 	if *listFlag {
 		list()
 	} else if *installFlag != "" {
-		e = install(*installFlag)
+		_ = install(*installFlag)
 	} else {
 		help()
 	}
@@ -35,7 +31,7 @@ func Gobox(call []string) (e error) {
 
 func help() {
 	println("`gobox` [options]")
-	flagSet.PrintDefaults()
+	flag.PrintDefaults()
 	println()
 	println("Version", VERSION)
 	list()
