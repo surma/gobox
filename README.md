@@ -19,6 +19,12 @@ Pitfalls
 - Telnetd has no authentication mechanism right now. It’s noting more than a
   network-capable pipe.
 
+Build
+-----
+docker run --rm -it -v $(pwd):/go/src/gobox -w /go/src/gobox golang bash
+> go get
+> go build
+
 Installation
 ------------
 

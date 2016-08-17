@@ -1,8 +1,8 @@
 package telnetd
 
 import (
-	flag "../../appletflag"
-	"../../common"
+	flag "gobox/appletflag"
+	"gobox/common"
 	"errors"
 	"io"
 	"log"

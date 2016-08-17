@@ -1,7 +1,7 @@
 package httpd
 
 import (
-	flag "../../appletflag"
+	flag "gobox/appletflag"
 	"log"
 	"net/http"
 )

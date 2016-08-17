@@ -1,7 +1,7 @@
 package ls
 
 import (
-	flag "../../appletflag"
+	flag "gobox/appletflag"
 	"fmt"
 	"io/ioutil"
 	"log"

@@ -1,8 +1,8 @@
 package ps
 
 import (
-	flag "../../appletflag"
-	"../../common"
+	flag "gobox/appletflag"
+	"gobox/common"
 	"fmt"
 	"log"
 	"os"

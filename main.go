@@ -1,8 +1,8 @@
 package main
 
 import (
-	flag "./appletflag"
-	"./common"
+    flag "gobox/appletflag"
+    "gobox/common"
 	"errors"
 	"os"
 	"path/filepath"

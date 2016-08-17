@@ -1,7 +1,7 @@
 package mkdir
 
 import (
-	flag "../../appletflag"
+	flag "gobox/appletflag"
 	"log"
 	"os"
 )

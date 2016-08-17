@@ -1,7 +1,7 @@
 package echo
 
 import (
-	flag "../../appletflag"
+	flag "gobox/appletflag"
 	"fmt"
 	"strings"
 )

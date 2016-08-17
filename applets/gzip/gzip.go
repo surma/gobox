@@ -1,7 +1,7 @@
 package gzip
 
 import (
-	flag "../../appletflag"
+	flag "gobox/appletflag"
 	"compress/gzip"
 	"fmt"
 	"io"
