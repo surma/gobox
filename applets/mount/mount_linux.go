@@ -38,7 +38,7 @@ func Mount(call []string) error {
 		log.Fatalf("Could not parse options: %s\n", e)
 	}
 
-	e = syscall.Mount(flagSet.Arg(0), flag.Arg(1), *typeFlag, uintptr(flags), "")
+	e = syscall.Mount(flagSet.Arg(0), flagSet.Arg(1), *typeFlag, uintptr(flags), "")
 	if e != nil {
 		log.Fatalf("Could not mount: %s\n", e)
 	}

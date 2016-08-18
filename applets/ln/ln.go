@@ -26,7 +26,7 @@ func Ln(call []string) error {
 	}
 
 	if *parentFlag {
-      e = os.Symlink(flagSet.Arg(0), flag.Arg(1))
+      e = os.Symlink(flagSet.Arg(0), flagSet.Arg(1))
 	} else {
       log.Fatalf("Not implemented. Use -s")
     }

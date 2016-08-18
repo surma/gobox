@@ -30,7 +30,7 @@ func Chroot(call []string) error {
 		log.Fatalf("Could not chroot: %s\n", e)
 	}
 
-	e = syscall.Exec(flagSet.Arg(1), flag.Args()[1:], os.Environ())
+	e = syscall.Exec(flagSet.Arg(1), flagSet.Args()[1:], os.Environ())
 	if e != nil {
 		log.Fatalf("Could not exec: %s\n", e)
 	}
