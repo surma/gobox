@@ -25,7 +25,9 @@ import (
 	"gobox/applets/tar"
 	"gobox/applets/telnetd"
 	"gobox/applets/touch"
+	"gobox/applets/tr"
 	"gobox/applets/umount"
+	"gobox/applets/uname"
 	"gobox/applets/wc"
 	"gobox/applets/wget"
 )
@@ -49,6 +51,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"rm":        rm.Rm,
 	"httpd":     httpd.Httpd,
 	"wget":      wget.Wget,
+	"tr":        tr.Tr,
 	"tar":       tar.Tar,
 	"wc":        wc.Wc,
 	"kill":      kill.Kill,
@@ -57,6 +60,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"mknod":     mknod.Mknod,
 	"mount":     mount.Mount,
 	"umount":    umount.Umount,
+	"uname":     uname.Uname,
 	"chroot":    chroot.Chroot,
 	"ps":        ps.Ps,
 	"mkdir":     mkdir.Mkdir,
