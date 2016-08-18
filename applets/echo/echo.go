@@ -1,14 +1,16 @@
 package echo
 
-import (
-	flag "gobox/appletflag"
-	"fmt"
-	"strings"
-)
+import "strings"
 
 // A simple, parameterless echo implementation
-func Main() {
-	parameters := flag.Parameters[1:]
-	fmt.Println(strings.Join(parameters, " "))
-	return
+func Echo(call []string) error {
+  var parameters []string
+  if len(call) <= 1 {
+    parameters = make([]string, 0)
+  } else {
+    parameters = call[1:]
+  }
+
+  println(strings.Join(parameters, " "))
+  return nil
 }

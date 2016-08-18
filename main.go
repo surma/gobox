@@ -1,9 +1,8 @@
 package main
 
 import (
-    flag "gobox/appletflag"
-    "gobox/common"
 	"errors"
+	"gobox/common"
 	"os"
 	"path/filepath"
 )
@@ -34,8 +33,7 @@ func run() {
 		}
 	}
 
-	flag.Parameters = args
-	applet()
+	applet(args)
 }
 
 func main() {

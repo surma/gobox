@@ -2,11 +2,11 @@ package main
 
 // Applet imports
 import (
-    "gobox/applets/cal"
+	"gobox/applets/cal"
 	"gobox/applets/cat"
+	"gobox/applets/checksum"
 	"gobox/applets/chroot"
-    "gobox/applets/checksum"
-    "gobox/applets/date"
+	"gobox/applets/date"
 	"gobox/applets/echo"
 	"gobox/applets/grep"
 	"gobox/applets/gzip"
@@ -20,12 +20,12 @@ import (
 	"gobox/applets/ps"
 	"gobox/applets/rm"
 	"gobox/applets/shell"
-    "gobox/applets/strings"
+	"gobox/applets/strings"
+	"gobox/applets/tar"
 	"gobox/applets/telnetd"
-    "gobox/applets/touch"
-    "gobox/applets/tar"
+	"gobox/applets/touch"
 	"gobox/applets/umount"
-    "gobox/applets/wc"
+	"gobox/applets/wc"
 	"gobox/applets/wget"
 )
 
@@ -34,7 +34,7 @@ import (
 var Applets map[string]Applet = map[string]Applet{
 	"echo":      echo.Echo,
 	"shell":     shell.Shell,
-    "sh":        shell.Shell,
+	"sh":        shell.Shell,
 	"strings":   strings.Strings,
 	"telnetd":   telnetd.Telnetd,
 	"touch":     touch.Touch,

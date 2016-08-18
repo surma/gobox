@@ -1,8 +1,8 @@
 package main
 
 import (
-	flag "gobox/appletflag"
-    "gobox/common"
+	"flag"
+	"gobox/common"
 	"path/filepath"
 )
 
@@ -11,18 +11,22 @@ const (
 )
 
 var (
-	listFlag    = flag.Bool("list", false, "List applets")
-	installFlag = flag.String("install", "", "Create symlinks for applets in given path")
-	helpFlag    = flag.Bool("help", false, "Show help")
+	flagSet     = flag.NewFlagSet("gobox", flag.ExitOnError)
+	listFlag    = flagSet.Bool("list", false, "List applets")
+	installFlag = flagSet.String("install", "", "Create symlinks for applets in given path")
+	helpFlag    = flagSet.Bool("help", false, "Show help")
 )
 
-func GoboxMain() {
-	flag.Parse()
+func GoboxMain(call []string) (e error) {
+	e = flagSet.Parse(call[1:])
+	if e != nil {
+		return
+	}
 
 	if *listFlag {
 		list()
 	} else if *installFlag != "" {
-		_ = install(*installFlag)
+		e = install(*installFlag)
 	} else {
 		help()
 	}
@@ -31,7 +35,7 @@ func GoboxMain() {
 
 func help() {
 	println("`gobox` [options]")
-	flag.PrintDefaults()
+	flagSet.PrintDefaults()
 	println()
 	println("Version", VERSION)
 	list()
