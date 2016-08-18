@@ -25,7 +25,7 @@ func Date(call []string) error {
 	case 0:
 		t = time.Now()
 	case 1:
-		i, err := strconv.ParseInt(flag.Arg(0), 10, 64)
+		i, err := strconv.ParseInt(flagSet.Arg(0), 10, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "date: error parsing time:", err)
 			os.Exit(1)

@@ -12,9 +12,9 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("head", flag.PanicOnError)
-	helpFlag = flag.Bool("help", false, "Show this help")
-	numLines = flag.Uint("n", 10, "Print -n <number> of lines. Default is 10.")
-	quiet    = flag.Bool("q", false, "Don't print file names in multi-file mode.")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
+	numLines = flagSet.Uint("n", 10, "Print -n <number> of lines. Default is 10.")
+	quiet    = flagSet.Bool("q", false, "Don't print file names in multi-file mode.")
 )
 
 func Head(call []string) error {
@@ -23,14 +23,14 @@ func Head(call []string) error {
 		return e
 	}
 
-	argn := flag.NArg()
+	argn := flagSet.NArg()
 	if argn <= 0 || *helpFlag {
 		println("`head` [options] <files>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	for _, file := range flag.Args() {
+	for _, file := range flagSet.Args() {
 		if !*quiet {
 			fmt.Fprintf(os.Stdout, "==> %s <==\n", file)
 		}

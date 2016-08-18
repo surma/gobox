@@ -10,8 +10,8 @@ import (
 
 var (
 	flagSet       = flag.NewFlagSet("rm", flag.PanicOnError)
-	recursiveFlag = flag.Bool("r", false, "Recurse into directories")
-	helpFlag      = flag.Bool("help", false, "Show this help")
+	recursiveFlag = flagSet.Bool("r", false, "Recurse into directories")
+	helpFlag      = flagSet.Bool("help", false, "Show this help")
 )
 
 func Rm(call []string) error {
@@ -20,13 +20,13 @@ func Rm(call []string) error {
 		return e
 	}
 
-	if flag.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() <= 0 || *helpFlag {
 		println("`rm` [options] <files...>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	for _, file := range flag.Args() {
+	for _, file := range flagSet.Args() {
 		e := delete(file)
 		if e != nil {
 			log.Fatalf("Could not delete file: %s\n", e)

@@ -13,7 +13,7 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("grep", flag.PanicOnError)
-	helpFlag = flag.Bool("help", false, "Show this help")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
 func Grep(call []string) error {
@@ -22,25 +22,25 @@ func Grep(call []string) error {
 		return e
 	}
 
-	if flag.NArg() < 1 || *helpFlag {
+	if flagSet.NArg() < 1 || *helpFlag {
 		println("`grep` <pattern> [<file>...]")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	pattern, err := regexp.Compile(flag.Arg(0))
+	pattern, err := regexp.Compile(flagSet.Arg(0))
 	if err != nil {
 		log.Fatalf("Invalid regular expression: %s\n", err)
 	}
 
-	if flag.NArg() == 1 {
+	if flagSet.NArg() == 1 {
 		doGrep(pattern, os.Stdin, "<stdin>", false)
 	} else {
-		for _, fn := range flag.Args()[1:] {
+		for _, fn := range flagSet.Args()[1:] {
 			if fh, err := os.Open(fn); err == nil {
 				func() {
 					defer fh.Close()
-					doGrep(pattern, fh, fn, flag.NArg() > 2)
+					doGrep(pattern, fh, fn, flagSet.NArg() > 2)
 				}()
 			} else {
 				log.Printf("Could not open file %s: %s\n", fn, err)

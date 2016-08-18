@@ -9,8 +9,8 @@ import (
 
 var (
 	flagSet    = flag.NewFlagSet("ln", flag.PanicOnError)
-	parentFlag = flag.Bool("s", false, "Create a symlink")
-	helpFlag   = flag.Bool("help", false, "Show this help")
+	parentFlag = flagSet.Bool("s", false, "Create a symlink")
+	helpFlag   = flagSet.Bool("help", false, "Show this help")
 )
 
 func Ln(call []string) error {
@@ -19,14 +19,14 @@ func Ln(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 2 || *helpFlag {
+	if flagSet.NArg() != 2 || *helpFlag {
       println("`Ln` [OPTION]... TARGET... DIRECTORY")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
 	if *parentFlag {
-      e = os.Symlink(flag.Arg(0), flag.Arg(1))
+      e = os.Symlink(flagSet.Arg(0), flag.Arg(1))
 	} else {
       log.Fatalf("Not implemented. Use -s")
     }

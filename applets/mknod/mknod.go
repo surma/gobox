@@ -11,11 +11,11 @@ import (
 
 var (
 	flagSet   = flag.NewFlagSet("mknod", flag.PanicOnError)
-	majorFlag = flag.Int("major", -1, "Major number of the block device")
-	minorFlag = flag.Int("minor", -1, "Minor number of the block device")
-	typeFlag  = flag.String("type", "", "Type of the node to create (i.e. socket, link, regular, block, directory, character, fifo)")
-	modeFlag  = flag.String("mode", "644", "Mode (in octal) to create the node with")
-	helpFlag  = flag.Bool("help", false, "Show this help")
+	majorFlag = flagSet.Int("major", -1, "Major number of the block device")
+	minorFlag = flagSet.Int("minor", -1, "Minor number of the block device")
+	typeFlag  = flagSet.String("type", "", "Type of the node to create (i.e. socket, link, regular, block, directory, character, fifo)")
+	modeFlag  = flagSet.String("mode", "644", "Mode (in octal) to create the node with")
+	helpFlag  = flagSet.Bool("help", false, "Show this help")
 
 	typemap = map[string]uint32{
 		"socket":    syscall.S_IFSOCK,
@@ -34,9 +34,9 @@ func Mknod(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 1 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`mknod` [options] <file>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
@@ -55,7 +55,7 @@ func Mknod(call []string) error {
 	}
 	mode |= uint32(fmode)
 
-	e = syscall.Mknod(flag.Arg(0), mode, *majorFlag<<8|*minorFlag)
+	e = syscall.Mknod(flagSet.Arg(0), mode, *majorFlag<<8|*minorFlag)
 	if e != nil {
 		log.Fatalf("Could not create node: %s\n", e)
 	}

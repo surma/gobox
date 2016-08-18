@@ -13,8 +13,8 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("wget", flag.PanicOnError)
-	outFlag  = flag.String("o", "", "Filename to save output to")
-	helpFlag = flag.Bool("help", false, "Show this help")
+	outFlag  = flagSet.String("o", "", "Filename to save output to")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
 func Wget(call []string) error {
@@ -23,20 +23,20 @@ func Wget(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 1 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`wget` [options] <url>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	output, e := getOutputFile(flag.Arg(0))
+	output, e := getOutputFile(flagSet.Arg(0))
 	if e != nil {
-		log.Fatalf("Could not open output file %s: %s", flag.Arg(0), e)
+		log.Fatalf("Could not open output file %s: %s", flagSet.Arg(0), e)
 	}
 	defer output.Close()
 
 	c := http.Client{}
-	r, e := c.Get(flag.Arg(0))
+	r, e := c.Get(flagSet.Arg(0))
 	if e != nil {
 		log.Fatalf("Could not issue HTTP request: %s", e)
 	}
@@ -66,7 +66,7 @@ func getOutputFile(rawurl string) (io.WriteCloser, error) {
 	var filename string
 	var e error
 	if len(*outFlag) == 0 {
-		filename, e = getFilenameFromURL(flag.Arg(0))
+		filename, e = getFilenameFromURL(flagSet.Arg(0))
 		if e != nil {
 			return nil, e
 		}

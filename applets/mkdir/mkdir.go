@@ -9,8 +9,8 @@ import (
 
 var (
 	flagSet    = flag.NewFlagSet("mkdir", flag.PanicOnError)
-	parentFlag = flag.Bool("p", false, "Create parent directories, if necessary")
-	helpFlag   = flag.Bool("help", false, "Show this help")
+	parentFlag = flagSet.Bool("p", false, "Create parent directories, if necessary")
+	helpFlag   = flagSet.Bool("help", false, "Show this help")
 )
 
 func Mkdir(call []string) error {
@@ -19,16 +19,16 @@ func Mkdir(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 1 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`Mkdir` [options] <path>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
 	if *parentFlag {
-		e = os.MkdirAll(flag.Arg(0), 0755)
+		e = os.MkdirAll(flagSet.Arg(0), 0755)
 	} else {
-		e = os.Mkdir(flag.Arg(0), 0755)
+		e = os.Mkdir(flagSet.Arg(0), 0755)
 	}
 	if e != nil {
 		log.Fatalf("Could not create: %s\n", e)

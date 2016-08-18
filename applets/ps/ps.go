@@ -12,7 +12,7 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("ps", flag.PanicOnError)
-	helpFlag = flag.Bool("help", false, "Show this help")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 	out      = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
@@ -22,9 +22,9 @@ func Ps(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 0 || *helpFlag {
+	if flagSet.NArg() != 0 || *helpFlag {
 		println("`ps` [options]")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 

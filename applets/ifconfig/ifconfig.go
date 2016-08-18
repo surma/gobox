@@ -11,16 +11,16 @@ import (
 
 var (
 	flagSet     = flag.NewFlagSet("ifconfig", flag.PanicOnError)
-	addrFlag    = flag.String("addr", "", "Address to set")
-	netmaskFlag = flag.String("netmask", "", "Netmask to set")
-	stateFlag   = flag.String("state", "", "Set the interface up")
-	listFlag    = flag.Bool("list", false, "List one or all interfaces")
-	helpFlag    = flag.Bool("help", false, "Show this help")
+	addrFlag    = flagSet.String("addr", "", "Address to set")
+	netmaskFlag = flagSet.String("netmask", "", "Netmask to set")
+	stateFlag   = flagSet.String("state", "", "Set the interface up")
+	listFlag    = flagSet.Bool("list", false, "List one or all interfaces")
+	helpFlag    = flagSet.Bool("help", false, "Show this help")
 )
 
 func Help() {
 	fmt.Println("`ifconfig` {-list [interface] | [options] [-state {up|down}] <interface>}")
-	flag.PrintDefaults()
+	flagSet.PrintDefaults()
 }
 
 func Ifconfig(call []string) error {
@@ -29,7 +29,7 @@ func Ifconfig(call []string) error {
 		return e
 	}
 
-	narg := flag.NArg()
+	narg := flagSet.NArg()
 	if (narg != 0 && narg != 1) || *helpFlag {
 		Help()
 		return nil
@@ -39,7 +39,7 @@ func Ifconfig(call []string) error {
 		if narg == 0 {
 			e = ListAllInterfaces()
 		} else {
-			e = ListInterface(flag.Arg(0))
+			e = ListInterface(flagSet.Arg(0))
 		}
 		if e != nil {
 			log.Fatalf("Could not list interface(s): %s\n", e)
@@ -54,7 +54,7 @@ func Ifconfig(call []string) error {
 		if ip == nil {
 			log.Fatalf("Invalid IP")
 		}
-		e := SetAddrForIface(flag.Arg(0), ip)
+		e := SetAddrForIface(flagSet.Arg(0), ip)
 		if e != nil {
 			log.Fatalf("Could not set address: %s\n", e)
 		}
@@ -64,14 +64,14 @@ func Ifconfig(call []string) error {
 		if nm == nil {
 			log.Fatalf("Invalid netmask")
 		}
-		e := SetNetmaskForIface(flag.Arg(0), nm)
+		e := SetNetmaskForIface(flagSet.Arg(0), nm)
 		if e != nil {
 			log.Fatalf("Could not set netmask: %s\n", e)
 		}
 	}
 	if *stateFlag == "up" || *stateFlag == "down" {
 		up := *stateFlag == "up"
-		e := SetStateForIface(flag.Arg(0), up)
+		e := SetStateForIface(flagSet.Arg(0), up)
 		if e != nil {
 			log.Fatalf("Could not change state: %s\n", e)
 		}

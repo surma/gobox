@@ -9,8 +9,8 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("httpd", flag.PanicOnError)
-	addrFlag = flag.String("addr", ":8080", "Address to listen on")
-	helpFlag = flag.Bool("help", false, "Show this help")
+	addrFlag = flagSet.String("addr", ":8080", "Address to listen on")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
 func Httpd(call []string) error {
@@ -19,13 +19,13 @@ func Httpd(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 1 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`httpd` [options] <dir>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	e = http.ListenAndServe(*addrFlag, http.FileServer(http.Dir(flag.Arg(0))))
+	e = http.ListenAndServe(*addrFlag, http.FileServer(http.Dir(flagSet.Arg(0))))
 	if e != nil {
 		log.Fatalf("Could not start server: %s\n", e)
 	}

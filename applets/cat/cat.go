@@ -10,7 +10,7 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("cat", flag.PanicOnError)
-	helpFlag = flag.Bool("help", false, "Show this help")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
 func Cat(call []string) error {
@@ -19,13 +19,13 @@ func Cat(call []string) error {
 		return e
 	}
 
-	if flag.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() <= 0 || *helpFlag {
 		println("`cat` [options] <files>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	for _, file := range flag.Args() {
+	for _, file := range flagSet.Args() {
 		e := dumpFile(file)
 		if e != nil {
 			log.Printf("Could not print file %s: %s\n", file, e)

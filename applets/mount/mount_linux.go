@@ -11,9 +11,9 @@ import (
 
 var (
 	flagSet   = flag.NewFlagSet("mount_linux", flag.PanicOnError)
-	typeFlag  = flag.String("t", "", "Filesystem type of the mount")
-	flagsFlag = flag.String("o", "defaults", "Comma-separated list of flags for the mount")
-	helpFlag  = flag.Bool("help", false, "Show this help")
+	typeFlag  = flagSet.String("t", "", "Filesystem type of the mount")
+	flagsFlag = flagSet.String("o", "defaults", "Comma-separated list of flags for the mount")
+	helpFlag  = flagSet.Bool("help", false, "Show this help")
 )
 
 func Mount(call []string) error {
@@ -22,9 +22,9 @@ func Mount(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 2 || *helpFlag {
+	if flagSet.NArg() != 2 || *helpFlag {
 		println("`mount` [options] <device> <dir>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		println("\nAvailable options are:")
 		for opt := range flagMap {
 			print(opt, ", ")
@@ -38,7 +38,7 @@ func Mount(call []string) error {
 		log.Fatalf("Could not parse options: %s\n", e)
 	}
 
-	e = syscall.Mount(flag.Arg(0), flag.Arg(1), *typeFlag, uintptr(flags), "")
+	e = syscall.Mount(flagSet.Arg(0), flag.Arg(1), *typeFlag, uintptr(flags), "")
 	if e != nil {
 		log.Fatalf("Could not mount: %s\n", e)
 	}

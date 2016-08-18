@@ -11,8 +11,8 @@ import (
 
 var (
 	flagSet    = flag.NewFlagSet("kill", flag.PanicOnError)
-	signalFlag = flag.Int("sig", 9, "Number of the signal to send")
-	helpFlag   = flag.Bool("help", false, "Show this help")
+	signalFlag = flagSet.Int("sig", 9, "Number of the signal to send")
+	helpFlag   = flagSet.Bool("help", false, "Show this help")
 )
 
 func Kill(call []string) error {
@@ -21,9 +21,9 @@ func Kill(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 1 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`kill` [options] <pid>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		println("1     SIGHUP       terminal line hangup")
 		println("2     SIGINT       interrupt program")
 		println("3     SIGQUIT      quit program")
@@ -43,9 +43,9 @@ func Kill(call []string) error {
 		return nil
 	}
 
-	pid, e := strconv.Atoi(flag.Arg(0))
+	pid, e := strconv.Atoi(flagSet.Arg(0))
 	if e != nil {
-		log.Fatalf("Invald PID %s: %s\n", flag.Arg(0), e)
+		log.Fatalf("Invald PID %s: %s\n", flagSet.Arg(0), e)
 	}
 
 	p, e := os.FindProcess(pid)

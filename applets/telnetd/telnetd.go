@@ -13,8 +13,8 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("telnetd", flag.PanicOnError)
-	addrFlag = flag.String("addr", ":23", "Port to listen on")
-	helpFlag = flag.Bool("help", false, "Show this help")
+	addrFlag = flagSet.String("addr", ":23", "Port to listen on")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
 func Telnetd(call []string) error {
@@ -23,13 +23,13 @@ func Telnetd(call []string) error {
 		return e
 	}
 
-	if flag.NArg() <= 0 || *helpFlag {
+	if flagSet.NArg() <= 0 || *helpFlag {
 		println("telnet [options] <command to serve...>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	e = startServer(*addrFlag, flag.Args())
+	e = startServer(*addrFlag, flagSet.Args())
 	if e != nil {
 		log.Fatalf("Could not start server: %s\n", e)
 	}

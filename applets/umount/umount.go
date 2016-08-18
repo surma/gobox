@@ -9,7 +9,7 @@ import (
 
 var (
 	flagSet  = flag.NewFlagSet("umount", flag.PanicOnError)
-	helpFlag = flag.Bool("help", false, "Show this help")
+	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
 func Umount(call []string) error {
@@ -18,13 +18,13 @@ func Umount(call []string) error {
 		return e
 	}
 
-	if flag.NArg() != 1 || *helpFlag {
+	if flagSet.NArg() != 1 || *helpFlag {
 		println("`umount` [options] <mount point>")
-		flag.PrintDefaults()
+		flagSet.PrintDefaults()
 		return nil
 	}
 
-	e = syscall.Unmount(flag.Arg(0), 0)
+	e = syscall.Unmount(flagSet.Arg(0), 0)
 	if e != nil {
 		log.Fatalf("Could not unmount: %s\n", e)
 	}
