@@ -1,7 +1,8 @@
 package wget
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"io"
 	"log"
 	"net/http"

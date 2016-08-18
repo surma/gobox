@@ -1,7 +1,8 @@
 package mount
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"errors"
 	"log"
 	"strings"

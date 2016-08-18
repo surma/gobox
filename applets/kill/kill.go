@@ -1,7 +1,8 @@
 package kill
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"log"
 	"os"
 	"strconv"

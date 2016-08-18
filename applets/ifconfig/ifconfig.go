@@ -1,7 +1,8 @@
 package ifconfig
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"fmt"
 	"log"
 	"net"

@@ -1,9 +1,10 @@
 package grep
 
 import (
-	flag "gobox/appletflag"
-	"gobox/common"
+	"flag"
+
 	"fmt"
+	"gobox/common"
 	"io"
 	"log"
 	"os"

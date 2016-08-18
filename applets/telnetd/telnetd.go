@@ -1,9 +1,10 @@
 package telnetd
 
 import (
-	flag "gobox/appletflag"
-	"gobox/common"
+	"flag"
+
 	"errors"
+	"gobox/common"
 	"io"
 	"log"
 	"net"

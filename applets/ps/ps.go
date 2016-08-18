@@ -1,9 +1,10 @@
 package ps
 
 import (
-	flag "gobox/appletflag"
-	"gobox/common"
+	"flag"
+
 	"fmt"
+	"gobox/common"
 	"log"
 	"os"
 	"text/tabwriter"

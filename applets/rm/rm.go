@@ -1,7 +1,8 @@
 package rm
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"io/ioutil"
 	"log"
 	"os"

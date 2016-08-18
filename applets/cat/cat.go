@@ -1,7 +1,8 @@
 package cat
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"io"
 	"log"
 	"os"

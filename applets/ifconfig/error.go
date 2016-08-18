@@ -1,6 +1,8 @@
 package ifconfig
 
 import (
+	"flag"
+
 	"errors"
 )
 

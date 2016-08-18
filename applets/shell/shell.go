@@ -1,9 +1,9 @@
 package shell
 
 import (
-	flag "gobox/appletflag"
-	"gobox/common"
+	"flag"
 	"fmt"
+	"gobox/common"
 	"log"
 	"os"
 	"os/exec"

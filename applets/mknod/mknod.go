@@ -1,7 +1,8 @@
 package mknod
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"log"
 	"strconv"
 	"strings"

@@ -1,7 +1,8 @@
 package umount
 
 import (
-	flag "gobox/appletflag"
+	"flag"
+
 	"log"
 	"syscall"
 )
