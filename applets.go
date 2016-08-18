@@ -14,6 +14,7 @@ import (
 	"gobox/applets/httpd"
 	"gobox/applets/kill"
 	"gobox/applets/ls"
+	"gobox/applets/ln"
 	"gobox/applets/mkdir"
 	"gobox/applets/mknod"
 	"gobox/applets/mount"
@@ -44,6 +45,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"sha512sum": checksum.Hash,
 	"crc32":     checksum.Hash,
 	"ls":        ls.Ls,
+	"ln":        ln.Ln,
 	"rm":        rm.Rm,
 	"httpd":     httpd.Httpd,
 	"wget":      wget.Wget,
