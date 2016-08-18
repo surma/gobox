@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	flagSet   = flag.NewFlagSet("mknod", flag.PanicOnError)
 	majorFlag = flag.Int("major", -1, "Major number of the block device")
 	minorFlag = flag.Int("minor", -1, "Minor number of the block device")
 	typeFlag  = flag.String("type", "", "Type of the node to create (i.e. socket, link, regular, block, directory, character, fifo)")
@@ -27,13 +28,16 @@ var (
 	}
 )
 
-func Main() {
-	flag.Parse()
+func Mknod(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() != 1 || *helpFlag {
 		println("`mknod` [options] <file>")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	mode, ok := typemap[strings.ToLower(*typeFlag)]
@@ -55,4 +59,5 @@ func Main() {
 	if e != nil {
 		log.Fatalf("Could not create node: %s\n", e)
 	}
+	return nil
 }

@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	flagSet     = flag.NewFlagSet("ifconfig", flag.PanicOnError)
 	addrFlag    = flag.String("addr", "", "Address to set")
 	netmaskFlag = flag.String("netmask", "", "Netmask to set")
 	stateFlag   = flag.String("state", "", "Set the interface up")
@@ -22,13 +23,16 @@ func Help() {
 	flag.PrintDefaults()
 }
 
-func Main() {
-	flag.Parse()
+func Ifconfig(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	narg := flag.NArg()
 	if (narg != 0 && narg != 1) || *helpFlag {
 		Help()
-		return
+		return nil
 	}
 	var e error
 	if *listFlag {
@@ -43,7 +47,7 @@ func Main() {
 	}
 	if narg != 1 {
 		Help()
-		return
+		return nil
 	}
 	if *addrFlag != "" {
 		ip := net.ParseIP(*addrFlag)
@@ -74,7 +78,7 @@ func Main() {
 	} else if *stateFlag != "" {
 		log.Fatalf("Invalid state")
 	}
-	return
+	return nil
 }
 
 func ListInterface(name string) error {

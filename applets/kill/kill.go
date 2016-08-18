@@ -10,12 +10,16 @@ import (
 )
 
 var (
+	flagSet    = flag.NewFlagSet("kill", flag.PanicOnError)
 	signalFlag = flag.Int("sig", 9, "Number of the signal to send")
 	helpFlag   = flag.Bool("help", false, "Show this help")
 )
 
-func Main() {
-	flag.Parse()
+func Kill(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() != 1 || *helpFlag {
 		println("`kill` [options] <pid>")
@@ -36,7 +40,7 @@ func Main() {
 		println("14    SIGALRM      real-time timer expired")
 		println("15    SIGTERM      software termination signal")
 		println("16    SIGURG       urgent condition present on socket")
-		return
+		return nil
 	}
 
 	pid, e := strconv.Atoi(flag.Arg(0))
@@ -53,4 +57,5 @@ func Main() {
 	if e != nil {
 		log.Fatalf("Could not send signal: %s\n", e)
 	}
+	return nil
 }

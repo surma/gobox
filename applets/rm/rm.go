@@ -9,17 +9,21 @@ import (
 )
 
 var (
+	flagSet       = flag.NewFlagSet("rm", flag.PanicOnError)
 	recursiveFlag = flag.Bool("r", false, "Recurse into directories")
 	helpFlag      = flag.Bool("help", false, "Show this help")
 )
 
-func Main() {
-	flag.Parse()
+func Rm(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() <= 0 || *helpFlag {
 		println("`rm` [options] <files...>")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	for _, file := range flag.Args() {
@@ -28,7 +32,7 @@ func Main() {
 			log.Fatalf("Could not delete file: %s\n", e)
 		}
 	}
-	return
+	return nil
 }
 
 func delete(file string) error {

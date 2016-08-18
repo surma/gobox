@@ -10,13 +10,17 @@ import (
 )
 
 var (
+	flagSet   = flag.NewFlagSet("mount_linux", flag.PanicOnError)
 	typeFlag  = flag.String("t", "", "Filesystem type of the mount")
 	flagsFlag = flag.String("o", "defaults", "Comma-separated list of flags for the mount")
 	helpFlag  = flag.Bool("help", false, "Show this help")
 )
 
-func Main() {
-	flag.Parse()
+func Mount(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() != 2 || *helpFlag {
 		println("`mount` [options] <device> <dir>")
@@ -26,7 +30,7 @@ func Main() {
 			print(opt, ", ")
 		}
 		println()
-		return
+		return nil
 	}
 
 	flags, e := parseFlags()
@@ -38,6 +42,7 @@ func Main() {
 	if e != nil {
 		log.Fatalf("Could not mount: %s\n", e)
 	}
+	return e
 }
 
 var (

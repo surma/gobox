@@ -102,5 +102,5 @@ func stringifyStringArray(a []string) (s string) {
 		}
 	}
 	s += "}"
-	return
+	return nil
 }

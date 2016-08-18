@@ -11,17 +11,21 @@ import (
 )
 
 var (
+	flagSet  = flag.NewFlagSet("ps", flag.PanicOnError)
 	helpFlag = flag.Bool("help", false, "Show this help")
 	out      = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Main() {
-	flag.Parse()
+func Ps(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() != 0 || *helpFlag {
 		println("`ps` [options]")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	pids, e := common.GetAllPids()
@@ -40,7 +44,7 @@ func Main() {
 	}
 
 	out.Flush()
-	return
+	return nil
 }
 
 func printProcess(p *common.Process) {

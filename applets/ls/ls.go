@@ -13,6 +13,7 @@ import (
 )
 
 var (
+	flagSet       = flag.NewFlagSet("ls", flag.PanicOnError)
 	longFlag      = flag.Bool("l", false, "Long, detailed listing")
 	recursiveFlag = flag.Bool("r", false, "Recurse into directories")
 	humanFlag     = flag.Bool("h", false, "Output sizes in a human readable format")
@@ -20,13 +21,16 @@ var (
 	out           = tabwriter.NewWriter(os.Stdout, 4, 4, 1, ' ', 0)
 )
 
-func Main() {
-	flag.Parse()
+func Ls(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if *helpFlag {
 		println("`ls` [options] [dirs...]")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	dirs, e := getDirList()
@@ -41,7 +45,7 @@ func Main() {
 		}
 	}
 	out.Flush()
-	return
+	return nil
 }
 
 func getDirList() ([]string, error) {

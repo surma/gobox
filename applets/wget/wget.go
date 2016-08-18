@@ -12,17 +12,21 @@ import (
 )
 
 var (
+	flagSet  = flag.NewFlagSet("wget", flag.PanicOnError)
 	outFlag  = flag.String("o", "", "Filename to save output to")
 	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Main() {
-	flag.Parse()
+func Wget(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() != 1 || *helpFlag {
 		println("`wget` [options] <url>")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	output, e := getOutputFile(flag.Arg(0))
@@ -39,6 +43,7 @@ func Main() {
 	defer r.Body.Close()
 
 	_, e = io.Copy(output, r.Body)
+	return e
 }
 
 func getFilenameFromURL(rawurl string) (string, error) {

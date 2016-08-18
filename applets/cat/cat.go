@@ -9,16 +9,20 @@ import (
 )
 
 var (
+	flagSet  = flag.NewFlagSet("cat", flag.PanicOnError)
 	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Main() {
-	flag.Parse()
+func Cat(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() <= 0 || *helpFlag {
 		println("`cat` [options] <files>")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	for _, file := range flag.Args() {
@@ -28,7 +32,7 @@ func Main() {
 		}
 	}
 
-	return
+	return nil
 }
 
 func dumpFile(path string) error {

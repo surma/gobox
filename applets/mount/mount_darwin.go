@@ -6,6 +6,6 @@ import (
 	"log"
 )
 
-func Main() {
+func Mount(call []string) error {
 	log.Fatalf("Not implemented for darwin\n")
 }

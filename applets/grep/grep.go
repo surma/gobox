@@ -12,16 +12,20 @@ import (
 )
 
 var (
+	flagSet  = flag.NewFlagSet("grep", flag.PanicOnError)
 	helpFlag = flag.Bool("help", false, "Show this help")
 )
 
-func Main() {
-	flag.Parse()
+func Grep(call []string) error {
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
+	}
 
 	if flag.NArg() < 1 || *helpFlag {
 		println("`grep` <pattern> [<file>...]")
 		flag.PrintDefaults()
-		return
+		return nil
 	}
 
 	pattern, err := regexp.Compile(flag.Arg(0))
@@ -44,7 +48,7 @@ func Main() {
 		}
 	}
 
-	return
+	return nil
 }
 
 func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {

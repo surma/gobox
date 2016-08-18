@@ -1,7 +1,6 @@
 package shell
 
 import (
-	"flag"
 	"fmt"
 	"gobox/common"
 	"log"
@@ -12,9 +11,9 @@ import (
 	"strings"
 )
 
-func Main() {
-	flag.Parse()
-	call := flag.Args()
+func Shell(call []string) error {
+
+	var e error
 	var in *common.BufferedReader
 	interactive := true
 	if len(call) > 1 {
@@ -32,7 +31,6 @@ func Main() {
 		in = common.NewBufferedReader(os.Stdin)
 	}
 
-	var e error
 	var line string
 	for e == nil {
 		if interactive {
@@ -57,7 +55,7 @@ func Main() {
 			continue
 		}
 	}
-	return
+	return nil
 }
 
 func printPrompt() {
