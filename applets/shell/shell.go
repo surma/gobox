@@ -3,6 +3,7 @@ package shell
 import (
 	"fmt"
 	"gobox/common"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -16,13 +17,10 @@ func Shell(call []string) error {
 	var e error
 	var in *common.BufferedReader
 	interactive := true
-	if len(call) > 1 {
-		call = call[0:1]
-	}
-	if len(call) == 1 {
-		f, e := os.Open(call[0])
+	if len(call) == 2 {
+		f, e := os.Open(call[1])
 		if e != nil {
-			log.Fatalf("Could not open input file %s: %s\n", call[1], e)
+			return e
 		}
 		defer f.Close()
 		in = common.NewBufferedReader(f)
@@ -38,7 +36,11 @@ func Shell(call []string) error {
 		}
 		line, e = in.ReadWholeLine()
 		if e != nil {
-			log.Fatalf("Could not read line: %s\n", e)
+			if e != io.EOF {
+				log.Fatalf("Could not read line: %s\n", e)
+			} else {
+				fmt.Print("\n")
+			}
 		}
 		if isComment(line) {
 			continue
