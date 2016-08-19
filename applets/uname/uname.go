@@ -17,6 +17,7 @@ var (
 	rflag   = flagSet.Bool("r", false, "")
 	vflag   = flagSet.Bool("v", false, "")
 	sflag   = flagSet.Bool("s", false, "")
+	endflag = flagSet.Bool("t", false, "Remove end line.")
 	hflag   = flagSet.Bool("h", false, "Print this help")
 )
 
@@ -77,6 +78,8 @@ func Uname(call []string) error {
 		out(space, b2S(uts.Domainname))
 		space = true
 	}
-	fmt.Print("\n")
+	if !*endflag {
+		fmt.Print("\n")
+	}
 	return nil
 }
