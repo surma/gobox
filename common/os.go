@@ -24,7 +24,9 @@ func DumpError(e error) {
 
 // Prints an error to a writer in a "nice" way.
 func FDumpError(w io.Writer, e error) {
+	if e.Error() != "EOF" {
 	fmt.Fprintf(w, "gobox: Error: %s\n", e.Error())
+	}
 }
 
 // Creates a symlink and deletes the file blocking

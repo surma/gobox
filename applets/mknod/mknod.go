@@ -1,8 +1,9 @@
 package mknod
 
 import (
-	"errors"
 	"flag"
+
+	"log"
 	"strconv"
 	"strings"
 	"syscall"
@@ -41,19 +42,22 @@ func Mknod(call []string) error {
 
 	mode, ok := typemap[strings.ToLower(*typeFlag)]
 	if !ok {
-		return errors.New("Invalid node type \"" + *typeFlag + "\"")
+		log.Fatalf("Invalid node type: %s\n", *typeFlag)
 	}
 
 	if mode == syscall.S_IFBLK && (*majorFlag == -1 || *minorFlag == -1) {
-		return errors.New("When creating a block device, both minor and major number have to be given")
+		log.Fatalf("Major and minor device have to be set when creating a block device\n")
 	}
 
-	fmode, e := strconv.ParseUint(*modeFlag, 10, 8)
+	fmode, e := strconv.ParseInt(*modeFlag, 8, 32)
 	if e != nil {
-		return e
+		log.Fatalf("Invalid number: %s\n", e)
 	}
 	mode |= uint32(fmode)
 
 	e = syscall.Mknod(flagSet.Arg(0), mode, *majorFlag<<8|*minorFlag)
-	return e
+	if e != nil {
+		log.Fatalf("Could not create node: %s\n", e)
+	}
+	return nil
 }

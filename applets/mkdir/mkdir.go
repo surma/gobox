@@ -2,6 +2,8 @@ package mkdir
 
 import (
 	"flag"
+
+	"log"
 	"os"
 )
 
@@ -24,7 +26,13 @@ func Mkdir(call []string) error {
 	}
 
 	if *parentFlag {
-		return os.MkdirAll(flagSet.Arg(0), 0755)
+		e = os.MkdirAll(flagSet.Arg(0), 0755)
+	} else {
+		e = os.Mkdir(flagSet.Arg(0), 0755)
 	}
-	return os.Mkdir(flagSet.Arg(0), 0755)
+	if e != nil {
+		log.Fatalf("Could not create: %s\n", e)
+	}
+
+	return nil
 }

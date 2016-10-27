@@ -2,6 +2,8 @@ package chroot
 
 import (
 	"flag"
+
+	"log"
 	"os"
 	"syscall"
 )
@@ -25,9 +27,13 @@ func Chroot(call []string) error {
 
 	e = syscall.Chroot(flagSet.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Could not chroot: %s\n", e)
 	}
 
 	e = syscall.Exec(flagSet.Arg(1), flagSet.Args()[1:], os.Environ())
-	return e
+	if e != nil {
+		log.Fatalf("Could not exec: %s\n", e)
+	}
+
+	return nil
 }

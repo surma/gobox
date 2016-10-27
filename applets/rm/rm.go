@@ -2,7 +2,9 @@ package rm
 
 import (
 	"flag"
+
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -27,7 +29,7 @@ func Rm(call []string) error {
 	for _, file := range flagSet.Args() {
 		e := delete(file)
 		if e != nil {
-			return e
+			log.Fatalf("Could not delete file: %s\n", e)
 		}
 	}
 	return nil

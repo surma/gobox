@@ -2,9 +2,11 @@ package head
 
 import (
 	"flag"
+
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
+	"gobox/common"
 	"io"
+	"log"
 	"os"
 )
 
@@ -16,9 +18,9 @@ var (
 )
 
 func Head(call []string) error {
-	err := flagSet.Parse(call[1:])
-	if err != nil {
-		return err
+	e := flagSet.Parse(call[1:])
+	if e != nil {
+		return e
 	}
 
 	argn := flagSet.NArg()
@@ -33,9 +35,9 @@ func Head(call []string) error {
 			fmt.Fprintf(os.Stdout, "==> %s <==\n", file)
 		}
 
-		err = dumpFile(file)
-		if err != nil {
-			return err
+		e := dumpFile(file)
+		if e != nil {
+			log.Printf("Could not read file %s: %s\n", file, e)
 		}
 	}
 

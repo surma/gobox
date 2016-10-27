@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/surma/gobox/pkg/common"
+	"gobox/common"
 	"os"
 	"path/filepath"
 )
@@ -11,7 +11,7 @@ func init() {
 	// "gobox" has to be added here for two reasons
 	// 1.) So it can't be removed, it's core functionalty
 	// 2.) It causes cyclic dependencies otherwise
-	Applets["gobox"] = Gobox
+	Applets["gobox"] = GoboxMain
 }
 
 func run() {
@@ -33,10 +33,7 @@ func run() {
 		}
 	}
 
-	e := applet(args)
-	if e != nil {
-		panic(e)
-	}
+	applet(args)
 }
 
 func main() {

@@ -2,6 +2,8 @@ package kill
 
 import (
 	"flag"
+
+	"log"
 	"os"
 	"strconv"
 	"syscall"
@@ -43,13 +45,17 @@ func Kill(call []string) error {
 
 	pid, e := strconv.Atoi(flagSet.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Invald PID %s: %s\n", flagSet.Arg(0), e)
 	}
 
 	p, e := os.FindProcess(pid)
 	if e != nil {
-		return e
+		log.Fatalf("Could not find process: %s\n", e)
 	}
 
-	return p.Signal(syscall.Signal(int32(*signalFlag)))
+	e = p.Signal(syscall.Signal(*signalFlag))
+	if e != nil {
+		log.Fatalf("Could not send signal: %s\n", e)
+	}
+	return nil
 }

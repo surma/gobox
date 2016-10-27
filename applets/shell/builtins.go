@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"strconv"
+	"time"
 )
 
 type BuiltinHandler func(call []string) error
@@ -22,6 +23,7 @@ func init() {
 		"setenv":   setenv,
 		"unsetenv": unsetenv,
 		"fork":     fork,
+		"sleep":    sleep,
 	}
 }
 
@@ -35,13 +37,13 @@ func pwd(call []string) error {
 }
 
 func cd(call []string) error {
-		homedir := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
-		if homedir == "" {
-				homedir = os.Getenv("USERPROFILE")
-		}
-		if homedir == "" {
-				homedir = os.Getenv("HOME")
-		}
+	homedir := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
+	if homedir == "" {
+		homedir = os.Getenv("USERPROFILE")
+	}
+	if homedir == "" {
+		homedir = os.Getenv("HOME")
+	}
 	if len(call) == 1 {
 		e := os.Chdir(homedir)
 		return e
@@ -103,5 +105,18 @@ func fork(call []string) error {
 		return errors.New("`fork <command...>`")
 	}
 	go execute(call[1:])
+	return nil
+}
+
+func sleep(call []string) error {
+	if len(call) < 2 {
+		return errors.New("`sleep duration(S)`")
+	}
+	t, e := strconv.ParseFloat(call[1], 64)
+	if e != nil {
+		return e
+	}
+	d := time.Duration(t * 1000 * 1000 * 1000)
+	time.Sleep(d)
 	return nil
 }

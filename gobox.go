@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/surma/gobox/pkg/common"
+	"gobox/common"
 	"path/filepath"
 )
 
@@ -17,7 +17,7 @@ var (
 	helpFlag    = flagSet.Bool("help", false, "Show help")
 )
 
-func Gobox(call []string) (e error) {
+func GoboxMain(call []string) (e error) {
 	e = flagSet.Parse(call[1:])
 	if e != nil {
 		return

@@ -2,7 +2,9 @@ package wget
 
 import (
 	"flag"
+
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -29,19 +31,18 @@ func Wget(call []string) error {
 
 	output, e := getOutputFile(flagSet.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Could not open output file %s: %s", flagSet.Arg(0), e)
 	}
 	defer output.Close()
 
 	c := http.Client{}
 	r, e := c.Get(flagSet.Arg(0))
 	if e != nil {
-		return e
+		log.Fatalf("Could not issue HTTP request: %s", e)
 	}
 	defer r.Body.Close()
 
 	_, e = io.Copy(output, r.Body)
-
 	return e
 }
 

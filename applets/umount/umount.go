@@ -2,6 +2,8 @@ package umount
 
 import (
 	"flag"
+
+	"log"
 	"syscall"
 )
 
@@ -23,5 +25,8 @@ func Umount(call []string) error {
 	}
 
 	e = syscall.Unmount(flagSet.Arg(0), 0)
+	if e != nil {
+		log.Fatalf("Could not unmount: %s\n", e)
+	}
 	return e
 }

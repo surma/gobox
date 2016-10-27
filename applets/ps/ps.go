@@ -2,8 +2,10 @@ package ps
 
 import (
 	"flag"
+
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
+	"gobox/common"
+	"log"
 	"os"
 	"text/tabwriter"
 )
@@ -28,14 +30,15 @@ func Ps(call []string) error {
 
 	pids, e := common.GetAllPids()
 	if e != nil {
-		return e
+		log.Fatalf("Could not obtain PIDs: %s\n", e)
 	}
 
 	fmt.Fprintf(out, "Pid\tParent\tState\tOwner\tMem (kB)\tName\t\n")
 	for _, pid := range pids {
 		proc, e := common.GetProcessByPid(pid)
 		if e != nil {
-			return e
+			log.Printf("Could not get process info of %d: %s\n", pid, e)
+			continue
 		}
 		printProcess(proc)
 	}

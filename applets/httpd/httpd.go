@@ -2,6 +2,8 @@ package httpd
 
 import (
 	"flag"
+
+	"log"
 	"net/http"
 )
 
@@ -23,5 +25,10 @@ func Httpd(call []string) error {
 		return nil
 	}
 
-	return http.ListenAndServe(*addrFlag, http.FileServer(http.Dir(flagSet.Arg(0))))
+	e = http.ListenAndServe(*addrFlag, http.FileServer(http.Dir(flagSet.Arg(0))))
+	if e != nil {
+		log.Fatalf("Could not start server: %s\n", e)
+	}
+
+	return nil
 }

@@ -2,7 +2,9 @@ package cat
 
 import (
 	"flag"
+
 	"io"
+	"log"
 	"os"
 )
 
@@ -26,7 +28,7 @@ func Cat(call []string) error {
 	for _, file := range flagSet.Args() {
 		e := dumpFile(file)
 		if e != nil {
-			return e
+			log.Printf("Could not print file %s: %s\n", file, e)
 		}
 	}
 

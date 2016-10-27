@@ -2,9 +2,11 @@ package grep
 
 import (
 	"flag"
+
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
+	"gobox/common"
 	"io"
+	"log"
 	"os"
 	"regexp"
 )
@@ -28,7 +30,7 @@ func Grep(call []string) error {
 
 	pattern, err := regexp.Compile(flagSet.Arg(0))
 	if err != nil {
-		return err
+		log.Fatalf("Invalid regular expression: %s\n", err)
 	}
 
 	if flagSet.NArg() == 1 {
@@ -41,7 +43,7 @@ func Grep(call []string) error {
 					doGrep(pattern, fh, fn, flagSet.NArg() > 2)
 				}()
 			} else {
-				fmt.Fprintf(os.Stderr, "grep: %s: %v\n", fn, err)
+				log.Printf("Could not open file %s: %s\n", fn, err)
 			}
 		}
 	}
@@ -54,12 +56,15 @@ func doGrep(pattern *regexp.Regexp, fh io.Reader, fn string, print_fn bool) {
 
 	for {
 		line, err := buf.ReadWholeLine()
+		if err == io.EOF {
+			return
+		}
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error while reading from %s: %v\n", fn, err)
+			log.Printf("Could not read from %s: %s\n", fn, err)
 			return
 		}
 		if line == "" {
-			break
+			continue
 		}
 
 		if pattern.MatchString(line) {

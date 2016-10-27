@@ -64,7 +64,7 @@ var (
 )
 
 func Zcat(call []string) error {
-	e := flagSetZcat.Parse(call[1:])
+	e := flagSet.Parse(call[1:])
 	if e != nil {
 		return e
 	}
@@ -82,32 +82,32 @@ func Zcat(call []string) error {
 	return nil
 }
 
-func doGzip(fn string) {
+func doGzip(fn string) error {
 	fh, err := os.Open(fn)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
-		return
+		return err
 	}
 	defer fh.Close()
 	fi, err := fh.Stat()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
-		return
+		return err
 	}
-	if !fi.Mode().IsRegular() {
-		fmt.Fprintf(os.Stderr, "%s: not a regular file\n", fn)
-		return
+	if fi.IsDir() {
+		fmt.Fprintf(os.Stderr, "%s: is a directory\n", fn)
+		return err
 	}
 	newfn := fn + ".gz"
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode())
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
-		return
+		return err
 	}
 	compressor, err := gzip.NewWriterLevel(tfh, gzip.BestCompression)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "gzip: %v\n", err)
-		return
+		return err
 	}
 	defer compressor.Close()
 	compressor.ModTime = fi.ModTime()
@@ -119,37 +119,38 @@ func doGzip(fn string) {
 	if err := os.Remove(fn); err != nil {
 		fmt.Fprintf(os.Stderr, "gzip: %v\n", err)
 	}
+	return nil
 }
 
-func doGunzip(fn string) {
+func doGunzip(fn string) error {
 	fh, err := os.Open(fn)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
-		return
+		return err
 	}
 	decompressor, err := gzip.NewReader(fh)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
-		return
+		return err
 	}
 	defer decompressor.Close()
 	fi, err := fh.Stat()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
-		return
+		return err
 	}
 	if path.Ext(fn) != ".gz" && !*forceFlag {
 		fmt.Fprintf(os.Stderr, "gunzip: %v: unknown suffix -- ignored\n", fn)
-		return
+		return nil
 	}
 	newfn := fn + ".gunzip"
 	if !*forceFlag {
 		newfn = fn[0 : len(fn)-3]
 	}
-	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode())
+	tfh, err := os.OpenFile(newfn, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", newfn, err)
-		return
+		return err
 	}
 	defer tfh.Close()
 	if _, err := io.Copy(tfh, decompressor); err != nil {
@@ -158,17 +159,19 @@ func doGunzip(fn string) {
 	if err := os.Remove(fn); err != nil {
 		fmt.Fprintf(os.Stderr, "gunzip: %v\n", err)
 	}
+	return nil
 }
 
-func doZcat(fn string) {
+func doZcat(fn string) error {
 	fh, err := os.Open(fn)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", fn, err)
-		return
+		return err
 	}
 	decompressor, err := gzip.NewReader(fh)
 	defer decompressor.Close()
 	if _, err := io.Copy(os.Stdout, decompressor); err != nil {
 		fmt.Fprintf(os.Stderr, "zcat: %v\n", err)
 	}
+	return nil
 }

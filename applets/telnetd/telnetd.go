@@ -1,10 +1,12 @@
 package telnetd
 
 import (
-	"errors"
 	"flag"
-	"github.com/surma/gobox/pkg/common"
+
+	"errors"
+	"gobox/common"
 	"io"
+	"log"
 	"net"
 	"os/exec"
 )
@@ -27,7 +29,11 @@ func Telnetd(call []string) error {
 		return nil
 	}
 
-	return startServer(*addrFlag, flagSet.Args())
+	e = startServer(*addrFlag, flagSet.Args())
+	if e != nil {
+		log.Fatalf("Could not start server: %s\n", e)
+	}
+	return e
 }
 
 func startServer(addr string, call []string) error {

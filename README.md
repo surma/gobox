@@ -19,6 +19,12 @@ Pitfalls
 - Telnetd has no authentication mechanism right now. It’s noting more than a
   network-capable pipe.
 
+Build
+-----
+docker run --rm -it -v $(pwd):/go/src/gobox -w /go/src/gobox golang bash
+> go get
+> go build
+
 Installation
 ------------
 
@@ -26,11 +32,13 @@ GoBox is now `go get`-able.
 
 Developing applets
 ------------------
-- Copy `applets/template` and name the copy like your applet
-- Rename `template.go` and edit its contents to fit your applet
-- Add your applet to `cmd/gobox/applets.go`
+Write your applet as a standalone Go application. When done, you need to execute the following steps:
 
-The template provides the basic framework you should stick to.
+1. Change the package name from `main` to something sensible (i.e. the exectuables name)
+2. Change `import "flag"` to `import flag "appletflag"`
+3. Change `func main() {...` to `func Main() {...`
+
+Now move your code into it’s own folder unter `applets` and add your applet to the `cmd/gobox/applets.go`.
 
 Why is there not real shell?
 ----------------------------
@@ -39,9 +47,30 @@ I got this question a lot and I have 2 main reasons:
 - I seriously did not want to implement the broken and god-awful syntax of bash
   or any other currently used shell!
 - You have Go. Do you need anything *more* lightweight? The philosohpy behind this
-  project is that it is cheap to (re)build and deploy. You don’t really use
+  project is, that it is cheap to (re)build and deploy. So you don’t really use
   scripting anymore. If you need to automate some process, write an applet in Go and
   integrate it with GoBox and push it.
+
+Tools-Folder
+------------
+All these scripts are supposed to be run from the root of the repository inside
+the DevEnv. Most of them will work on the outside as well, though.
+
+- `geninitramfs.sh`
+  This script will build a kernel compatible initramfs containing just enough to be
+  able to boot with it.
+  You usually don’t need to run this script yourself as `run_qemu.sh` does it for you.
+  For details on customization take a look at the script itself and [the kernel’s implementation](https://github.com/torvalds/linux/blob/master/usr/gen_init_cpio.c)
+
+- `run_qemu.sh`
+  This script builds an initramfs and starts a virtual machine booting the DevEnv’s
+  kernel together with the newly build initramfs.
+
+- `netpkg_fix.sh`
+  You don’t need to run this script except if you updated Go!
+  A while ago, the Go team has decided to use libc´s DNS lookup routines instead of
+  their own´s which requires dynamic linking. This script will recompile the `net`
+  package of the Go distribution to reenable static linking.
 
 Bugs
 ----
