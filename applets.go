@@ -4,6 +4,7 @@ package main
 import (
 	"github.com/surma/gobox/applets/cat"
 	"github.com/surma/gobox/applets/chroot"
+	"github.com/surma/gobox/applets/date"
 	"github.com/surma/gobox/applets/echo"
 	"github.com/surma/gobox/applets/grep"
 	"github.com/surma/gobox/applets/gzip"
@@ -46,6 +47,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"gzip":    gzip.Gzip,
 	"gunzip":  gzip.Gunzip,
 	"zcat":    gzip.Zcat,
+	"date":    date.Date,
 }
 
 // Signature of applet functions.
