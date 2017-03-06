@@ -2,10 +2,11 @@ package shell
 
 import (
 	"fmt"
-	"github.com/surma/gobox/pkg/common"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/surma/gobox/pkg/common"
 )
 
 func Shell(call []string) error {
@@ -39,6 +40,7 @@ func Shell(call []string) error {
 		if isComment(line) {
 			continue
 		}
+		line = expandVariables(line)
 		params, ce := common.Parameterize(line)
 		if ce != nil {
 			common.DumpError(ce)
@@ -51,6 +53,23 @@ func Shell(call []string) error {
 		}
 	}
 	return nil
+}
+
+func expandVariables(line string) string {
+	var expanded []string
+	var isquote bool
+	words := strings.Split(line, " ")
+	for _, word := range words {
+		isquote = false
+		if strings.HasPrefix(word, `'`) {
+			isquote = true
+		}
+		if !isquote && strings.HasPrefix(word, "$") {
+			word = os.ExpandEnv(word)
+		}
+		expanded = append(expanded, word)
+	}
+	return strings.Join(expanded, " ")
 }
 
 func isComment(line string) bool {
