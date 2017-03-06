@@ -27,6 +27,7 @@ import (
 var Applets map[string]Applet = map[string]Applet{
 	"echo":    echo.Echo,
 	"shell":   shell.Shell,
+	"sh":      shell.Shell,
 	"telnetd": telnetd.Telnetd,
 	"ls":      ls.Ls,
 	"rm":      rm.Rm,
