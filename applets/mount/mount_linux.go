@@ -5,6 +5,7 @@ import (
 	"flag"
 	"strings"
 	"syscall"
+	"io/ioutil"
 )
 
 var (
@@ -20,7 +21,19 @@ func Mount(call []string) error {
 		return e
 	}
 
-	if flagSet.NArg() != 2 || *helpFlag {
+	if flagSet.NArg() < 1 && !*helpFlag {
+		mountinfo, err := ioutil.ReadFile("/etc/mtab")
+		if err != nil {
+			mountinfo, err = ioutil.ReadFile("/proc/mounts")
+			if err != nil {
+				return err
+			}
+		}
+		print(string(mountinfo))
+		return nil	
+	}
+	
+	if *helpFlag {
 		println("`mount` [options] <device> <dir>")
 		flagSet.PrintDefaults()
 		println("\nAvailable options are:")
