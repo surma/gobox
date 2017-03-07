@@ -22,25 +22,31 @@ func Mount(call []string) error {
 	}
 
 	if flagSet.NArg() < 1 && !*helpFlag {
+
+		// try mtab
 		mountinfo, err := ioutil.ReadFile("/etc/mtab")
 		if err != nil {
+		
+			// try procfs
 			mountinfo, err = ioutil.ReadFile("/proc/mounts")
+
 			if err != nil {
+				if strings.Contains(err.Error(), "such file"){
+					println("mount: no /etc/mtab, no /proc/mounts")
+					showHelp()
+					return nil					
+				} else {
 				return err
+				}
 			}
+
 		}
 		print(string(mountinfo))
 		return nil	
 	}
 	
 	if *helpFlag {
-		println("`mount` [options] <device> <dir>")
-		flagSet.PrintDefaults()
-		println("\nAvailable options are:")
-		for opt := range flagMap {
-			print(opt, ", ")
-		}
-		println()
+		showHelp()
 		return nil
 	}
 
@@ -79,4 +85,14 @@ func parseFlags() (uint32, error) {
 		ret |= val
 	}
 	return ret, nil
+}
+
+func showHelp(){
+		println("`mount` [options] <device> <dir>")
+		flagSet.PrintDefaults()
+		println("\nAvailable options are:")
+		for opt := range flagMap {
+			print(opt, ", ")
+		}
+		println()
 }
