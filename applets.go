@@ -15,6 +15,7 @@ import (
 	"github.com/surma/gobox/applets/mknod"
 	"github.com/surma/gobox/applets/mount"
 	"github.com/surma/gobox/applets/ps"
+	"github.com/surma/gobox/applets/pwd"
 	"github.com/surma/gobox/applets/rm"
 	"github.com/surma/gobox/applets/shell"
 	"github.com/surma/gobox/applets/telnetd"
@@ -46,6 +47,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"gzip":    gzip.Gzip,
 	"gunzip":  gzip.Gunzip,
 	"zcat":    gzip.Zcat,
+	"pwd":     pwd.Pwd,
 }
 
 // Signature of applet functions.
