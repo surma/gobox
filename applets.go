@@ -20,6 +20,7 @@ import (
 	"github.com/surma/gobox/applets/shell"
 	"github.com/surma/gobox/applets/telnetd"
 	"github.com/surma/gobox/applets/umount"
+	"github.com/surma/gobox/applets/wc"
 	"github.com/surma/gobox/applets/wget"
 )
 
@@ -48,6 +49,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"gunzip":  gzip.Gunzip,
 	"zcat":    gzip.Zcat,
 	"pwd":     pwd.Pwd,
+	"wc":      wc.Wc,
 }
 
 // Signature of applet functions.
