@@ -19,6 +19,7 @@ import (
 	"github.com/surma/gobox/applets/rm"
 	"github.com/surma/gobox/applets/shasum"
 	"github.com/surma/gobox/applets/shell"
+	"github.com/surma/gobox/applets/sleep"
 	"github.com/surma/gobox/applets/telnetd"
 	"github.com/surma/gobox/applets/umount"
 	"github.com/surma/gobox/applets/wc"
@@ -54,6 +55,7 @@ var Applets map[string]Applet = map[string]Applet{
 	"sha1sum":   shasum.Sha1sum,
 	"sha256sum": shasum.Sha256sum,
 	"sha512sum": shasum.Sha512sum,
+	"sleep":     sleep.Sleep,
 }
 
 // Signature of applet functions.

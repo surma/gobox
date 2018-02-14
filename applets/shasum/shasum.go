@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	flagSet  = flag.NewFlagSet("template", flag.PanicOnError)
+	flagSet  = flag.NewFlagSet("shasum", flag.PanicOnError)
 	helpFlag = flagSet.Bool("help", false, "Show this help")
 )
 
@@ -23,7 +23,7 @@ func Sha1sum(call []string) error {
 	}
 
 	if flagSet.NArg() <= 0 || *helpFlag {
-		println("`sha1sum` [options] <files>")
+		println("`sha1sum` <files>")
 		flagSet.PrintDefaults()
 		return nil
 	}
@@ -50,7 +50,7 @@ func Sha256sum(call []string) error {
 	}
 
 	if flagSet.NArg() <= 0 || *helpFlag {
-		println("`sha256sum` [options] <files>")
+		println("`sha256sum` <files>")
 		flagSet.PrintDefaults()
 		return nil
 	}
@@ -77,7 +77,7 @@ func Sha512sum(call []string) error {
 	}
 
 	if flagSet.NArg() <= 0 || *helpFlag {
-		println("`sha256sum` [options] <files>")
+		println("`sha512sum` <files>")
 		flagSet.PrintDefaults()
 		return nil
 	}
