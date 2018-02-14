@@ -17,6 +17,7 @@ import (
 	"github.com/surma/gobox/applets/ps"
 	"github.com/surma/gobox/applets/pwd"
 	"github.com/surma/gobox/applets/rm"
+	"github.com/surma/gobox/applets/shasum"
 	"github.com/surma/gobox/applets/shell"
 	"github.com/surma/gobox/applets/telnetd"
 	"github.com/surma/gobox/applets/umount"
@@ -27,29 +28,32 @@ import (
 // This map contains the mappings from callname
 // to applet function.
 var Applets map[string]Applet = map[string]Applet{
-	"echo":    echo.Echo,
-	"shell":   shell.Shell,
-	"sh":      shell.Shell,
-	"telnetd": telnetd.Telnetd,
-	"ls":      ls.Ls,
-	"rm":      rm.Rm,
-	"httpd":   httpd.Httpd,
-	"wget":    wget.Wget,
-	"kill":    kill.Kill,
-	"cat":     cat.Cat,
-	"mknod":   mknod.Mknod,
-	"mount":   mount.Mount,
-	"umount":  umount.Umount,
-	"chroot":  chroot.Chroot,
-	"ps":      ps.Ps,
-	"mkdir":   mkdir.Mkdir,
-	"head":    head.Head,
-	"grep":    grep.Grep,
-	"gzip":    gzip.Gzip,
-	"gunzip":  gzip.Gunzip,
-	"zcat":    gzip.Zcat,
-	"pwd":     pwd.Pwd,
-	"wc":      wc.Wc,
+	"echo":      echo.Echo,
+	"shell":     shell.Shell,
+	"sh":        shell.Shell,
+	"telnetd":   telnetd.Telnetd,
+	"ls":        ls.Ls,
+	"rm":        rm.Rm,
+	"httpd":     httpd.Httpd,
+	"wget":      wget.Wget,
+	"kill":      kill.Kill,
+	"cat":       cat.Cat,
+	"mknod":     mknod.Mknod,
+	"mount":     mount.Mount,
+	"umount":    umount.Umount,
+	"chroot":    chroot.Chroot,
+	"ps":        ps.Ps,
+	"mkdir":     mkdir.Mkdir,
+	"head":      head.Head,
+	"grep":      grep.Grep,
+	"gzip":      gzip.Gzip,
+	"gunzip":    gzip.Gunzip,
+	"zcat":      gzip.Zcat,
+	"pwd":       pwd.Pwd,
+	"wc":        wc.Wc,
+	"sha1sum":   shasum.Sha1sum,
+	"sha256sum": shasum.Sha256sum,
+	"sha512sum": shasum.Sha512sum,
 }
 
 // Signature of applet functions.
