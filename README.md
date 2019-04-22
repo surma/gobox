@@ -24,7 +24,7 @@ Installation
 
 ### With Modules - Go 1.11 or higher
 
-    git clone https://github.com/surma/gobox
+    git clone https://github.com/surma/gobox ;# clone outside of GOPATH
     cd gobox
     go install
 
