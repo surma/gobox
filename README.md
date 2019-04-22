@@ -22,7 +22,17 @@ Pitfalls
 Installation
 ------------
 
-GoBox is now `go get`-able.
+### With Modules - Go 1.11 or higher
+
+    git clone https://github.com/surma/gobox ;# clone outside of GOPATH
+    cd gobox
+    go install
+
+### Without Modules - Before Go 1.11
+
+    go get github.com/surma/gobox
+
+`go get` can also be used with Modules, but it will get you only an immutable copy of the source code.
 
 Developing applets
 ------------------
