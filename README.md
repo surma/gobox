@@ -31,7 +31,8 @@ Installation
 ### Without Modules - Before Go 1.11
 
     go get github.com/surma/gobox
-    go install github.com/surma/gobox
+
+`go get` can also be used with Modules, but it will get you only an immutable copy of the source code.
 
 Developing applets
 ------------------
